@@ -32,7 +32,8 @@ class Command(BaseCommand):
             line2 = '{:<69}'.format(line2.strip())
 
             TLE_list.append(
-                TLE(title_line=title_line,
+                TLE(#datetime_creation=datetime.utcnow(),
+                    title_line=title_line,
                     line1=line1,
                     line2=line2,
                     datetime_in_lines=datetime_in_lines,
