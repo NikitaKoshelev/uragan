@@ -25,7 +25,8 @@ class TLE(models.Model):
 
 class Satellite(models.Model):
     title = models.CharField(max_length=200, verbose_name=_('satellite title'))
-    satellite_number = models.IntegerField(verbose_name=_('number of satellites in the database NORAD'), unique=True)
+    satellite_number = models.IntegerField(verbose_name=_('number of satellites in the database NORAD'),
+                                           unique=True)
     about_satellite = models.TextField(verbose_name=_('about satellite'), null=True)
     image = models.ImageField(upload_to='satellites', verbose_name=_('satellite image'), null=True)
 

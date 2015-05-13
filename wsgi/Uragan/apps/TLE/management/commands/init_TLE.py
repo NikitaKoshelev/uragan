@@ -3,8 +3,37 @@
 from django.core.management.base import BaseCommand
 from apps.TLE.models import TLE, Satellite
 from apps.TLE import spacetrack
-from datetime import datetime, date, timedelta
-from pytz import utc
+from datetime import date
+from dateutil.parser import parse
+
+
+def unique_tle(seq, satellite):
+
+    seen = set()
+    seen_add = seen.add
+    len_seq = len(seq)
+    for count, tle in enumerate(seq):
+
+        progress = '{:.0%}'.format(count / len_seq)
+        if count == 0:
+            prev_progress = progress
+
+        datetime_in_lines = parse('{}.{} {}'.format(tle['EPOCH'], tle['EPOCH_MICROSECONDS'], 'UTC'))
+        norad_id = tle['NORAD_CAT_ID']
+
+        if not ((datetime_in_lines, norad_id) in seen or seen_add((datetime_in_lines, norad_id))):
+            title_line = '{:<24}'.format(tle['TLE_LINE0'][2:].strip())
+            line1 = '{:<69}'.format(tle['TLE_LINE1'].strip())
+            line2 = '{:<69}'.format(tle['TLE_LINE2'].strip())
+
+            yield TLE(title_line=title_line, line1=line1, line2=line2,
+                      datetime_in_lines=datetime_in_lines, satellite=satellite)
+
+        if progress != prev_progress:
+            print(progress)
+
+        prev_progress = progress
+    del seq, seen
 
 
 class Command(BaseCommand):
@@ -13,33 +42,19 @@ class Command(BaseCommand):
     def handle(self, **options):
         TLE.objects.all().delete()
         satellites = Satellite.objects.all()
-        satellites_ids = ','.join(map(str, (sat.satellite_number for sat in satellites)))
-        credentials = {'identity': 'nikita.koshelev@gmail.com', 'password': 'K0SHeLeV21101994'}
-        query = spacetrack.tle_query_build(date_range=(date(1998, 11, 20), date.today()),
-                                           norad_id=satellites_ids)
-        r = spacetrack.request_sequence(credentials, spacetrack_query=query)
-        result = set((datetime.strptime(tle['EPOCH'], '%Y-%m-%d %H:%M:%S'), int(tle['EPOCH_MICROSECONDS']),
-                      int(tle['NORAD_CAT_ID']),
-                      tle['TLE_LINE0'][2:], tle['TLE_LINE1'], tle['TLE_LINE2']) for tle in r)
 
-        TLE_list = []
-        for epoch, epoch_microseconds, satellite_number, title, line1, line2 in result:
-            #print(epoch, epoch_microseconds, satellite_number, title)
-            datetime_in_lines = epoch.replace(tzinfo=utc) + timedelta(microseconds=epoch_microseconds)
+        for sat in satellites:
+            try:
+                credentials = {'identity': 'nikita.koshelev@gmail.com', 'password': 'K0SHeLeV21101994'}
+                query = spacetrack.tle_query_build(date_range=(date(1998, 11, 20), date.today()),
+                                                   norad_id=str(sat.satellite_number), sort='asc')
 
-            title_line = '{:<24}'.format(title.strip())
-            line1 = '{:<69}'.format(line1.strip())
-            line2 = '{:<69}'.format(line2.strip())
+                self.stdout.write('Start download object - ' + sat.title)
+                r = spacetrack.request_sequence(credentials, spacetrack_query=query)
+                self.stdout.write('Finished download object - ' + sat.title)
 
-            TLE_list.append(
-                TLE(#datetime_created=datetime.utcnow(),
-                    title_line=title_line,
-                    line1=line1,
-                    line2=line2,
-                    datetime_in_lines=datetime_in_lines,
-                    satellite=satellites.get(satellite_number=satellite_number))
-                )
-
-        TLE.objects.bulk_create(sorted(TLE_list, key=lambda x: x.datetime_in_lines))
-
-        self.stdout.write('Download finished')
+                self.stdout.write('Start create and save object - ' + sat.title)
+                TLE.objects.bulk_create(unique_tle(r, sat))
+                self.stdout.write('Finished create and save object - ' + sat.title)
+            except:
+                self.stdout.write('Fail download, create or save object - ' + sat.title)
