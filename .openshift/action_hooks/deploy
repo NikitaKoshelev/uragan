@@ -1,0 +1,24 @@
+#!/bin/bash
+
+source ${VIRTUAL_ENV}/bin/activate
+
+cd ${OPENSHIFT_REPO_DIR}
+pip install -r requirements.txt
+
+cd wsgi/Uragan
+
+Commands[1]="migrate"
+Commands[2]="collectstatic --noinput"
+Commands[3]="makemessages -a"
+Commands[4]="makemessages -d djangojs -a"
+Commands[5]="compilemessages"
+
+
+for index in 1 2 3 4 5
+do
+    echo "______________________________________________________________________________________"
+    echo "python manage.py ${Commands[index]}"
+    python manage.py ${Commands[index]}
+    echo "______________________________________________________________________________________"
+    echo ""
+done

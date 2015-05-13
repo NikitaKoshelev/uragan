@@ -1,0 +1,12 @@
+https://pypi.python.org/packages/source/D/Django/Django-1.8.1.tar.gz#md5=0f0a677a2cd56b9ab7ccb1c562d70f53
+django-forms-bootstrap
+django_select2
+django-grappelli
+geopy
+pillow
+pytz
+requests
+psycopg2
+django-rosetta
+goslate
+solid_i18n

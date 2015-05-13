@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+
+{% block content-header %}
+  {% trans 'Two-line element sets' %}
+{% endblock %}
+
+{% block content %}
+    {% for obj in object_list %}
+    <div class="col-md-4">
+      <div class="box box-solid">
+        <div class="box-body">
+          <p>{{ obj.datetime_in_lines|date:'c' }}</p>
+
+          <p>{{ obj.title_line }}</p>
+
+          <p>{{ obj.satellite_number }}</p>
+
+          <p>{{ obj.line1 }}</p>
+
+          <p>{{ obj.line2 }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}
