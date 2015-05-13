@@ -3,7 +3,7 @@
 source ${VIRTUAL_ENV}/bin/activate
 
 cd ${OPENSHIFT_REPO_DIR}
-pip install -r requirements.txt
+#pip install -r requirements.txt
 
 cd wsgi/Uragan
 
