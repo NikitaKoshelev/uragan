@@ -15,7 +15,7 @@ class Command(BaseCommand):
         satellites = Satellite.objects.all()
         satellites_ids = ','.join(map(str, (sat.satellite_number for sat in satellites)))
         credentials = {'identity': 'nikita.koshelev@gmail.com', 'password': 'K0SHeLeV21101994'}
-        query = spacetrack.tle_query_build(date_range=(date(2015, 5, 1), date.today()),
+        query = spacetrack.tle_query_build(date_range=(date(1998, 11, 20), date.today()),
                                            norad_id=satellites_ids)
         r = spacetrack.request_sequence(credentials, spacetrack_query=query)
         result = set((datetime.strptime(tle['EPOCH'], '%Y-%m-%d %H:%M:%S'), int(tle['EPOCH_MICROSECONDS']),
@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
         TLE_list = []
         for epoch, epoch_microseconds, satellite_number, title, line1, line2 in result:
-            print(epoch, epoch_microseconds, satellite_number, title)
+            #print(epoch, epoch_microseconds, satellite_number, title)
             datetime_in_lines = epoch.replace(tzinfo=utc) + timedelta(microseconds=epoch_microseconds)
 
             title_line = '{:<24}'.format(title.strip())
@@ -32,7 +32,7 @@ class Command(BaseCommand):
             line2 = '{:<69}'.format(line2.strip())
 
             TLE_list.append(
-                TLE(#datetime_creation=datetime.utcnow(),
+                TLE(#datetime_created=datetime.utcnow(),
                     title_line=title_line,
                     line1=line1,
                     line2=line2,
