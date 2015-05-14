@@ -1,9 +1,43 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 """ Functional implementation of SpaceTrack API requests
+
+    List TLE object params:'APOGEE',
+                           'ARG_OF_PERICENTER',
+                           'BSTAR',
+                           'CLASSIFICATION_TYPE',
+                           'COMMENT',
+                           'ECCENTRICITY',
+                           'ELEMENT_SET_NO',
+                           'EPHEMERIS_TYPE',
+                           'EPOCH',
+                           'EPOCH_MICROSECONDS',
+                           'FILE',
+                           'INCLINATION',
+                           'INTLDES',
+                           'MEAN_ANOMALY',
+                           'MEAN_MOTION',
+                           'MEAN_MOTION_DDOT',
+                           'MEAN_MOTION_DOT',
+                           'NORAD_CAT_ID',
+                           'OBJECT_ID',
+                           'OBJECT_NAME',
+                           'OBJECT_NUMBER',
+                           'OBJECT_TYPE',
+                           'ORDINAL',
+                           'ORIGINATOR',
+                           'PERIGEE',
+                           'PERIOD',
+                           'RA_OF_ASC_NODE',
+                           'REV_AT_EPOCH',
+                           'SEMIMAJOR_AXIS',
+                           'TLE_LINE0',
+                           'TLE_LINE1',
+                           'TLE_LINE2'
+
 """
 
 import requests
-from datetime import date, datetime
+from datetime import date
 
 
 _url_base = "https://www.space-track.org/"
@@ -14,8 +48,9 @@ _url_request_postfix = "/orderby/EPOCH%20desc/limit/1"
 
 
 def tle_query_build(latest=False, order_by='EPOCH', sort='desc', norad_id='25544', date_range=(0, 0), last=None):
-    print(date_range)
-    print(type(date_range[0]) is date)
+    """
+    If latest=True then args last and date_range ignoring. If last then arg date_range ignoring.
+    """
     if latest:
         return ('https://www.space-track.org/basicspacedata/query/class/tle_latest/'
                 'ORDINAL/1/'
@@ -33,6 +68,7 @@ def tle_query_build(latest=False, order_by='EPOCH', sort='desc', norad_id='25544
                                                       sort=sort))
     if type(date_range) is tuple:
         if (type(date_range[0]) is date) and (type(date_range[1]) is date):
+            print('Date range: {0[0]} -- {0[1]}'.format(date_range))
             return ('https://www.space-track.org/basicspacedata/query/class/tle/'
                     'EPOCH/{date_min}--{date_max}/'
                     'NORAD_CAT_ID/{norad_id}/'
@@ -103,10 +139,10 @@ def request_sequence(credentials, norad_id=None, spacetrack_query=None):
 
 if __name__ == '__main__':
     credentials = {'identity': 'nikita.koshelev@gmail.com', 'password': 'K0SHeLeV21101994'}
-    query = tle_query_build(date_range=(date(2015, 5, 9), date.today()))
+    query = tle_query_build(norad_id='25544', latest=True, last=5, date_range=(date(2015, 5, 9), date.today()))
     print(query)
-    r = request_sequence(credentials, spacetrack_query=query)
-    result = set((datetime.strptime(tle['EPOCH'], '%Y-%m-%d %H:%M:%S'), tle['TLE_LINE0'][2:], tle['TLE_LINE1'], tle['TLE_LINE1']) for tle in r)
-    for tle in sorted(result, reverse=True):
-        print(tle)
 
+    r = request_sequence(credentials, spacetrack_query=query)
+
+    for tle in r:
+        print(tle['OBJECT_NAME'], tle['EPOCH'], tle['TLE_LINE1'])

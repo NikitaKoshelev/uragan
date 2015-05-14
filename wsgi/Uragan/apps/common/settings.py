@@ -59,6 +59,7 @@ THIRD_PARTY_APPS = (
     'django_forms_bootstrap',
     'django_select2',
     'rosetta',
+    'crispy_forms',
 )
 
 LOCAL_APPS = (
@@ -201,3 +202,4 @@ ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_GOOGLE_TRANSLATE = True
 ROSETTA_WSGI_AUTO_RELOAD = True
 #-----------------------------------------------------------------------------------------------------------------------
+CRISPY_TEMPLATE_PACK = 'bootstrap'

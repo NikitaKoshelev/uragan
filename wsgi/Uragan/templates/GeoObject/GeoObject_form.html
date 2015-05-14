@@ -1,41 +1,26 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags staticfiles %}
+{% load bootstrap_tags staticfiles crispy_forms_tags %}
+
 {% block extra_head %}
   {{ form.media.css }}
-  <script type="text/javascript"
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"></script>
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
+          type="text/javascript"></script>
 {% endblock %}
+
 {% block content %}
   <div class="row">
 
   </div>
   <div class="row">
-    <div class="col-sm-4">
-
-      <form action="" method="post">
-        {% csrf_token %}
-        <div class="box box-solid">
-          <div class="box-header with-border"><h3 class="box-title">Create Form</h3></div>
-          <div class="box-body">
-            {{ form|as_bootstrap }}
-          </div>
-          <div class="box-footer">
-            <button class="btn btn-primary btn-flat" type="submit">Submit</button>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="col-sm-8">
+    <div class="col-sm-12">
       <!-- Custom Tabs -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
           <li class="active">
-            <a href="#tab_1" data-toggle="tab" aria-expanded="true">Geocoder response</a>
+            <a href="#part_1" data-toggle="tab" aria-expanded="true">Geocoder response</a>
           </li>
           <li class="">
-            <a href="#tab_2" data-toggle="tab" aria-expanded="false">Map</a>
+            <a href="#part_2" data-toggle="tab" aria-expanded="false">Map</a>
           </li>
           <li class="pull-right dropdown">
             <a href="#" class="text-muted dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -59,12 +44,12 @@
           </li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane active" id="tab_1">
-            <div id="geocoder_box"></div>
+          <div class="tab-pane active" id="part_1">
+
           </div>
           <!-- /.tab-pane -->
-          <div class="tab-pane" id="tab_2">
-            <div id="map_canvas" style="width:100%; height:600px; margin: 0 0"></div>
+          <div class="tab-pane" id="part_2">
+
           </div>
           <!-- /.tab-pane -->
         </div>
@@ -78,119 +63,35 @@
 {% block scripts %}
 
   {{ block.super }}
-  {{ form.media.js }}
-  <script src="{% static 'plugins/jQueryUI/jquery-ui-1.10.3.min.js' %}"></script>
-  <script>
-    //function nominatim() {
-    //  var lat = $('#id_lat'),
-    //      lon = $('#id_lon'),
-    //      title = $('#id_title').val(),
-    //      url_html = 'http://nominatim.openstreetmap.org/search?q=' + encodeURI(title) + '&format=html&polygon=1',
-    //      url_json = 'http://nominatim.openstreetmap.org/search?q=' + encodeURI(title) + '&format=json&polygon_kml=1';
-    //  $.getJSON(url_json, function (data) {
-    //    var items = [];
-    //    $.each(data, function (key, val) {
-    //      if (key === 0) {
-    //        $('#id_lat').val(val.lat);
-    //        $('#id_lon').val(val.lon);
-    //        $('#id_polygon').val(val.geokml);
-    //      }
-    //      var dl = $('<dl>', {class: "dl-horizontal"});
-    //      $.each(val, function (dt, dd) {
-    //        dl.append($('<dt>').text(dt)).append($('<dd>').text(dd))
-    //      });
-    //      console.log(dl);
-    //      items.push($('<a>', {class: 'list-group-item', href: 'javascript:void(0);'})
-    //                     .append($('<h4>', {class: 'list-group-item-heading'}).text(val.display_name))
-    //                     .append($('<p>', {class: 'list-group-item-text'}).html(dl))
-    //      );
-    //
-    //    });
-    //    $('#geocoder_box').addClass('list-group').html(items);
-    //  });
-    //
-    //  $('#geocoder_frame').attr('src', url_html);
-    //}
 
-    $('#id_title')
-        .parent()
-        .addClass('input-group')
-        .append($('<span>', {
-                  class: 'input-group-btn'
-                }).append($('<button>', {
-                            class: 'btn btn-default btn-flat',
-                            type: 'button',
-                            onclick: 'nominatim();'
-                          }).html($('<i>', {class: 'fa fa-search'}))
-                )
-    )
-  </script>
+  {{ form.media.js }}
 
   <script type="text/javascript">
-
-    var geocoder, map, marker;
-
-    function initialize() {
-      //Определение карты
-      var latlng = new google.maps.LatLng(55.920963, 37.80495829999995);
-      var options = {
-        zoom: 8,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.HYBRID
-      };
-
-      map = new google.maps.Map(document.getElementById("map_canvas"), options);
-
-      //Определение геокодера
-      geocoder = new google.maps.Geocoder();
-
-      marker = new google.maps.Marker({map: map, draggable: true});
-
-    }
-
-    $(document).ready(function () {
-
-      initialize();
-
-      $(function () {
-        $("#id_title").autocomplete({
-                                      //Определяем значение для адреса при геокодировании
-                                      source: function (request, response) {
-                                        geocoder.geocode({'address': request.term}, function (results, status) {
-                                          response($.map(results, function (item) {
-                                            return {
-                                              label: item.formatted_address,
-                                              value: item.formatted_address,
-                                              latitude: item.geometry.location.lat(),
-                                              longitude: item.geometry.location.lng()
-                                            }
-                                          }));
-                                        })
-                                      },
-                                      //Выполняется при выборе конкретного адреса
-                                      select: function (event, ui) {
-                                        $("#id_lat").val(ui.item.latitude);
-                                        $("#id_lon").val(ui.item.longitude);
-                                        var location = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
-                                        marker.setPosition(location);
-                                        map.setCenter(location);
-                                      }
-                                    });
-      });
-
-      //Добавляем слушателя события обратного геокодирования для маркера при его перемещении
-      google.maps.event.addListener(marker, 'drag', function () {
-        geocoder.geocode({'latLng': marker.getPosition()}, function (results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            if (results[0]) {
-              $('#id_title').val(results[0].formatted_address);
-              $('#id_lat').val(marker.getPosition().lat());
-              $('#id_lon').val(marker.getPosition().lng());
-            }
-          }
-        });
-      });
-
+    $.ajax({
+      url: "partition/part_1/",
+      cache: false,
+      success: function(html){
+        var $html = $(html);
+        var $links = $html.filter('link'), $scripts = $html.filter('script');
+        $links.appendTo('head');
+        $html.filter('form, div').appendTo($('#part_1'));
+        $scripts.appendTo('body');
+        initialize();
+      }
     });
+    //google.maps.event.addDomListener(window, 'load', initialize);
+    //$('#part_1').load("partition/part_1/", function(request, status, xhr){
+    //  var $html = $(request);
+    //  var $links = $html.filter('link'), $scripts = $html.filter('script');
+    //  console.log($links, $scripts);
+    //  $links.detach();
+    //  $scripts.detach();
+    //  $links.appendTo('head');
+    //  $scripts.appendTo('body');
+    //  console.log($html);
+    //})
+
+
+
   </script>
 {% endblock %}

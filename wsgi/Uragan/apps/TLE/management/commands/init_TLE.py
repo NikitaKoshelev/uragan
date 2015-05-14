@@ -5,18 +5,14 @@ from apps.TLE.models import TLE, Satellite
 from apps.TLE import spacetrack
 from datetime import date
 from dateutil.parser import parse
+from tqdm import tqdm
 
 
 def unique_tle(seq, satellite):
 
     seen = set()
     seen_add = seen.add
-    len_seq = len(seq)
-    for count, tle in enumerate(seq):
-
-        progress = '{:.0%}'.format(count / len_seq)
-        if count == 0:
-            prev_progress = progress
+    for tle in tqdm(seq, leave=True):
 
         datetime_in_lines = parse('{}.{} {}'.format(tle['EPOCH'], tle['EPOCH_MICROSECONDS'], 'UTC'))
         norad_id = tle['NORAD_CAT_ID']
@@ -29,10 +25,6 @@ def unique_tle(seq, satellite):
             yield TLE(title_line=title_line, line1=line1, line2=line2,
                       datetime_in_lines=datetime_in_lines, satellite=satellite)
 
-        if progress != prev_progress:
-            print(progress)
-
-        prev_progress = progress
     del seq, seen
 
 
@@ -55,6 +47,6 @@ class Command(BaseCommand):
 
                 self.stdout.write('Start create and save object - ' + sat.title)
                 TLE.objects.bulk_create(unique_tle(r, sat))
-                self.stdout.write('Finished create and save object - ' + sat.title)
+                self.stdout.write('\nFinished create and save object - ' + sat.title)
             except:
                 self.stdout.write('Fail download, create or save object - ' + sat.title)

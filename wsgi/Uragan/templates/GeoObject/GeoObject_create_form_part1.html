@@ -1,0 +1,10 @@
+{% load bootstrap_tags %}
+{{ form.media.css }}
+
+<form class="inline">
+    {% csrf_token %}
+  {{ form|as_bootstrap_inline }}
+</form>
+<div id="map_canvas" style="width:100%; height:600px; margin: 0 0"></div>
+
+{{ form.media.js }}
