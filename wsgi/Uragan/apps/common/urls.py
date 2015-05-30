@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from solid_i18n.urls import solid_i18n_patterns
-
+from .views import translate_string
 js_info_dict = {
     'packages': ('common',),
 }
@@ -15,6 +15,7 @@ urlpatterns = solid_i18n_patterns(
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^geo-object/', include('apps.GeoObject.urls'), name='GeoObject'),
     url(r'^TLE/', include('apps.TLE.urls'), name='TLE'),
+    url(r'^translate/$', translate_string),
 )
 
 urlpatterns += patterns(

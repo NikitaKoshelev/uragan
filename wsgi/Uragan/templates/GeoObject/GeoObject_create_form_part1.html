@@ -2,8 +2,8 @@
 {{ form.media.css }}
 
 <form class="inline">
-    {% csrf_token %}
-  {{ form|as_bootstrap_inline }}
+  {% csrf_token %}
+  {{ form|as_bootstrap}}
 </form>
 <div id="map_canvas" style="width:100%; height:600px; margin: 0 0"></div>
 

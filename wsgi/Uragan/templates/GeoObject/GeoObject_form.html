@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags staticfiles crispy_forms_tags %}
+{% load bootstrap_tags staticfiles %}
 
 {% block extra_head %}
   {{ form.media.css }}
@@ -49,7 +49,7 @@
           </div>
           <!-- /.tab-pane -->
           <div class="tab-pane" id="part_2">
-
+              <input type="text" id="translate" class="form-control">
           </div>
           <!-- /.tab-pane -->
         </div>
@@ -79,6 +79,31 @@
         initialize();
       }
     });
+
+
+
+
+    $('#translate').keyup(function(eventObject){
+      if (eventObject.which === 13){
+        var text = $(this).val();
+        console.log(text);
+        var res=$.get(
+              "/translate/",
+              {source: text},
+              onAjaxSuccess
+          );
+      console.log(res)
+      }
+    });
+
+    function onAjaxSuccess(data)
+    {
+      // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
+      var translate = $('#translate');
+      console.log(translate.val(), data);
+      translate.val(data.result);
+      return data.result;
+    }
     //google.maps.event.addDomListener(window, 'load', initialize);
     //$('#part_1').load("partition/part_1/", function(request, status, xhr){
     //  var $html = $(request);
