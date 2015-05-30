@@ -59,7 +59,7 @@ THIRD_PARTY_APPS = (
     'django_forms_bootstrap',
     'django_select2',
     'rosetta',
-    'crispy_forms',
+    #'crispy_forms',
 )
 
 LOCAL_APPS = (
