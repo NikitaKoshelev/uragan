@@ -32,26 +32,26 @@ function initialize() {
                     cont.html('<span class="select2-selection__clear">×</span>' + results[0].formatted_address);
                     $lat.val(marker.getPosition().lat());
                     $lon.val(marker.getPosition().lng());
-                }
-            }
-        });
-        $.ajax({
-            url: "http://nominatim.openstreetmap.org/reverse",
-            dataType: 'json',
-            data: {lat: marker.getPosition().lat(), lon: marker.getPosition().lng(), format: 'json'},
-            cache: true,
-            ifModified: true,
-            timeout: 300,
-            success: function (data, status) {
-                if (status === 'success') {
-                    var cont = $('#select2-nominatim_geocode-container');
-                    cont.attr('title', data.display_name);
-                    cont.html('<span class="select2-selection__clear">×</span>' + data.display_name);
                     $title.val(data.display_name);
 
                 }
             }
         });
+        //$.ajax({
+        //    url: "http://nominatim.openstreetmap.org/reverse",
+        //    dataType: 'json',
+        //    data: {lat: marker.getPosition().lat(), lon: marker.getPosition().lng(), format: 'json'},
+        //    cache: true,
+        //    ifModified: true,
+        //    timeout: 300,
+        //    success: function (data, status) {
+        //        if (status === 'success') {
+        //            var cont = $('#select2-nominatim_geocode-container');
+        //            cont.attr('title', data.display_name);
+        //            cont.html('<span class="select2-selection__clear">×</span>' + data.display_name);
+        //        }
+        //    }
+        //});
 
 
     })
