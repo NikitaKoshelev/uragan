@@ -53,8 +53,9 @@ $(document).ready(function () {
                 return nominatim_geocode.text;
             }
             else {
-                return $('<p><strong>' + nominatim_geocode.text +'</strong><span class="pull-right">('
-                    + nominatim_geocode.lat + ', ' + nominatim_geocode.lon + ')</span></p>');
+                return $('<strong>{0}</strong><span class="pull-right">({1},{2})</span>'
+                        .f(nominatim_geocode.text, nominatim_geocode.lat, nominatim_geocode.lon)
+                );
                 //return $('<div class="row">' +
                 //    '  <div class="col-md-9">' + nominatim_geocode.text + '</div>' +
                 //   '  <div class="col-md-3">(' + nominatim_geocode.lat + ', ' + nominatim_geocode.lon + ')</div>' +
@@ -77,8 +78,6 @@ $('#geocoders').append(
         $nominatim_geocode
     )
 );
-
-console.log($nominatim_geocode);
 
 $nominatim_geocode.on('select2:select', function (e) {
     var nominatim_geocode = e.params.data;

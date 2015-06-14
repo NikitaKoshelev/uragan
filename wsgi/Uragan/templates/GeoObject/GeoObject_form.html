@@ -102,20 +102,6 @@
   {{ form.media.js }}
 
     <script type="text/javascript">
-        //$.ajax({
-        //  url: "partition/part_1/",
-        //  cache: false,
-        //  success: function(html){
-        //    var $html = $(html);
-        //    var $links = $html.filter('link'), $scripts = $html.filter('script');
-        //    $links.appendTo('head');
-        //    $html.filter('form, div').appendTo($('#part_1'));
-        //    $scripts.appendTo('body');
-        //    initialize();
-        //  }
-        //});
-
-
         $('#translate').keyup(function (eventObject) {
             if (eventObject.which === 13) {
                 var text = $(this).val();
@@ -131,23 +117,7 @@
                             return data.result;
                         }
                 );
-                console.log(res)
             }
         });
-
-
-        //google.maps.event.addDomListener(window, 'load', initialize);
-        //$('#part_1').load("partition/part_1/", function(request, status, xhr){
-        //  var $html = $(request);
-        //  var $links = $html.filter('link'), $scripts = $html.filter('script');
-        //  console.log($links, $scripts);
-        //  $links.detach();
-        //  $scripts.detach();
-        //  $links.appendTo('head');
-        //  $scripts.appendTo('body');
-        //  console.log($html);
-        //})
-
-
     </script>
 {% endblock %}

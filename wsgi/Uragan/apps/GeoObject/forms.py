@@ -11,6 +11,7 @@ class GeoObjectForm(forms.ModelForm):
         widgets = {
             'color': ColorPickerWidget(),
             'short_description': forms.widgets.Textarea(attrs={'rows': 5}),
+            'polygon': forms.widgets.Textarea(attrs={'rows': 1}),
         }
 
     class Media:
@@ -20,7 +21,7 @@ class GeoObjectForm(forms.ModelForm):
          js = (
              'uragan/geoxml3.js',
              "plugins/select2/js/select2.full.min.js",
-             'uragan/GeoObject_create_part1.js',
+             'uragan/create_GeoObject.js',
              'uragan/nominatim_in_select2.js',
              'uragan/google_in_select2.js',
          )

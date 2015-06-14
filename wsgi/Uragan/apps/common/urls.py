@@ -5,7 +5,7 @@ from django.contrib import admin
 from solid_i18n.urls import solid_i18n_patterns
 from .views import translate_string
 js_info_dict = {
-    'packages': ('common',),
+    # 'packages': ('apps.common',),
 }
 
 urlpatterns = solid_i18n_patterns(
@@ -22,7 +22,7 @@ urlpatterns += patterns(
     '',
     url(r'^grappelli/', include('grappelli.urls')),  # grappelli URLS
     url(r'^select2/', include('django_select2.urls')),
-    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict, name='js_catalog'),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

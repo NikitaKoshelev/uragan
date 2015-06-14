@@ -7,7 +7,6 @@ $(document).ready(function () {
     $google_geocode.select2({
         placeholder: 'Search geo object with Google Geocoder...',
         allowClear: true,
-        minimumInputLength: 3,
 
         ajax: {
             url: "https://maps.googleapis.com/maps/api/geocode/json",
@@ -50,8 +49,9 @@ $(document).ready(function () {
                 return google_geocode.text;
             }
             else {
-                return $('<p><strong>' + google_geocode.text +'</strong><span class="pull-right">('
-                    + google_geocode.lat + ', ' + google_geocode.lon + ')</span></p>');
+                return $('<strong>{0}</strong><span class="pull-right">({1},{2})</span>'
+                    .f(google_geocode.text, google_geocode.lat, google_geocode.lon)
+                );
             }
 
         } // omitted for brevity, see the source of this page
@@ -63,14 +63,12 @@ $(document).ready(function () {
 });
 
 $('#geocoders').append(
-    //$('<div class="col-md-5"></div>').append(
     $('<div class="form-group col-md-5">' +
         '<label for="google_geocode" class="control-label">Google geocoder</label>' +
         '</div>').append(
         $google_geocode
     )
 );
-
 
 $google_geocode.on('select2:select', function (e) {
     var google_geocode = e.params.data;
