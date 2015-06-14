@@ -2,7 +2,7 @@
  * Created by koshelev on 14.05.15.
  */
 var geocoder, map, marker,
-    $title = $('id_title'),
+    $title = $('#id_title'),
     $lat = $("#id_lat"),
     $lon = $("#id_lon");
 
