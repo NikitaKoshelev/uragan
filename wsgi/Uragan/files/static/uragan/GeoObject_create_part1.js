@@ -32,7 +32,7 @@ function initialize() {
                     cont.html('<span class="select2-selection__clear">×</span>' + results[0].formatted_address);
                     $lat.val(marker.getPosition().lat());
                     $lon.val(marker.getPosition().lng());
-                    $title.val(data.display_name);
+                    $title.val(results[0].formatted_address);
 
                 }
             }
