@@ -53,6 +53,9 @@ geoXML3 = window.geoXML3 || {instances: []};
  * @param {geoXML3.parserOptions} options
  */
 geoXML3.parser = function (options) {
+  // Inherit from Google MVC Object to include event handling
+  google.maps.MVCObject.call(this);
+
   // Private variables
   var parserOptions = new geoXML3.parserOptions(options);
   var docs        = [];  // Individual KML documents
@@ -224,14 +227,15 @@ geoXML3.parser = function (options) {
 
   var kmlNS = 'http://www.opengis.net/kml/2.2';
   var gxNS  = 'http://www.google.com/kml/ext/2.2';
-  var nodeValue              = geoXML3.nodeValue;
-  var getBooleanValue        = geoXML3.getBooleanValue;
-  var getElementsByTagNameNS = geoXML3.getElementsByTagNameNS;
-  var getElementsByTagName   = geoXML3.getElementsByTagName;
+  var nodeValue						= geoXML3.nodeValue;
+  var getBooleanValue				= geoXML3.getBooleanValue;
+  var getElementsByTagNameNS		= geoXML3.getElementsByTagNameNS;
+  var getElementsByTagName			= geoXML3.getElementsByTagName;
+  var getElementsBySpecialTagName	= geoXML3.getElementsBySpecialTagName;
 
 function processStyleUrl(node) {
   var styleUrlStr = nodeValue(getElementsByTagName(node, 'styleUrl')[0]);
-  if (!!styleUrlStr && styleUrlStr.indexOf('#') != -1) 
+  if (!!styleUrlStr && styleUrlStr.indexOf('#') != -1)
     var styleUrl = styleUrlStr.split('#');
   else var styleUrl = ["",""];
   return styleUrl;
@@ -274,7 +278,7 @@ function processStyleUrl(node) {
           h: parseInt(nodeValue(getElementsByTagNameNS(styleNodes[0], gxNS, 'h')[0], icon.dim.h))
         };
 
-        styleNodes = getElementsByTagName(styleNodes[0], 'hotSpot')[0];
+        styleNodes = getElementsByTagName(thisNode, 'hotSpot');
         if (!!styleNodes && styleNodes.length > 0) {
           icon.hotSpot = {
             x:      styleNodes[0].getAttribute('x'),
@@ -363,7 +367,7 @@ function processStyleUrl(node) {
     } else {
       styles[baseUrl][styleID] = clone(defaultStyle);
     }
-    if (!!map["highlight"]) {
+    if (!!map["highlight"] && !!parserOptions.processStyles) {
       processStyleID(map["highlight"]);
     }
     styles[baseUrl][styleID].map = clone(map);
@@ -511,7 +515,7 @@ function processStyleUrl(node) {
         }
       }
       var placemark, node, coords, path, marker, poly;
-      var placemark, coords, path, pathLength, marker, polygonNodes, coordList;
+      var pathLength, marker, polygonNodes, coordList;
       var placemarkNodes = getElementsByTagName(responseXML, 'Placemark');
       for (pm = 0; pm < placemarkNodes.length; pm++) {
         // Init the placemark object
@@ -524,8 +528,10 @@ function processStyleUrl(node) {
           styleBaseUrl: styleUrl[0] ? cleanURL(doc.baseDir, styleUrl[0]) : doc.baseUrl,
           styleID:      styleUrl[1],
           visibility:        getBooleanValue(getElementsByTagName(node, 'visibility')[0], true),
-          balloonVisibility: getBooleanValue(getElementsByTagNameNS(node, gxNS, 'balloonVisibility')[0], !parserOptions.suppressInfoWindows)
+          balloonVisibility: getBooleanValue(getElementsByTagNameNS(node, gxNS, 'balloonVisibility')[0], !parserOptions.suppressInfoWindows),
+          id:           node.getAttribute('id')
         };
+
         placemark.style = (styles[placemark.styleBaseUrl] && styles[placemark.styleBaseUrl][placemark.styleID]) || clone(defaultStyle);
         // inline style overrides shared style
         var inlineStyles = getElementsByTagName(node, 'Style');
@@ -577,6 +583,35 @@ function processStyleUrl(node) {
             placemark.vars.display[name] = dName;
           }
         }
+
+		//process track data
+		var track = getElementsBySpecialTagName(node, 'gx:Track');
+
+		if (typeof(track[0]) != "undefined") {
+			placemark.track = [];
+
+			coordNodes = getElementsBySpecialTagName(track[0], "gx:coord");
+			if (coordNodes.length > 0) {
+				var coordList = [];
+				var latitude, longitude, altitude, latLng;
+				for (var j=0; j<coordNodes.length; j++) {
+					var coords = nodeValue(coordNodes[j]).trim();
+					coords = coords.replace(/,\s+/g, ',');
+					var path = coords.split(/\s+/g);
+
+					if (!isNaN(path[0]) && !isNaN(path[1])) {
+						latitude = parseFloat(path[1]);
+						longitude = parseFloat(path[0]);
+						altitude = parseFloat(path[2]);
+
+						latLng = new google.maps.LatLng(latitude, longitude);
+						coordList.push(latLng);
+					}
+				}
+
+				placemark.track.coordinates = coordList;
+			}
+		}
 
         // process MultiGeometry
         var GeometryNodes = getElementsByTagName(node, 'coordinates');
@@ -648,7 +683,10 @@ function processStyleUrl(node) {
               doc.markers = doc.markers || [];
               if (doc.reload) {
                 for (var j = 0; j < doc.markers.length; j++) {
-                  if (doc.markers[j].getPosition().equals(placemark.latlng)) {
+                    if ((doc.markers[j].id == placemark.id) ||
+      // if no id, check position
+                        (!doc.markers[j].id &&
+                         (doc.markers[j].getPosition().equals(placemark.latlng)))) {
                     found = doc.markers[j].active = true;
                     break;
                   }
@@ -659,7 +697,10 @@ function processStyleUrl(node) {
           if (!found) {
             // Call the marker creator
             var marker = pointCreateFunc(placemark, doc);
-            if (marker) marker.active = placemark.visibility;
+            if (marker) {
+              marker.active = placemark.visibility;
+              marker.id = placemark.id;
+            }
           }
         }
         // polygon/line
@@ -879,12 +920,14 @@ function processStyleUrl(node) {
     if (doc.internals.remaining === 0) {
       // We're done processing this set of KML documents
       // Options that get invoked after parsing completes
-      if (parserOptions.zoom && !!doc.internals.bounds) {
+      if (parserOptions.zoom && !!doc.internals.bounds &&
+    !doc.internals.bounds.isEmpty() && !!parserOptions.map) {
         parserOptions.map.fitBounds(doc.internals.bounds);
       }
       if (parserOptions.afterParse) {
         parserOptions.afterParse(doc.internals.docSet);
       }
+      google.maps.event.trigger(doc.internals.parser, 'parsed');
     }
   };
 
@@ -922,7 +965,7 @@ function processStyleUrl(node) {
     var icon = style.icon;
     if (!icon.href) return;
 
-    if (icon.img && !icon.img.complete) {
+    if (icon.img && !icon.img.complete && (icon.dim.w < 0) && (icon.dim.h < 0) ) {
       // we're still waiting on the image loading (probably because we've been blocking since the declaration)
       // so, let's queue this function on the onload stack
       icon.markerBacklog = [];
@@ -972,13 +1015,15 @@ function processStyleUrl(node) {
     };
 
     // Figure out the anchor spot
+    // Origins, anchor positions and coordinates of the marker increase in the X direction to the right and in
+    // the Y direction down.
     var aX, aY;
     switch (icon.hotSpot.xunits) {
       case 'fraction':    aX = rnd(scaled.aX * icon.dim.w); break;
       case 'insetPixels': aX = rnd(icon.dim.w * icon.scale - scaled.aX); break;
       default:            aX = rnd(scaled.aX); break;  // already pixels
     }
-    aY = rnd( ((icon.hotSpot.yunits === 'fraction') ? icon.dim.h : 1) * scaled.aY );  // insetPixels Y = pixels Y
+    aY = scaled.h - rnd( ((icon.hotSpot.yunits === 'fraction') ? icon.dim.h : 1) * scaled.aY );  // insetPixels Y = pixels Y
     var iconAnchor = new google.maps.Point(aX, aY);
 
     // Sizes
@@ -993,13 +1038,13 @@ function processStyleUrl(node) {
     if (kmzMetaData[icon.url]) icon.url = kmzMetaData[icon.url].dataUrl;
 
     // Init the style object with the KML icon
-    icon.marker = new google.maps.MarkerImage(
-      icon.url,    // url
-      iconSize,    // size
-      iconOrigin,  // origin
-      iconAnchor,  // anchor
-      iconScale    // scaledSize
-    );
+    icon.marker = {
+      url: icon.url,        // url
+      size: iconSize,       // size
+      origin: iconOrigin,   // origin
+      anchor: iconAnchor,   // anchor
+      scaledSize: iconScale // scaledSize
+    };
 
     // Look for a predictable shadow
     var stdRegEx = /\/(red|blue|green|yellow|lightblue|purple|pink|orange)(-dot)?\.png/;
@@ -1007,22 +1052,22 @@ function processStyleUrl(node) {
     var shadowPoint = new google.maps.Point(16, 32);
     if (stdRegEx.test(icon.href)) {
       // A standard GMap-style marker icon
-      icon.shadow = new google.maps.MarkerImage(
-        'http://maps.google.com/mapfiles/ms/micons/msmarker.shadow.png', // url
-        shadowSize,                                                      // size
-        null,                                                            // origin
-        shadowPoint,                                                     // anchor
-        shadowSize                                                       // scaledSize
-      );
+  icon.shadow = {
+    url: 'http://maps.google.com/mapfiles/ms/micons/msmarker.shadow.png', // url
+          size: shadowSize,    // size
+          origin: null,        // origin
+    anchor: shadowPoint, // anchor
+          scaledSize: shadowSize // scaledSize
+  };
     } else if (icon.href.indexOf('-pushpin.png') > -1) {
       // Pushpin marker icon
-      icon.shadow = new google.maps.MarkerImage(
-        'http://maps.google.com/mapfiles/ms/micons/pushpin_shadow.png',  // url
-        shadowSize,                                                      // size
-        null,                                                            // origin
-        shadowPoint,                                                     // anchor
-        shadowSize                                                       // scaledSize
-      );
+      icon.shadow = {
+  url: 'http://maps.google.com/mapfiles/ms/micons/pushpin_shadow.png',  // url
+        size: shadowSize,    // size
+        origin: null,        // origin
+        anchor: shadowPoint, // anchor
+        scaledSize: shadowSize // scaledSize
+      };
     } /* else {
       // Other MyMaps KML standard icon
       icon.shadow = new google.maps.MarkerImage(
@@ -1099,9 +1144,9 @@ function processStyleUrl(node) {
   // Create Polyline
   var createPolyline = function(placemark, doc) {
     var path = [];
+    var bounds = new google.maps.LatLngBounds();
     for (var j=0; j<placemark.LineString.length; j++) {
       var coords = placemark.LineString[j].coordinates;
-      var bounds = new google.maps.LatLngBounds();
       for (var i=0;i<coords.length;i++) {
         var pt = new google.maps.LatLng(coords[i].lat, coords[i].lng);
         path.push(pt);
@@ -1197,7 +1242,8 @@ function processStyleUrl(node) {
     if (!placemark.balloonVisibility || bStyle.displayMode === 'hide') return;
 
     // define geDirections
-    if (placemark.latlng) {
+    if (placemark.latlng &&
+        (!parserOptions.suppressDirections || !parserOptions.suppressDirections)) {
       vars.directions.push('sll=' + placemark.latlng.toUrlValue());
 
       var url = 'http://maps.google.com/maps?' + vars.directions.join('&');
@@ -1234,6 +1280,22 @@ function processStyleUrl(node) {
       if      (e && e.latLng) iW.setPosition(e.latLng);
       else if (this.bounds)   iW.setPosition(this.bounds.getCenter());
 
+      iW.setContent("<div id='geoxml3_infowindow'>"+iW.getContent()+"</div>");
+      google.maps.event.addListenerOnce(iW, "domready", function() {
+        var node = document.getElementById('geoxml3_infowindow');
+        var imgArray = node.getElementsByTagName('img');
+        for (var i = 0; i < imgArray.length; i++)
+        {
+          var imgUrlIE = imgArray[i].getAttribute("src");
+          var imgUrl  = cleanURL(doc.baseDir, imgUrlIE);
+
+          if (kmzMetaData[imgUrl]) {
+             imgArray[i].src = kmzMetaData[imgUrl].dataUrl;
+          } else if (kmzMetaData[imgUrlIE]) {
+             imgArray[i].src = kmzMetaData[imgUrlIE].dataUrl;
+          }
+        }
+      });
       iW.open(this.map, this.bounds ? null : this);
     });
 
@@ -1248,6 +1310,7 @@ function processStyleUrl(node) {
     kmzMetaData: kmzMetaData,
 
     parse:          parse,
+    render:         render,
     parseKmlString: parseKmlString,
     hideDocument:   hideDocument,
     showDocument:   showDocument,
@@ -1394,29 +1457,14 @@ geoXML3.fetchers = [];
  * @return {Element|Document} DOM.
  */
 geoXML3.xmlParse = function (str) {
-  if      (!!window.DOMParser)     return (new DOMParser()).parseFromString(str, 'text/xml');
-  else if (!!window.ActiveXObject) {
-    var doc;
-
-    // the many versions of IE's DOM parsers
-    var AXOs = [
-      'MSXML2.DOMDocument.6.0',
-      'MSXML2.DOMDocument.5.0',
-      'MSXML2.DOMDocument.4.0',
-      'MSXML2.DOMDocument.3.0',
-      'MSXML2.DOMDocument',
-      'Microsoft.XMLDOM',
-      'MSXML.DOMDocument'
-    ];
-    for (var i = 0; i < AXOs.length; i++) {
-      try      { doc = new ActiveXObject(AXOs[i]); break; }
-      catch(e) { continue; }
-    }
-    if (!doc) return createElement('div', null);
-
-    if (doc.async) doc.async = false;
+  if (typeof ActiveXObject != 'undefined' && typeof GetObject != 'undefined') {
+    var doc = new ActiveXObject('Microsoft.XMLDOM');
     doc.loadXML(str);
     return doc;
+  }
+
+  if (typeof DOMParser != 'undefined') {
+    return (new DOMParser()).parseFromString(str, 'text/xml');
   }
 
   return createElement('div', null);
@@ -1460,8 +1508,8 @@ geoXML3.fetchXML = function (url, callback) {
     }
   }
 
-  if (!!xhrFetcher.fetcher.overrideMimeType) xhrFetcher.fetcher.overrideMimeType('text/xml');
   xhrFetcher.fetcher.open('GET', url, true);
+  if (!!xhrFetcher.fetcher.overrideMimeType) xhrFetcher.fetcher.overrideMimeType('text/xml');
   xhrFetcher.fetcher.onreadystatechange = function () {
     if (xhrFetcher.fetcher.readyState === 4) {
       // Retrieval complete
@@ -1476,8 +1524,8 @@ geoXML3.fetchXML = function (url, callback) {
         // Sometimes IE will get the data, but won't bother loading it as an XML doc
         var xmlDoc = xhrFetcher.fetcher.responseXML;
         if (xmlDoc && !xmlDoc.documentElement && !xmlDoc.ownerElement) xmlDoc.loadXML(xhrFetcher.fetcher.responseText);
-          callback(xmlDoc);          
-        } else // handle valid xml sent with wrong MIME type 
+          callback(xmlDoc);
+        } else // handle valid xml sent with wrong MIME type
           callback(geoXML3.xmlParse(xhrFetcher.fetcher.responseText));
       }
 
@@ -1489,6 +1537,21 @@ geoXML3.fetchXML = function (url, callback) {
   xhrFetcher.xhrtimeout = setTimeout(timeoutHandler, 60000);
   xhrFetcher.fetcher.send(null);
   return null;
+};
+
+var IEversion = function() {
+  // http://msdn.microsoft.com/workshop/author/dhtml/overview/browserdetection.asp
+  // Returns the version of Internet Explorer or a -1
+  // (indicating the use of another browser).
+  var rv = -1; // Return value assumes failure
+  if (navigator.appName == 'Microsoft Internet Explorer') {
+    var ua = navigator.userAgent;
+    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null) {
+      rv = parseFloat( RegExp.$1 );
+    }
+  }
+  return rv;
 };
 
 /**
@@ -1569,13 +1632,21 @@ geoXML3.fetchZIP = function (url, callback, parser) {
       parser.kmzMetaData[mdUrl].entry = entry;
       // data:image/gif;base64,R0lGODlhEAAOALMA...
       parser.kmzMetaData[mdUrl].dataUrl = 'data:' + mime + ';base64,' + base64Encode(entryContent);
-
       // IE cannot handle GET requests beyond 2071 characters, even if it's an inline image
-      if (/msie/i.test(navigator.userAgent) && !/opera/i.test(navigator.userAgent) && parser.kmzMetaData[mdUrl].dataUrl.length > 2071)
-        parser.kmzMetaData[mdUrl].dataUrl =
-        // this is a simple IE icon; to hint at the problem...
-        'data:image/gif;base64,R0lGODlhDwAQAOMPADBPvSpQ1Dpoyz1p6FhwvU2A6ECP63CM04CWxYCk+V6x+UK++Jao3rvC3fj7+v///yH5BAEKAA8ALAAAAAAPABAAAASC8Mk5mwCAUMlWwcLRHEelLA' +
-        'oGDMgzSsiyGCAhCETDPMh5XQCBwYBrNBIKWmg0MCQHj8MJU5IoroYCY6AAAgrDIbbQDGIK6DR5UPhlNo0JAlSUNAiDgH7eNAxEDWAKCQM2AAFheVxYAA0AIkFOJ1gBcQQaUQKKA5w7LpcEBwkJaKMUEQA7';
+  if (/msie/i.test(navigator.userAgent) && !/opera/i.test(navigator.userAgent))
+        {
+            if (((IEversion() < 8.0) &&
+                 (parser.kmzMetaData[mdUrl].dataUrl.length > 2071)) ||
+                ((IEversion < 9.0) &&
+                 (parser.kmzMetaData[mdUrl].dataUrl.length > 32767))) {
+             parser.kmzMetaData[mdUrl].dataUrl =
+             // this is a simple IE icon; to hint at the problem...
+             'data:image/gif;base64,R0lGODlhDwAQAOMPADBPvSpQ1Dpoyz1p6FhwvU2A6ECP63CM04CWxYCk+V6x+UK++Jao3rvC3fj7+v///yH5BAEKAA8ALAAAAAAPABAAAASC8Mk5mwCAUMlWwcLRHEelLA' +
+             'oGDMgzSsiyGCAhCETDPMh5XQCBwYBrNBIKWmg0MCQHj8MJU5IoroYCY6AAAgrDIbbQDGIK6DR5UPhlNo0JAlSUNAiDgH7eNAxEDWAKCQM2AAFheVxYAA0AIkFOJ1gBcQQaUQKKA5w7LpcEBwkJaKMUEQA7';
+            }
+       }
+       parser.kmzMetaData[internalSrc(entry.name)]=parser.kmzMetaData[mdUrl];
+
     };
     var kmlExtractCb = function(entry, entryContent) {
       if ((typeof entryContent.description == "string") && (entryContent.name == "Error")) {
@@ -1716,6 +1787,25 @@ geoXML3.getElementsByTagName = function(node, tagname) {
   return node.getElementsByTagName(tagname);  // hope for the best...
 }
 
+geoXML3.getElementsBySpecialTagName = function(node, tagName) {
+	//tagName may be something unordinary like: "gx:track" or "georss:point"
+	elements = node.getElementsByTagName(tagName);
+	//daca nu gasim elementele prin metoda normala
+	if (!elements[0] || elements[0] == null) {
+		var tagParts, subTagName;
+		if (tagName.indexOf(":") != -1) {
+			tagParts = tagName.split(":");
+			subTagName = tagParts[1];
+			elements = node.getElementsByTagName(subTagName);
+		}
+	}
+	//daca tot nu am gasit elementele
+	if (!elements[0] || elements[0] == null) {
+ 		//elements = node.getElementsByTagNameNS('http://www.georss.org/georss', 'point');
+	}
+	return elements;
+}
+
 /**
  * Turn a directory + relative URL into an absolute one.
  *
@@ -1741,6 +1831,15 @@ var toAbsURL = function (d, s) {
   }
 
   return h + p + '/' + s;
+}
+
+var internalSrc = function(src) {
+  //this gets the full url
+  var url = document.location.href;
+  //this removes everything after the last slash in the path
+  url = url.substring(0,url.lastIndexOf("/") + 1);
+  var internalPath= url+src;
+  return internalPath;
 }
 
 /**

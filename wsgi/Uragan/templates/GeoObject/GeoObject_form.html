@@ -3,120 +3,151 @@
 
 {% block extra_head %}
   {{ form.media.css }}
-  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
-          type="text/javascript"></script>
+    <style>
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #FFF;
+            overflow: auto;
+        }
+
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background: #F0F0F0;
+        }
+
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+
+        .autocomplete-group strong {
+            display: block;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
+            type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
-  <div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#part_1" data-toggle="tab" aria-expanded="true">Geocoder response</a>
+                    </li>
+                    <li class="">
+                        <a href="#part_2" data-toggle="tab" aria-expanded="false">Map</a>
+                    </li>
+                    <li class="pull-right dropdown">
+                        <a href="#" class="text-muted dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-gear"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Action</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Another action</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Something else here</a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Separated link</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="part_1">
 
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <!-- Custom Tabs -->
-      <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-          <li class="active">
-            <a href="#part_1" data-toggle="tab" aria-expanded="true">Geocoder response</a>
-          </li>
-          <li class="">
-            <a href="#part_2" data-toggle="tab" aria-expanded="false">Map</a>
-          </li>
-          <li class="pull-right dropdown">
-            <a href="#" class="text-muted dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-              <i class="fa fa-gear"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Action</a>
-              </li>
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Another action</a>
-              </li>
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Something else here</a>
-              </li>
-              <li role="presentation" class="divider"></li>
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Separated link</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="part_1">
+                        <form id="create-geo_object">
+                          {% csrf_token %}
+                          {{ form|as_bootstrap }}
+                        </form>
 
-          </div>
-          <!-- /.tab-pane -->
-          <div class="tab-pane" id="part_2">
-              <input type="text" id="translate" class="form-control">
-          </div>
-          <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="part_2">
+                        <input type="text" id="translate" class="form-control">
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- nav-tabs-custom -->
         </div>
-        <!-- /.tab-content -->
-      </div>
-      <!-- nav-tabs-custom -->
     </div>
-  </div>
 {% endblock %}
 
 {% block scripts %}
 
   {{ block.super }}
 
+    <script type="text/javascript" src="{% static 'plugins/jquery.autocomplete.min.js' %}"></script>
+
   {{ form.media.js }}
 
-  <script type="text/javascript">
-    $.ajax({
-      url: "partition/part_1/",
-      cache: false,
-      success: function(html){
-        var $html = $(html);
-        var $links = $html.filter('link'), $scripts = $html.filter('script');
-        $links.appendTo('head');
-        $html.filter('form, div').appendTo($('#part_1'));
-        $scripts.appendTo('body');
-        initialize();
-      }
-    });
+    <script type="text/javascript">
+        //$.ajax({
+        //  url: "partition/part_1/",
+        //  cache: false,
+        //  success: function(html){
+        //    var $html = $(html);
+        //    var $links = $html.filter('link'), $scripts = $html.filter('script');
+        //    $links.appendTo('head');
+        //    $html.filter('form, div').appendTo($('#part_1'));
+        //    $scripts.appendTo('body');
+        //    initialize();
+        //  }
+        //});
 
 
+        $('#translate').keyup(function (eventObject) {
+            if (eventObject.which === 13) {
+                var text = $(this).val();
+                console.log(text);
+                var res = $.get(
+                        "/translate/",
+                        {source: text},
+                        function onAjaxSuccess(data) {
+                            // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
+                            var translate = $('#translate');
+                            console.log(translate.val(), data);
+                            translate.val(data.result);
+                            return data.result;
+                        }
+                );
+                console.log(res)
+            }
+        });
 
 
-    $('#translate').keyup(function(eventObject){
-      if (eventObject.which === 13){
-        var text = $(this).val();
-        console.log(text);
-        var res=$.get(
-              "/translate/",
-              {source: text},
-              onAjaxSuccess
-          );
-      console.log(res)
-      }
-    });
-
-    function onAjaxSuccess(data)
-    {
-      // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
-      var translate = $('#translate');
-      console.log(translate.val(), data);
-      translate.val(data.result);
-      return data.result;
-    }
-    //google.maps.event.addDomListener(window, 'load', initialize);
-    //$('#part_1').load("partition/part_1/", function(request, status, xhr){
-    //  var $html = $(request);
-    //  var $links = $html.filter('link'), $scripts = $html.filter('script');
-    //  console.log($links, $scripts);
-    //  $links.detach();
-    //  $scripts.detach();
-    //  $links.appendTo('head');
-    //  $scripts.appendTo('body');
-    //  console.log($html);
-    //})
+        //google.maps.event.addDomListener(window, 'load', initialize);
+        //$('#part_1').load("partition/part_1/", function(request, status, xhr){
+        //  var $html = $(request);
+        //  var $links = $html.filter('link'), $scripts = $html.filter('script');
+        //  console.log($links, $scripts);
+        //  $links.detach();
+        //  $scripts.detach();
+        //  $links.appendTo('head');
+        //  $scripts.appendTo('body');
+        //  console.log($html);
+        //})
 
 
-
-  </script>
+    </script>
 {% endblock %}

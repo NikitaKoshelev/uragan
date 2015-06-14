@@ -7,19 +7,10 @@ from .models import GeoObject
 class GeoObjectForm(forms.ModelForm):
     class Meta:
         model = GeoObject
-        fields = '__all__'
+        fields = 'title', 'lat', 'lon', 'description', 'short_description', 'polygon'
         widgets = {
             'color': ColorPickerWidget(),
             'short_description': forms.widgets.Textarea(attrs={'rows': 5}),
-        }
-
-
-class GeoObjectPart1Form(forms.ModelForm):
-    class Meta:
-        model = GeoObject
-        fields = 'title', 'lat', 'lon'
-        widgets = {
-            'title': forms.widgets.TextInput(attrs={'style': 'display: none;'})
         }
 
     class Media:
@@ -30,6 +21,8 @@ class GeoObjectPart1Form(forms.ModelForm):
              'uragan/geoxml3.js',
              "plugins/select2/js/select2.full.min.js",
              'uragan/GeoObject_create_part1.js',
+             'uragan/nominatim_in_select2.js',
+             'uragan/google_in_select2.js',
          )
 
 

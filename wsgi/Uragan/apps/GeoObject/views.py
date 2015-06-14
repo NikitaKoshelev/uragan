@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from django.views.generic import CreateView, DeleteView, FormView
-from .forms import GeoObjectForm, GeoObjectPart1Form
+from .forms import GeoObjectForm#,GeoObjectPart1Form
 from apps.common.mixins import LoginRequiredMixin
 
 
@@ -13,9 +13,5 @@ class CreateGeoObject(CreateView):
 
     template_name = 'GeoObject/GeoObject_form.html'
 
-
-class CreateGeoObjectPart1(CreateView):
-    form_class = GeoObjectPart1Form
-    template_name = 'GeoObject/GeoObject_create_form_part1.html'
 
 
