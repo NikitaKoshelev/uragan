@@ -1,6 +1,7 @@
 /**
  * Created by koshelev on 14.05.15.
  */
+
 var geocoder, map, marker,
     $title = $('#id_title'),
     $lat = $("#id_lat"),
@@ -11,7 +12,7 @@ var geocoder, map, marker,
 
 $('#create-geo_object').before($('<div class="row" id="geocoders"></div>'));
 
-$coords.append( $lat_container.addClass('col-sm-6'), $lon_container.addClass('col-sm-6'));
+$coords.append($lat_container.addClass('col-sm-6'), $lon_container.addClass('col-sm-6'));
 $('#div_id_title').after($coords);
 
 $coords.after($('<div id="map_canvas" style="width:100%; height:600px; margin-bottom: 15px"></div>'));
@@ -36,8 +37,12 @@ $lon.keyup(function (key) {
 String.prototype.format = String.prototype.f = function () {
     var args = arguments;
     return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
-        if (m == "{{") { return "{"; }
-        if (m == "}}") { return "}"; }
+        if (m == "{{") {
+            return "{";
+        }
+        if (m == "}}") {
+            return "}";
+        }
         return args[n];
     });
 };
@@ -62,7 +67,7 @@ function showMessage(hasError, messages) {
 }
 
 
-function google_reverse_geocode(location){
+function google_reverse_geocode(location) {
 
     map.setCenter(location);
 
@@ -74,7 +79,7 @@ function google_reverse_geocode(location){
                 cont.attr('title', title);
                 cont.html('<span class="select2-selection__clear">×</span>' + title);
                 $title.val(title);
-                showMessage(false, gettext('Was found geo object') +': "{0}"'.f(title.bold().italics()));
+                showMessage(false, gettext('Was found geo object') + ': "{0}"'.f(title.bold().italics()));
             }
         }
     });
@@ -103,7 +108,7 @@ function initialize() {
     $lon.val(location.lng());
 
     // Добавляем слушателя события обратного геокодирования для маркера при его перемещении
-    google.maps.event.addListener(marker, 'drag', function() {
+    google.maps.event.addListener(marker, 'drag', function () {
         var location = marker.getPosition();
         //$lat.val(location.lat());
         //$lon.val(location.lng());
@@ -130,9 +135,9 @@ function initialize() {
 
 
 /**********************************************************************************************************************
-// Nominatim reverse geocoder
+ // Nominatim reverse geocoder
 
-$.ajax({
+ $.ajax({
     url: "http://nominatim.openstreetmap.org/reverse",
     dataType: 'json',
     data: {lat: marker.getPosition().lat(), lon: marker.getPosition().lng(), format: 'json'},
@@ -147,7 +152,7 @@ $.ajax({
         }
     }
 });
-*********************************************************************************************/
+ *********************************************************************************************/
 
 
 
