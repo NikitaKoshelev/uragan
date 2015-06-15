@@ -19,11 +19,11 @@ class GeoObjectForm(forms.ModelForm):
              'all': ('plugins/select2/css/select2.min.css',)
          }
          js = (
-             'uragan/geoxml3.js',
              "plugins/select2/js/select2.full.min.js",
-             'uragan/create_GeoObject.js',
-             'uragan/nominatim_in_select2.js',
-             'uragan/google_in_select2.js',
+             'uragan/GeoObject_create.min.js'
+             #'uragan/create_GeoObject.js',
+             #'uragan/nominatim_in_select2.js',
+             #'uragan/google_in_select2.js',
          )
 
 

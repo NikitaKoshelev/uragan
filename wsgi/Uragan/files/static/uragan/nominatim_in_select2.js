@@ -71,8 +71,7 @@ $(document).ready(function () {
 });
 
 $('#geocoders').append(
-    //$('<div class="col-md-7"></div>').append(
-    $('<div class="form-group col-md-7"">' +
+    $('<div class="form-group col-md-6"">' +
         '<label for="nominatim_geocode" class="control-label">Nominatim geocoder</label>' +
         '</div>').append(
         $nominatim_geocode

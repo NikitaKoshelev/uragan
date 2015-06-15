@@ -1,0 +1,59 @@
+{% load i18n staticfiles %}
+<div class="box box-solid" id="translate_container" style="display: none;">
+    <div class="box-header with-border">
+        <h3 class="box-title">{% trans 'Tranlslate' %}</h3>
+
+        <div class="box-tools pull-right">
+            <button id="sync_toggle" class="btn btn-box-tool" data-toggle="tooltip" data-status="true"
+                    title="{% trans 'Sync translate' %}">
+                <i class="fa fa-toggle-on text-olive"></i>
+            </button>
+            <button class="btn btn-box-tool" data-toggle="tooltip" title="{% trans 'Reverse' %}">
+                <i class="fa fa-exchange"></i>
+            </button>
+            <button class="btn btn-box-tool"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="{% trans 'Collapse' %}">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="{% trans 'Remove' %}">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="source_select" class="control-label">{% trans 'Source language' %}</label>
+                    <select id="source_select" class="form-control" style="width: 100%"></select>
+                </div>
+                <div class="form-group">
+                    <label for="source" class="control-label sr-only">{% trans 'Source language' %}</label>
+                    <textarea id="source" class="form-control" rows="1" style="resize: vertical"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="translate_select" class="control-label">{% trans 'Destination language' %}</label>
+                    <select id="translate_select" class="form-control" style="width: 100%"></select>
+                </div>
+                <div class="form-group">
+                    <label for="destination" class="control-label sr-only">{% trans 'Destination language' %}</label>
+                    <textarea id="destination" class="form-control" rows="1" style="resize: vertical"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer clearfix" style="display: none;">
+        <button id="translate_btn" class="btn btn-flat btn-block btn-default">{% trans 'Translate' %}</button>
+    </div>
+</div>
+
+<script type="text/javascript" defer>
+
+</script>

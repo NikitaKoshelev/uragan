@@ -1,37 +1,24 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags staticfiles %}
+{% load bootstrap_tags staticfiles i18n %}
 
 {% block extra_head %}
   {{ form.media.css }}
     <style>
-        .autocomplete-suggestions {
-            border: 1px solid #999;
-            background: #FFF;
-            overflow: auto;
+        .outer:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
         }
 
-        .autocomplete-suggestion {
-            padding: 2px 5px;
-            white-space: nowrap;
-            overflow: hidden;
+        .inner {
+            display: inline-block;
+            vertical-align: middle;
         }
 
-        .autocomplete-selected {
-            background: #F0F0F0;
-        }
-
-        .autocomplete-suggestions strong {
-            font-weight: normal;
-            color: #3399FF;
-        }
-
-        .autocomplete-group {
-            padding: 2px 5px;
-        }
-
-        .autocomplete-group strong {
-            display: block;
-            border-bottom: 1px solid #000;
+        /* добавим горизонтальное центрирование */
+        .outer {
+            text-align: center;
         }
     </style>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
@@ -49,6 +36,11 @@
                     </li>
                     <li class="">
                         <a href="#part_2" data-toggle="tab" aria-expanded="false">Map</a>
+                    </li>
+                    <li class="pull-right">
+                        <div>
+
+                        </div>
                     </li>
                     <li class="pull-right dropdown">
                         <a href="#" class="text-muted dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -102,9 +94,8 @@
   {{ form.media.js }}
 
     <script type="text/javascript">
-        $('#translate').keyup(function (eventObject) {
-            if (eventObject.which === 13) {
-                var text = $(this).val();
+        $('#russian_text').keyup(function (eventObject) {
+            var text = $(this).val();
                 console.log(text);
                 var res = $.get(
                         "/translate/",
@@ -113,11 +104,18 @@
                             // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
                             var translate = $('#translate');
                             console.log(translate.val(), data);
-                            translate.val(data.result);
+                            $('#english_text').val(data.result);
                             return data.result;
                         }
                 );
+            if (eventObject.which === 13) {
+
             }
         });
+        //var $reverse = $('#reverse'),
+        //        $h = $($reverse.siblings(".col-sm-5")[0]);
+        //$reverse.height($($reverse.siblings(".col-sm-5")[0]).height());
+
+
     </script>
 {% endblock %}

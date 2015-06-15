@@ -63,7 +63,7 @@ $(document).ready(function () {
 });
 
 $('#geocoders').append(
-    $('<div class="form-group col-md-5">' +
+    $('<div class="form-group col-md-6">' +
         '<label for="google_geocode" class="control-label">Google geocoder</label>' +
         '</div>').append(
         $google_geocode
