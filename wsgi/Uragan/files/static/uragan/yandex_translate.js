@@ -2,7 +2,7 @@
  * Created by koshelev on 15.06.15.
  */
 
-html = '<div class="box box-solid" id="translate_container" style="display: none;">';
+html = '<div class="box box-solid collapsed-box" id="translate_container">';
 html += '<div class="box-header with-border">';
 html += '<h3 class="box-title">' + gettext("Translator") + '</h3>';
 html += '<div class="box-tools pull-right">';
