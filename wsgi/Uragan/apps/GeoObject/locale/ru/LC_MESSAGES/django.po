@@ -2,41 +2,44 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-15 09:08+0000\n"
-"PO-Revision-Date: 2015-06-15 08:59+0000\n"
+"POT-Creation-Date: 2015-06-16 21:39+0000\n"
+"PO-Revision-Date: 2015-06-16 21:42+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.6\n"
 
-#: apps/GeoObject/models.py:11 apps/GeoObject/models.py:31
-msgid "geographical object"
-msgstr "географический объект"
+#: apps/GeoObject/models.py:11
+msgid "title"
+msgstr "название"
 
-#: apps/GeoObject/models.py:12
+#: apps/GeoObject/models.py:12 apps/GeoObject/models.py:25
+msgid "description"
+msgstr "описание"
+
+#: apps/GeoObject/models.py:13
 msgid "image"
 msgstr "изображение"
 
-#: apps/GeoObject/models.py:15
+#: apps/GeoObject/models.py:16
 msgid "geographical object image"
 msgstr "изображение географического объекта"
 
-#: apps/GeoObject/models.py:16
+#: apps/GeoObject/models.py:17
 msgid "images of geographical objects"
 msgstr "изображения географических объектов"
 
-#: apps/GeoObject/models.py:20
+#: apps/GeoObject/models.py:21
 msgid "title geographical object"
 msgstr "название географического объекта"
 
@@ -52,10 +55,6 @@ msgstr "восточная долгота в градусах"
 msgid "short description"
 msgstr "краткое описание"
 
-#: apps/GeoObject/models.py:25
-msgid "description"
-msgstr "описание"
-
 #: apps/GeoObject/models.py:26
 msgid "polygon in KML format"
 msgstr "многоугольник в формате KML"
@@ -64,22 +63,31 @@ msgstr "многоугольник в формате KML"
 msgid "color"
 msgstr "цвет"
 
+#: apps/GeoObject/models.py:28
+#| msgid "images of geographical objects"
+msgid "images of geographical object"
+msgstr "изображения географических объектов"
+
 #: apps/GeoObject/models.py:32
+msgid "geographical object"
+msgstr "географический объект"
+
+#: apps/GeoObject/models.py:33
 msgid "geographical objects"
 msgstr "географические объекты"
 
-#: apps/GeoObject/models.py:36
+#: apps/GeoObject/models.py:37
 msgid "observed objects"
 msgstr "наблюдаемые объекты"
 
-#: apps/GeoObject/models.py:39
+#: apps/GeoObject/models.py:40
 msgid "researches"
 msgstr "исследования"
 
-#: apps/GeoObject/models.py:42
+#: apps/GeoObject/models.py:43
 msgid "surveillance plan"
 msgstr "план наблюдения"
 
-#: apps/GeoObject/models.py:43
+#: apps/GeoObject/models.py:44
 msgid "surveillance plans"
 msgstr "планы наблюдения"

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-15 09:08+0000\n"
-"PO-Revision-Date: 2015-06-15 09:10+0000\n"
+"POT-Creation-Date: 2015-06-16 21:39+0000\n"
+"PO-Revision-Date: 2015-06-16 21:41+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -20,16 +20,20 @@ msgstr ""
 "X-Translated-Using: django-rosetta 0.7.6\n"
 
 #: files/static/uragan/GeoObject_create.min.js:1
-#: files/static/uragan/create_GeoObject.js:56
+#: files/static/uragan/create_GeoObject.js:55
 msgid "Error!"
 msgstr "Ошибка!"
 
 #: files/static/uragan/GeoObject_create.min.js:1
-#: files/static/uragan/create_GeoObject.js:82
+#: files/static/uragan/create_GeoObject.js:81
 msgid "Was found geo object"
 msgstr "Был найден географический объект"
 
-#: files/static/uragan/create_GeoObject.js:56
+#: files/static/uragan/base.js:9
+msgid "*Required field"
+msgstr "*Обзательное для заполнения поле"
+
+#: files/static/uragan/create_GeoObject.js:55
 msgid "Success!"
 msgstr "Удачно!"
 
@@ -42,13 +46,11 @@ msgid "Search geo object with Nominatim Geocoder..."
 msgstr "Поиск географического объекта с помощью геокодера  Nominatim ..."
 
 #: files/static/uragan/yandex_translate.js:7
-#| msgid "Translate"
 msgid "Translator"
 msgstr "Переводчик"
 
 #: files/static/uragan/yandex_translate.js:9
 #: files/static/uragan/yandex_translate.min.js:1
-#, fuzzy
 msgid "Sync translate"
 msgstr "Синхронный перевод"
 

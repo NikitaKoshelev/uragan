@@ -198,9 +198,9 @@ LOGGING = {
 #-----------------------------------------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------------------------------------
-# YANDEX_TRANSLATE_KEY = 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9'
+YANDEX_TRANSLATE_KEY = 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9'
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
-ROSETTA_GOOGLE_TRANSLATE = True
+#ROSETTA_GOOGLE_TRANSLATE = True
 ROSETTA_WSGI_AUTO_RELOAD = True
 #-----------------------------------------------------------------------------------------------------------------------
 CRISPY_TEMPLATE_PACK = 'bootstrap'

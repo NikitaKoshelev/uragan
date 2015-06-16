@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-15 09:08+0000\n"
-"PO-Revision-Date: 2015-06-15 09:09+0000\n"
+"POT-Creation-Date: 2015-06-16 21:39+0000\n"
+"PO-Revision-Date: 2015-06-16 21:40+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,14 +19,21 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.6\n"
 
-#: templates/GeoObject/GeoObject_form.html:18
+#: templates/GeoObject/GeoObject_form.html:10
+msgid "Create geographical object"
+msgstr "Создать географический объект"
+
+#: templates/GeoObject/GeoObject_form.html:19
 msgid "Previous step"
 msgstr "Предыдущий шаг"
 
-#: templates/GeoObject/GeoObject_form.html:21
-#: templates/GeoObject/GeoObject_form.html:48
+#: templates/GeoObject/GeoObject_form.html:22
 msgid "Next step"
 msgstr "Следующий шаг"
+
+#: templates/GeoObject/GeoObject_form.html:25
+msgid "Save"
+msgstr "Сохранить"
 
 #: templates/TLE/TLE_list.html:6
 msgid "Two-line element sets"
