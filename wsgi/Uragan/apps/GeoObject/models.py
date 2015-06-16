@@ -19,8 +19,8 @@ class Images(models.Model):
 class GeoObject(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title geographical object'), unique=True)
     #location = models.PointField(verbose_name=_('location'), unique=True)
-    lat = models.FloatField(verbose_name=_('north latitude in degrees'))
-    lon = models.FloatField(verbose_name=_('east longitude in degrees'))
+    lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
+    lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
     short_description = models.TextField(verbose_name=_('short description'))
     description = models.TextField(verbose_name=_('description'))
     polygon = models.TextField(verbose_name=_('polygon in KML format'), null=True)

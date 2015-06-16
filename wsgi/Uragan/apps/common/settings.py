@@ -26,7 +26,7 @@ if os.environ.get('OPENSHIFT_REPO_DIR', False):
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$(@)#f)t^&!7q^s0rf=%hspn+boi81&vk%+=aye1uc@pj5+$b9'
+SECRET_KEY = os.environ.get('OPENSHIFT_SECRET_TOKEN', '$(@)#f)t^&!7q^s0rf=%hspn+boi81&vk%+=aye1uc@pj5+$b9')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -34,7 +34,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '127.3.161.130']
 if os.environ.get('OPENSHIFT_GEAR_DNS', False):
     ALLOWED_HOSTS.append(os.environ['OPENSHIFT_GEAR_DNS'])
 
@@ -59,7 +59,6 @@ THIRD_PARTY_APPS = (
     'django_forms_bootstrap',
     'django_select2',
     'rosetta',
-    #'crispy_forms',
 )
 
 LOCAL_APPS = (
@@ -105,12 +104,12 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
-            # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            # 'NAME': 'django',
-            # 'USER': 'postgres',
-            # 'PASSWORD': '211094',
-            # 'HOST': 'localhost',
-            # 'PORT': '5432',
+            #'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            #'NAME': 'uragan',
+            #'USER': 'admingkyfu7m',
+            #'PASSWORD': 'U7TqqYT97xlW',
+            #'HOST': 'uragan-nikitakoshelev.rhcloud.com',
+            #'PORT': '5432',
         }
     }
 
@@ -176,6 +175,7 @@ AUTH_USER_MODEL = 'User.Profile'
 #-----------------------------------------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------------------------------------
+"""
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -194,6 +194,7 @@ LOGGING = {
         },
     }
 }
+"""
 #-----------------------------------------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------------------------------------

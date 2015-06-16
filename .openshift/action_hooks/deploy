@@ -7,7 +7,7 @@ cd ${OPENSHIFT_REPO_DIR}wsgi/Uragan
 
 Commands[1]="migrate"
 Commands[2]="collectstatic --noinput"
-Commands[3]="makemessages -a"
+Commands[3]="makemessages --all"
 Commands[4]="makemessages -d djangojs -a"
 Commands[5]="compilemessages"
 

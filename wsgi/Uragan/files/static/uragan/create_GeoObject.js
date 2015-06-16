@@ -23,7 +23,6 @@ $lat.keyup(function (key) {
     var location = new google.maps.LatLng($(this).val(), $lon.val());
     marker.setPosition(location);
     google_reverse_geocode(location);
-
 });
 
 $lon.keyup(function (key) {

@@ -4,10 +4,10 @@
 
 html = '<div class="box box-solid" id="translate_container" style="display: none;">';
 html += '<div class="box-header with-border">';
-html += '<h3 class="box-title">' + gettext("Tranlslate") + '</h3>';
+html += '<h3 class="box-title">' + gettext("Translator") + '</h3>';
 html += '<div class="box-tools pull-right">';
-html += '<button id="sync_toggle" class="btn btn-box-tool" data-toggle="tooltip" data-status="false" title="' + gettext('Sync translate') + '">';
-html += '<i class="fa fa-toggle-off text-red"></i>';
+html += '<button id="sync_toggle" class="btn btn-box-tool" data-toggle="tooltip" data-status="true" title="' + gettext('Sync translate') + '">';
+html += '<i class="fa fa-toggle-on text-olive"></i>';
 html += '</button>';
 html += '<button id="reverse_btn" class="btn btn-box-tool" data-toggle="tooltip" title="' + gettext('Reverse') + '">';
 html += '<i class="fa fa-exchange"></i>';
@@ -44,7 +44,7 @@ html += '</div>';
 html += '</div>';
 html += '</div>';
 html += '<div class="row">';
-html += '<div class="col-xs-12">';
+html += '<div class="col-xs-12" style="display: none;">';
 html += '<button id="translate_btn" class="btn btn-flat btn-block btn-default">' + gettext("Translate") + '</button>';
 html += '</div>';
 html += '</div>';
@@ -52,6 +52,7 @@ html += '</div>';
 html += '</div>';
 
 $('#yandex_translate').append($(html));
+
 
 var $translate_container = $('#translate_container'),
     $source_select = $($translate_container.find('#source_select')),
@@ -74,7 +75,7 @@ $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
         langs.push({id: key, text: value})
     });
     $translate_select.select2({data: langs, language: lng});
-    $translate_select.val('en').change();
+    $translate_select.val(lng === 'en' ? 'ru': 'en').change();
 
     langs.push({id: 'auto', text: 'Determine automatically'});
     $source_select.select2({data: langs, language: lng});
@@ -83,7 +84,7 @@ $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
 
 
 $('#translate_icon').click(function () {
-    $translate_container.is(':hidden') ? $translate_container.fadeIn() : $translate_container.fadeOut();
+    $translate_container.slideToggle('fast');
 });
 
 
@@ -95,13 +96,12 @@ $sync_toggle.click(function () {
     if ($sync_toggle.data().status) {
         $sync_toggle.data('status', false);
         $sync_toggle.find('i').removeClass('fa-toggle-on text-olive').addClass('fa-toggle-off text-red');
-        $translate_btn.parent().fadeIn();
     }
     else {
         $sync_toggle.data('status', true);
         $sync_toggle.find('i').removeClass('fa-toggle-off text-red').addClass('fa-toggle-on text-olive');
-        $translate_btn.parent().fadeOut();
     }
+    $translate_btn.parent().slideToggle('fast');
 
 });
 

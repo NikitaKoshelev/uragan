@@ -2,17 +2,17 @@
  * Created by koshelev on 14.06.15.
  */
 
-var $nominatim_geocode = $('<select class="form-control" id="nominatim_geocode"></select>');
+var $nominatim_geocode = $('<select class="form-control" id="nominatim_geocode" style="width: 100%"></select>');
 $(document).ready(function () {
     $nominatim_geocode.select2({
-        placeholder: 'Search geo object with Nominatim Geocoder...',
+        placeholder: gettext('Search geo object with Nominatim Geocoder...'),
         allowClear: true,
         minimumInputLength: 3,
         language: "ru",
         ajax: {
             url: "http://nominatim.openstreetmap.org/search",
             dataType: 'json',
-            delay: 300,
+            delay: 1000,
             type: "GET",
             cache: true,
             data: function (params, page) {
@@ -70,12 +70,11 @@ $(document).ready(function () {
     });
 });
 
-$('#geocoders').append(
-    $('<div class="form-group col-md-6"">' +
-        '<label for="nominatim_geocode" class="control-label">Nominatim geocoder</label>' +
-        '</div>').append(
-        $nominatim_geocode
-    )
+$('#geocoders')
+    .append($('<div>', {class: 'col-md-6 form-group'})
+        .append($('<label>', {for: "nominatim_geocode", class: "control-label"})
+            .append('Nominatim geocoder'),
+        $nominatim_geocode)
 );
 
 $nominatim_geocode.on('select2:select', function (e) {

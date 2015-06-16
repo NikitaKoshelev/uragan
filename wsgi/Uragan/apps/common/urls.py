@@ -16,13 +16,14 @@ urlpatterns = solid_i18n_patterns(
     url(r'^geo-object/', include('apps.GeoObject.urls'), name='GeoObject'),
     url(r'^TLE/', include('apps.TLE.urls'), name='TLE'),
     url(r'^translate/$', translate_string),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+
 )
 
 urlpatterns += patterns(
     '',
     url(r'^grappelli/', include('grappelli.urls')),  # grappelli URLS
     url(r'^select2/', include('django_select2.urls')),
-    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

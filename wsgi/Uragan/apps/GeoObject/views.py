@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response
 from django.views.generic import CreateView, DeleteView, FormView
-from .forms import GeoObjectForm#,GeoObjectPart1Form
+
+
+from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
 
 

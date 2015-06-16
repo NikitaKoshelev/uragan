@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags %}
+{% load bootstrap_tags i18n %}
 
 {% block extra_head %}
   {{ form.media.css }}
@@ -7,29 +7,29 @@
             type="text/javascript"></script>
 {% endblock %}
 
+{% block content-header %}{% trans 'Create geographical object' %}{% endblock %}
+
 {% block content %}
     <div class="row">
-        <div class="col-sm-12">
-            <!-- Custom Tabs -->
-            <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#part_1" data-toggle="tab" aria-expanded="true">Step 1</a>
-                    </li>
-                    <li>
-                        <a href="#part_2" data-toggle="tab" aria-expanded="false">Step 2</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="part_1">
-                        <form id="create-geo_object">
-                          {% csrf_token %}
-                          {{ form|as_bootstrap }}
-                        </form>
-                    </div>
-                    <div class="tab-pane" id="part_2">
-
-                    </div>
+        <div class="col-xs-12">
+            <div class="box box-solid">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title"></h3>
+                    <button id='prev_step' class="btn btn-primary btn-flat pull-left" type="button">
+                        <i class="fa fa-chevron-left"></i> {% trans 'Previous step' %}
+                    </button>
+                    <button id='next_step' class="btn btn-primary btn-flat pull-right" type="button">
+                      {% trans 'Next step' %} <i class="fa fa-chevron-right"></i>
+                    </button>
+                    <button id='save' class="btn btn-success btn-flat pull-right" type="submit">
+                      <i class="fa fa-save"></i> {% trans 'Save' %}
+                    </button>
+                </div>
+                <div class="box-body">
+                    <form id="create-geo_object" action="" method="post">
+                      {% csrf_token %}
+                      {{ form|as_bootstrap }}
+                    </form>
                 </div>
             </div>
         </div>
@@ -39,4 +39,46 @@
 {% block scripts %}
   {{ block.super }}
   {{ form.media.js }}
+    <script type="text/javascript">
+        var $form = $('#create-geo_object'),
+                $geocoders = $('#geocoders'),
+                step_1_elements = $form.children(),
+                step_2_elements = step_1_elements.splice(-4),
+                $step_1 = $('<div>', {id: 'step_1'}),
+                $step_2 = $('<div>', {id: 'step_2'}),
+                $next_step = $('#next_step'),
+                $prev_step = $('#prev_step'),
+                $save = $('#save');
+                $header = $('.box-title');
+
+        $save.hide();
+        $prev_step.hide();
+        $header.hide();
+
+        $form.append($step_1.append(step_1_elements), $step_2.append(step_2_elements).hide());
+
+
+        $next_step.click(function () {
+            $geocoders.hide();
+            $step_1.hide();
+            $next_step.hide();
+            $step_2.fadeIn('fast');
+            $prev_step.fadeIn('fast');
+            $save.fadeIn('fast');
+            $header.text($title.val()).fadeIn('fast');
+        });
+
+        $prev_step.click(function () {
+            $step_2.hide();
+            $prev_step.hide();
+            $save.hide();
+            $header.hide();
+            $geocoders.fadeIn('fast');
+            $step_1.fadeIn('fast');
+            $next_step.fadeIn('fast');
+        });
+
+        $step_2.find('textarea').slice(0,-1).wysihtml5();
+
+    </script>
 {% endblock %}

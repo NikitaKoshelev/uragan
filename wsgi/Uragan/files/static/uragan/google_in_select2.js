@@ -2,10 +2,10 @@
  * Created by koshelev on 14.06.15.
  */
 
-var $google_geocode = $('<select class="form-control" id="google_geocode"></select>');
+var $google_geocode = $('<select class="form-control" id="google_geocode" style="width: 100%"></select>');
 $(document).ready(function () {
     $google_geocode.select2({
-        placeholder: 'Search geo object with Google Geocoder...',
+        placeholder: gettext('Search geo object with Google Geocoder...'),
         allowClear: true,
 
         ajax: {
@@ -50,7 +50,7 @@ $(document).ready(function () {
             }
             else {
                 return $('<strong>{0}</strong><span class="pull-right">({1},{2})</span>'
-                    .f(google_geocode.text, google_geocode.lat, google_geocode.lon)
+                        .f(google_geocode.text, google_geocode.lat, google_geocode.lon)
                 );
             }
 
@@ -62,12 +62,11 @@ $(document).ready(function () {
     });
 });
 
-$('#geocoders').append(
-    $('<div class="form-group col-md-6">' +
-        '<label for="google_geocode" class="control-label">Google geocoder</label>' +
-        '</div>').append(
-        $google_geocode
-    )
+$('#geocoders')
+    .append($('<div>', {class: 'col-md-6 form-group'})
+        .append($('<label>', {for: "google_geocode", class: "control-label"})
+            .append('Google geocoder'),
+        $google_geocode)
 );
 
 $google_geocode.on('select2:select', function (e) {
