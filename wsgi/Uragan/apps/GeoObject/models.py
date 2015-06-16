@@ -8,7 +8,8 @@ from datetime import timedelta
 from django.conf import settings
 
 class Images(models.Model):
-    geo_object = models.ForeignKey('GeoObject', verbose_name=_('geographical object'))
+    title = models.CharField(max_length=100, verbose_name=_('title'))
+    description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     image = models.ImageField(upload_to='geo_objects', verbose_name=_('image'))
 
     class Meta:
@@ -18,13 +19,13 @@ class Images(models.Model):
 
 class GeoObject(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title geographical object'), unique=True)
-    #location = models.PointField(verbose_name=_('location'), unique=True)
     lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
     lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
-    short_description = models.TextField(verbose_name=_('short description'))
-    description = models.TextField(verbose_name=_('description'))
-    polygon = models.TextField(verbose_name=_('polygon in KML format'), null=True)
-    color = models.TextField(verbose_name=_('color'), null=True)
+    short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
+    description = models.TextField(verbose_name=_('description'), null=True, blank=True)
+    polygon = models.TextField(verbose_name=_('polygon in KML format'), null=True, blank=True)
+    color = models.TextField(verbose_name=_('color'), null=True, blank=True)
+    images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
 
     class Meta:
         unique_together = 'lat', 'lon',

@@ -1,10 +1,11 @@
 dateutils==0.6.6
 Django==1.8.2
-django-crispy-forms==1.4.0
 django-forms-bootstrap==3.0.1
+django-formtools==1.0
 django-grappelli==2.6.5
 django-rosetta==0.7.6
 Django-Select2==4.3.1
+django-wysihtml5==1.2b3
 futures==3.0.3
 geopy==1.10.0
 goslate==1.4.0
