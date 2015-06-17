@@ -95,7 +95,8 @@ def login(credentials=None):
 
 
 def logout(cookie):
-    """ Expires provided SpaceTrack cookie.
+    """
+    Expires provided SpaceTrack cookie.
     """
     url = _url_base + _url_logout
     r = requests.get(url, cookies=cookie)
@@ -105,9 +106,9 @@ def logout(cookie):
 
 
 def request(cookie, norad_id=None, spacetrack_query=None):
-    """ Makes request for latest TLE of norad_id satellite.
-
-        If called with a non-None spacetrack_query, it will make that request instead.
+    """
+    Makes request for latest TLE of norad_id satellite.
+    If called with a non-None spacetrack_query, it will make that request instead.
     """
     if spacetrack_query is None and norad_id is not None:
         url = _url_base + _url_request + str(norad_id) + _url_request_postfix
@@ -120,7 +121,8 @@ def request(cookie, norad_id=None, spacetrack_query=None):
 
 
 def _valid_credentials(credentials):
-    """ Checks if credentials provided is sane.
+    """
+    Checks if credentials provided is sane.
     """
     if isinstance(credentials, dict):
         if 'identity' in credentials and 'password' in credentials:
@@ -129,7 +131,8 @@ def _valid_credentials(credentials):
 
 
 def request_sequence(credentials, norad_id=None, spacetrack_query=None):
-    """ Handles a complete login, request, logout cycle and returns full TLE json.
+    """
+    Handles a complete login, request, logout cycle and returns full TLE json.
     """
     cookie = login(credentials=credentials)
     r = request(cookie, norad_id, spacetrack_query=spacetrack_query)
