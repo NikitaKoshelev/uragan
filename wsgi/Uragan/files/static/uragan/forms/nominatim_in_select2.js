@@ -37,7 +37,7 @@ $(document).ready(function () {
                         text: obj.display_name,
                         lat: obj.lat,
                         lon: obj.lon,
-                        polygon: obj.geokml
+                        polygon: obj.geokml ? obj.geokml : ''
                     };
                 });
 
@@ -76,13 +76,14 @@ $('#geocoders')
             .append('Nominatim geocoder'),
         $nominatim_geocode)
 );
+var polygon;
 
 $nominatim_geocode.on('select2:select', function (e) {
     var nominatim_geocode = e.params.data;
-    $("#id_lat").val(nominatim_geocode.lat);
-    $("#id_lon").val(nominatim_geocode.lon);
-    $("#id_title").val(nominatim_geocode.text);
-    $('#id_polygon').val(nominatim_geocode.polygon);
+    $("[id^=id_][id$=lat]").val(nominatim_geocode.lat);
+    $("[id^=id_][id$=lon]").val(nominatim_geocode.lon);
+    $("[id^=id_][id$=title]").val(nominatim_geocode.text);
+    $("[id^=id_][id$=polygon]").val(nominatim_geocode.polygon);
     var location = new google.maps.LatLng(nominatim_geocode.lat, nominatim_geocode.lon);
     marker.setPosition(location);
     map.setCenter(location);

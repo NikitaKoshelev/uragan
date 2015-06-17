@@ -12,6 +12,7 @@ urlpatterns = solid_i18n_patterns(
     '',
     url(r'^rosetta/', include('rosetta.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls', namespace='accounts')),
     url(r'^geo-object/', include('apps.GeoObject.urls', namespace='GeoObject')),
     url(r'^TLE/', include('apps.TLE.urls', namespace='TLE')),

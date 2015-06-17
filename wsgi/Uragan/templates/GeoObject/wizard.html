@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load bootstrap_tags i18n %}
+
+{% block head %}
+  {{ block.super }}
+  {{ wizard.form.media.css }}
+
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
+            type="text/javascript"></script>
+{% endblock %}
+
+{% block content-header %}
+  {% trans 'Create geographical object' %}
+    <small>{% trans 'Step' %} {{ wizard.steps.step1 }} {% trans 'of' %} {{ wizard.steps.count }}</small>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-solid">
+                <div class="box-body">
+
+                    <form id="create-geo_object" action="" method="post">
+                      {% csrf_token %}
+                      {{ wizard.management_form }}
+                      {% if wizard.form.forms %}
+                        {{ wizard.form.management_form }}
+                        {% for form in wizard.form.forms %}
+                          {{ form|as_bootstrap }}
+                        {% endfor %}
+                      {% else %}
+                        {{ wizard.form|as_bootstrap }}
+                      {% endif %}
+                        <div class="form-group clearfix" id="buttons">
+                          {% if wizard.steps.current > 2 %}
+                              <button name="wizard_goto_step" class="btn btn-primary btn-flat pull-left" type="submit"
+                                      value="{{ wizard.steps.first }}">
+                                {% trans "First step" %}
+                              </button>
+                          {% endif %}
+
+                          {% if wizard.steps.prev %}
+                              <button name="wizard_goto_step" class="btn btn-primary btn-flat" type="submit"
+                                      value="{{ wizard.steps.prev }}">
+                                  <i class="fa fa-chevron-left"></i> {% trans 'Previous step' %}
+                              </button>
+                          {% endif %}
+
+                          {% if wizard.steps.current != wizard.steps.last %}
+                              <button class="btn btn-primary btn-flat pull-right" type="submit">
+                                {% trans 'Next step' %} <i class="fa fa-chevron-right"></i>
+                              </button>
+                            {% elif wizard.steps.current == wizard.steps.last %}
+                              <button class="btn btn-success btn-flat pull-right" type="submit">
+                                  <i class="fa fa-save"></i> {% trans 'Save' %}
+                              </button>
+                          {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  {{ wizard.form.media.js }}
+
+{% endblock %}

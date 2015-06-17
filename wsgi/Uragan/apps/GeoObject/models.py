@@ -10,7 +10,7 @@ from django.conf import settings
 class Images(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title'))
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
-    image = models.ImageField(upload_to='geo_objects', verbose_name=_('image'))
+    image = models.ImageField(upload_to='geo_objects/images/', verbose_name=_('image'))
 
     class Meta:
         verbose_name = _('geographical object image')

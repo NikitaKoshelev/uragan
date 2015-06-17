@@ -53,12 +53,14 @@ DEFAULT_APPS = (
     'django.contrib.staticfiles',
     'grappelli',
     'django.contrib.admin',
+    'django.contrib.admindocs',
 )
 
 THIRD_PARTY_APPS = (
     'django_forms_bootstrap',
     'django_select2',
     'rosetta',
+    'formtools',
 )
 
 LOCAL_APPS = (
@@ -203,4 +205,4 @@ ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 #ROSETTA_GOOGLE_TRANSLATE = True
 ROSETTA_WSGI_AUTO_RELOAD = True
 #-----------------------------------------------------------------------------------------------------------------------
-CRISPY_TEMPLATE_PACK = 'bootstrap'
+AUTO_RENDER_SELECT2_STATICS = False

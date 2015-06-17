@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load bootstrap_tags i18n %}
 
-{% block extra_head %}
-  {{ form.media.css }}
+{% block head %}
+    {{ block.super }}
+    {{ form.media.css }}
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
             type="text/javascript"></script>
 {% endblock %}
@@ -53,7 +54,8 @@
 
         $save.hide();
         $prev_step.hide();
-        $header.hide();
+        $title.change($header.text($title.val()));
+
 
         $form.append($step_1.append(step_1_elements), $step_2.append(step_2_elements).hide());
 
@@ -65,14 +67,12 @@
             $step_2.fadeIn('fast');
             $prev_step.fadeIn('fast');
             $save.fadeIn('fast');
-            $header.text($title.val()).fadeIn('fast');
         });
 
         $prev_step.click(function () {
             $step_2.hide();
             $prev_step.hide();
             $save.hide();
-            $header.hide();
             $geocoders.fadeIn('fast');
             $step_1.fadeIn('fast');
             $next_step.fadeIn('fast');

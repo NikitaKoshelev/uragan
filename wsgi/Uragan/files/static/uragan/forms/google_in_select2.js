@@ -69,12 +69,14 @@ $('#geocoders')
         $google_geocode)
 );
 
+
+
 $google_geocode.on('select2:select', function (e) {
     var google_geocode = e.params.data;
-    $("#id_lat").val(google_geocode.lat);
-    $("#id_lon").val(google_geocode.lon);
-    $("#id_title").val(google_geocode.text);
-    $('#id_polygon').val(google_geocode.polygon);
+    $("[id^=id_][id$=lat]").val(google_geocode.lat);
+    $("[id^=id_][id$=lon]").val(google_geocode.lon);
+    $("[id^=id_][id$=title]").val(google_geocode.text);
+    $("[id^=id_][id$=polygon]").val(google_geocode.polygon);
     var location = new google.maps.LatLng(google_geocode.lat, google_geocode.lon);
     marker.setPosition(location);
     map.setCenter(location);
