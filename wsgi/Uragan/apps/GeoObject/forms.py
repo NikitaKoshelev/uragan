@@ -29,7 +29,7 @@ class GeoObjectFormStep1(BaseModelForm):
         model = GeoObject
         fields = 'title', 'lon', 'lat', 'polygon'
         widgets = {
-            'polygon': HiddenInput(),
+            'polygon': Textarea(attrs={'style': 'display: none'}),
         }
 
     class Media:

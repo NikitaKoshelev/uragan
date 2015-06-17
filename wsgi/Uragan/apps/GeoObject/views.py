@@ -6,6 +6,8 @@ from .models import GeoObject
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
 
+from pykml import parser
+from lxml import etree
 
 def where_iss(request):
 
@@ -25,12 +27,6 @@ class WizardCreateGeoObject(CookieWizardView):
         ('step1', GeoObjectFormStep1),
         ('step2', GeoObjectFormStep2),
     )
-
-    def get_form_initial(self, step):
-        init = {}
-        if step == 'step2':
-            init['polygon'] = super(WizardCreateGeoObject, self).get_cleaned_data_for_step('step1')['polygon']
-        return self.initial_dict.get(step, init)
 
     def done(self, form_list, **kwargs):
         data = {k:v for form in form_list for k,v in form.cleaned_data.items()}

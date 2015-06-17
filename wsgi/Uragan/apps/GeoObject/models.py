@@ -7,6 +7,10 @@ from django.utils import timezone as tz
 from datetime import timedelta
 from django.conf import settings
 
+from pykml.factory import KML_ElementMaker as KML
+from pykml import parser
+from lxml import etree
+
 class Images(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title'))
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
@@ -31,6 +35,32 @@ class GeoObject(models.Model):
         unique_together = 'lat', 'lon',
         verbose_name = _('geographical object')
         verbose_name_plural = _('geographical objects')
+
+    def get_polygon_in_kml(self, full=True, placemark=False):
+        polygon = self.polygon
+        if polygon:
+            if full:
+                kml = KML.kml(
+                    KML.Document(
+                        KML.Placemark(
+                            KML.name(self.title),
+                            parser.fromstring(self.polygon)
+                        )
+                    )
+                )
+                polygon = etree.tostring(kml, pretty_print=True)
+
+            elif placemark:
+                kml = KML.Placemark(
+                    KML.name(self.title),
+                    parser.fromstring(self.polygon)
+                )
+                polygon = etree.tostring(kml, pretty_print=True)
+
+            else:
+                polygon = etree.tostring(self.polygon, pretty_print=True)
+
+        return polygon
 
 
 class SurveillancePlan(models.Model):
