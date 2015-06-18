@@ -42,5 +42,6 @@ class WizardCreateGeoObject(CookieWizardView):
 
     def done(self, form_list, **kwargs):
         data = {k:v for form in form_list for k,v in form.cleaned_data.items()}
+
         pk = GeoObject.objects.create(**data).pk
         return redirect('GeoObject:detail', pk=pk)

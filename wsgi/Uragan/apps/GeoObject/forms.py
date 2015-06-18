@@ -27,7 +27,7 @@ class GeoObjectForm(BaseModelForm):
 class GeoObjectFormStep1(BaseModelForm):
     class Meta:
         model = GeoObject
-        fields = 'title', 'lon', 'lat', 'polygon'
+        fields = 'title', 'lon', 'lat'
 
     class Media:
          js = (

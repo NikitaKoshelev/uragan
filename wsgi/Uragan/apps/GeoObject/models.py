@@ -7,6 +7,7 @@ from django.utils import timezone as tz
 from datetime import timedelta
 from django.conf import settings
 
+from geopy.geocoders import Nominatim
 from pykml.factory import KML_ElementMaker as KML
 from pykml import parser
 from lxml import etree
@@ -23,7 +24,7 @@ class Images(models.Model):
 
 
 class GeoObject(models.Model):
-    title = models.CharField(max_length=100, verbose_name=_('title geographical object'), unique=True)
+    title = models.TextField(verbose_name=_('title geographical object'), unique=True)
     lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
     lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
     short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
@@ -62,6 +63,12 @@ class GeoObject(models.Model):
                 polygon = etree.tostring(self.polygon, pretty_print=True)
 
         return polygon
+
+    def save(self, *args, **kwargs):
+        kml = Nominatim().geocode(self.title, geometry='kml').raw['geokml']
+        if kml:
+            self.polygon = kml
+        return super(GeoObject, self).save(*args, **kwargs)
 
 
 class SurveillancePlan(models.Model):

@@ -13,7 +13,6 @@ var geocoder, map, marker,
     $lat_container = $form.find('[id^=div_id_][id$=lat]');
 
 $form.find('[id^=div_id_][id$=title]').before($('<div class="row" id="geocoders"></div>'));
-$form.find('[id^=div_id_][id$=polygon]').hide();
 
 $coords.append($lat_container.addClass('col-sm-6'), $lon_container.addClass('col-sm-6'));
 $form.find('[id^=div_id_][id$=title]').after($coords);
@@ -50,7 +49,7 @@ function google_reverse_geocode(location) {
                 $title.val(title);
                 $lat.val(location.lat());
                 $lon.val(location.lng());
-                showMessage(false, gettext('Was found geo object') + ': "{0}"'.f(title.bold().italics()));
+                //showMessage(false, gettext('Was found geo object') + ': "{0}"'.f(title.bold().italics()));
             }
         }
     });
@@ -58,7 +57,8 @@ function google_reverse_geocode(location) {
 
 
 function initialize() {
-    var location = new google.maps.LatLng(55.920963, 37.80495829999995);
+    var location = $lat.val() && $lon.val() ?
+        new google.maps.LatLng($lat.val(), $lon.val()) : new google.maps.LatLng(55.920963, 37.80495829999995);
 
     // Определение карты
     var options = {
@@ -72,33 +72,13 @@ function initialize() {
     // Определение геокодера
     geocoder = new google.maps.Geocoder();
 
-    marker = new google.maps.Marker({map: map, draggable: true});
-    //marker.setPosition(location);
-
     // Отображаем положение маркера на форме
-    //google_reverse_geocode(location);
-    //$lat.val(location.lat());
-    //$lon.val(location.lng());
+    marker = new google.maps.Marker({map: map, draggable: true});
+    marker.setPosition(location);
 
     // Добавляем слушателя события обратного геокодирования для маркера при его перемещении
     google.maps.event.addListener(marker, 'drag', function () {
-        var location = marker.getPosition();
-
-        google_reverse_geocode(location);
-
-        //geocoder.geocode({'latLng': location}, function (results, status) {
-        //    if (status == google.maps.GeocoderStatus.OK) {
-        //        if (results[0]) {
-        //            var cont = $('#select2-google_geocode-container');
-        //            cont.attr('title', results[0].formatted_address);
-        //            cont.html('<span class="select2-selection__clear">×</span>' + results[0].formatted_address);
-        //            $lat.val(location.lat());
-        //            $lon.val(location.lng());
-        //            $title.val(results[0].formatted_address);
-        //        }
-        //    }
-        //});
-        //map.setCenter(location);
+        google_reverse_geocode(marker.getPosition());
     });
 
 }

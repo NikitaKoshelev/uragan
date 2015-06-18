@@ -18,8 +18,7 @@ $(document).ready(function () {
             data: function (params, page) {
                 return {
                     q: params.term, // search term
-                    format: 'json',
-                    polygon_kml: 1
+                    format: 'json'
                     // page: page || 1
                 };
             },
@@ -36,8 +35,7 @@ $(document).ready(function () {
                         id: '(' + obj.lat + ', ' + obj.lon + ')',
                         text: obj.display_name,
                         lat: obj.lat,
-                        lon: obj.lon,
-                        polygon: obj.geokml ? obj.geokml : ''
+                        lon: obj.lon
                     };
                 });
 
@@ -76,14 +74,12 @@ $('#geocoders')
             .append('Nominatim geocoder'),
         $nominatim_geocode)
 );
-var polygon;
 
 $nominatim_geocode.on('select2:select', function (e) {
     var nominatim_geocode = e.params.data;
     $("[id^=id_][id$=lat]").val(nominatim_geocode.lat);
     $("[id^=id_][id$=lon]").val(nominatim_geocode.lon);
     $("[id^=id_][id$=title]").val(nominatim_geocode.text);
-    $("[id^=id_][id$=polygon]").val(nominatim_geocode.polygon);
     var location = new google.maps.LatLng(nominatim_geocode.lat, nominatim_geocode.lon);
     marker.setPosition(location);
     map.setCenter(location);
