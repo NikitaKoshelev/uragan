@@ -55,9 +55,12 @@ class GeoObject(models.Model):
         return polygon
 
     def save(self, *args, **kwargs):
-        kml = Nominatim().geocode(self.title, geometry='kml').raw.get('geokml', False)
-        if kml:
-            self.polygon = kml
+        try:
+            kml = Nominatim().geocode(self.title, geometry='kml').raw.get('geokml', False)
+            if kml:
+                self.polygon = kml
+        except:
+            pass
         return super(GeoObject, self).save(*args, **kwargs)
 
 

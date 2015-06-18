@@ -31,10 +31,10 @@ class GeoObjectFormStep1(BaseModelForm):
 
     class Media:
          js = (
-             'uragan/forms/create_GeoObject_step1.min.js',
-             #'uragan/forms/create_GeoObject_step1.js',
-             #'uragan/forms/nominatim_in_select2.js',
-             #'uragan/forms/google_in_select2.js',
+             #'uragan/forms/create_GeoObject_step1.min.js',
+             'uragan/forms/create_GeoObject_step1.js',
+             'uragan/forms/nominatim_in_select2.js',
+             'uragan/forms/google_in_select2.js',
          )
 
 class GeoObjectFormStep2(BaseModelForm):

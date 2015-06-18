@@ -28,7 +28,15 @@ $lat.keyup(function (key) {
 $lon.keyup(function (key) {
     var location = new google.maps.LatLng($lat.val(), $(this).val());
     marker.setPosition(location);
-    google_reverse_geocode();
+    google_reverse_geocode(location);
+});
+
+var $btn_reverse = $('<button class="btn btn-default pull-left" type="button"><i class="fa fa-search"></i> {0}</button>'
+                         .f(gettext('Nominatim reverse geocode')));
+
+$btn_reverse.appendTo($('#buttons')).click(function () {
+    var location = new google.maps.LatLng($lat.val(), $lon.val());
+    nominatim_reverse_geocode(location);
 });
 
 $(document).ready(initialize());
@@ -52,6 +60,26 @@ function google_reverse_geocode(location) {
                 //showMessage(false, gettext('Was found geo object') + ': "{0}"'.f(title.bold().italics()));
             }
         }
+    });
+}
+
+function nominatim_reverse_geocode(location) {
+
+    $.ajax({
+       url: "http://nominatim.openstreetmap.org/reverse",
+       dataType: 'json',
+       data: {lat: marker.getPosition().lat(), lon: marker.getPosition().lng(), format: 'json'},
+       cache: true,
+       ifModified: true,
+       timeout: 300,
+       success: function (data, status) {
+           if (status === 'success') {
+               var cont = $('#select2-nominatim_geocode-container'),title = data.display_name;
+               cont.attr('title', title);
+               cont.html('<span class="select2-selection__clear">×</span>' + title);
+               $title.val(title);
+           }
+       }
     });
 }
 
@@ -89,21 +117,7 @@ function initialize() {
 /**********************************************************************************************************************
  // Nominatim reverse geocoder
 
- $.ajax({
-    url: "http://nominatim.openstreetmap.org/reverse",
-    dataType: 'json',
-    data: {lat: marker.getPosition().lat(), lon: marker.getPosition().lng(), format: 'json'},
-    cache: true,
-    ifModified: true,
-    timeout: 300,
-    success: function (data, status) {
-        if (status === 'success') {
-            var cont = $('#select2-nominatim_geocode-container');
-            cont.attr('title', data.display_name);
-            cont.html('<span class="select2-selection__clear">×</span>' + data.display_name);
-        }
-    }
-});
+
  *********************************************************************************************/
 
 
