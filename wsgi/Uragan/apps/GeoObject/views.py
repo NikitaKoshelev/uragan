@@ -9,7 +9,7 @@ from .models import GeoObject
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
 from goslate import Goslate
-
+import sys
 
 def where_iss(request):
 
@@ -18,16 +18,15 @@ def where_iss(request):
 
 def get_kml(request, pk):
 
-    try:
+    #try:
         obj = GeoObject.objects.get(pk=pk)
-        polygon = obj.get_polygon_in_kml()#.decode()
+        polygon = obj.get_polygon_in_kml()
         response = HttpResponse(polygon)
-        filename = Goslate().translate(obj.title, target_language='en')
-        response['Content-Disposition'] = 'attachment; filename="{}.kml"'.format(filename)
-        print(obj.title, response['Content-Disposition'])
+        response['Content-Disposition'] = 'attachment; filename="{}.kml"'.format(obj.get_translate_title())
+        sys.stdout.write(response['Content-Disposition'])
         return response
-    except:
-        return HttpResponse('GeoObject not found')
+    #except:
+    #    return HttpResponse('GeoObject not found')
 
 
 

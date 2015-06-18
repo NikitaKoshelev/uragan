@@ -11,7 +11,7 @@ from geopy.geocoders import Nominatim
 from pykml.factory import KML_ElementMaker as KML
 from pykml import parser
 from lxml import etree
-
+from yandex_translate import YandexTranslate
 
 class Images(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title'))
@@ -37,6 +37,11 @@ class GeoObject(models.Model):
         unique_together = 'lat', 'lon',
         verbose_name = _('geographical object')
         verbose_name_plural = _('geographical objects')
+
+    def get_translate_title(self, lang='en'):
+        translator = YandexTranslate(settings.YANDEX_TRANSLATE_KEY)
+        result = translator.translate(self.title, lang)
+        return result['text'][0] if result['code'] == 200 else self.title
 
     def get_polygon_in_kml(self, full=True, placemark=False):
         polygon = self.polygon
