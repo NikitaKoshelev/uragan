@@ -42,21 +42,11 @@ class GeoObject(models.Model):
         polygon = self.polygon
         if polygon:
             if full:
-                kml = KML.kml(
-                    KML.Document(
-                        KML.Placemark(
-                            KML.name(self.title),
-                            parser.fromstring(self.polygon)
-                        )
-                    )
-                )
+                kml = KML.kml(KML.Document(KML.Placemark(KML.name(self.title), parser.fromstring(self.polygon))))
                 polygon = etree.tostring(kml, pretty_print=True)
 
             elif placemark:
-                kml = KML.Placemark(
-                    KML.name(self.title),
-                    parser.fromstring(self.polygon)
-                )
+                kml = KML.Placemark(KML.name(self.title), parser.fromstring(self.polygon))
                 polygon = etree.tostring(kml, pretty_print=True)
 
             else:
@@ -65,7 +55,7 @@ class GeoObject(models.Model):
         return polygon
 
     def save(self, *args, **kwargs):
-        kml = Nominatim().geocode(self.title, geometry='kml').raw['geokml']
+        kml = Nominatim().geocode(self.title, geometry='kml').raw.get('geokml', False)
         if kml:
             self.polygon = kml
         return super(GeoObject, self).save(*args, **kwargs)

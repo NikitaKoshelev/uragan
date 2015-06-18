@@ -2,12 +2,13 @@ from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse, FileResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, FormView, DetailView
-
+from django.utils.text import slugify
 from formtools.wizard.views import CookieWizardView
 import tempfile
 from .models import GeoObject
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
+from goslate import Goslate
 
 
 def where_iss(request):
@@ -19,11 +20,12 @@ def get_kml(request, pk):
 
     try:
         obj = GeoObject.objects.get(pk=pk)
-        polygon = obj.get_polygon_in_kml().decode()
-        return HttpResponse(polygon)
-        #response = HttpResponse(polygon)
-        #response['Content-Disposition'] = 'attachment; filename="%s.kml"' % pk
-        #return response
+        polygon = obj.get_polygon_in_kml()#.decode()
+        response = HttpResponse(polygon)
+        filename = Goslate().translate(obj.title, target_language='en')
+        response['Content-Disposition'] = 'attachment; filename="{}.kml"'.format(filename)
+        print(obj.title, response['Content-Disposition'])
+        return response
     except:
         return HttpResponse('GeoObject not found')
 
