@@ -17,15 +17,15 @@ def where_iss(request):
 
 def get_kml(request, pk):
 
-    #try:
+    try:
         obj = GeoObject.objects.get(pk=pk)
         polygon = obj.get_polygon_in_kml().decode()
         return HttpResponse(polygon)
-        #response = HttpResponse('<?xml version="1.0" encoding="UTF-8"?>\n'+polygon)
+        #response = HttpResponse(polygon)
         #response['Content-Disposition'] = 'attachment; filename="%s.kml"' % pk
         #return response
-    #except:
-    #    return HttpResponse('GeoObject not found')
+    except:
+        return HttpResponse('GeoObject not found')
 
 
 

@@ -28,9 +28,6 @@ class GeoObjectFormStep1(BaseModelForm):
     class Meta:
         model = GeoObject
         fields = 'title', 'lon', 'lat', 'polygon'
-        widgets = {
-            'polygon': HiddenInput(),
-        }
 
     class Media:
          js = (

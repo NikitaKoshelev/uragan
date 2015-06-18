@@ -13,7 +13,7 @@ var geocoder, map, marker,
     $lat_container = $form.find('[id^=div_id_][id$=lat]');
 
 $form.find('[id^=div_id_][id$=title]').before($('<div class="row" id="geocoders"></div>'));
-
+$form.find('[id^=div_id_][id$=polygon]').hide();
 
 $coords.append($lat_container.addClass('col-sm-6'), $lon_container.addClass('col-sm-6'));
 $form.find('[id^=div_id_][id$=title]').after($coords);

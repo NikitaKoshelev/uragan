@@ -109,3 +109,4 @@ crashlytics-build.properties
 
 wsgi/Uragan/db/Uragan.sqlite3
 wsgi/Uragan/docs
+wsgi/static
