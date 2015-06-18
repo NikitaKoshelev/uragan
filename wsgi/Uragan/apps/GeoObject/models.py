@@ -1,5 +1,5 @@
 # coding: utf-8
-#from django.contrib.gis.db import models
+# from django.contrib.gis.db import models
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone as tz
@@ -10,6 +10,7 @@ from django.conf import settings
 from pykml.factory import KML_ElementMaker as KML
 from pykml import parser
 from lxml import etree
+
 
 class Images(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title'))
@@ -66,7 +67,7 @@ class GeoObject(models.Model):
 class SurveillancePlan(models.Model):
     geo_objects = models.ManyToManyField(GeoObject, verbose_name=_('observed objects'))
     time_start = models.DateTimeField(auto_now=True)
-    time_end = models.DateTimeField(default=tz.now()+timedelta(days=3))
+    time_end = models.DateTimeField(default=tz.now() + timedelta(days=3))
     researches = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researches'))
 
     class Meta:

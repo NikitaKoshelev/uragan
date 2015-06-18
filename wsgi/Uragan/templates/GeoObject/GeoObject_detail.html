@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
+            type="text/javascript"></script>
+{% endblock %}
+
+{% block content-header %}{{ geo_object.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-solid">
+
+                <!--<div class="box-header with-border text-center">
+                    <h3 class="box-title">{{ geo_object.title }}</h3>
+                    <button id='prev_step' class="btn btn-primary btn-flat pull-left" type="button">
+                        <i class="fa fa-chevron-left"></i> {% trans 'Previous step' %}
+                    </button>
+                    <button id='next_step' class="btn btn-primary btn-flat pull-right" type="button">
+                      {% trans 'Next step' %} <i class="fa fa-chevron-right"></i>
+                    </button>
+                    <button id='save' class="btn btn-success btn-flat pull-right" type="submit">
+                      <i class="fa fa-save"></i> {% trans 'Save' %}
+                    </button>
+                </div>-->
+                <div class="box-body">
+                                    <form>
+                    <div class="form-group">
+                        <label for="id_step1-title" class="control-label">
+                            Название географического объекта
+                        </label>
+                            <p class=" form-control-static">{{ geo_object.title }}</p>
+                    </div>
+                    <div id="div_id_step1-lat" class="form-group">
+                        <label for="id_step1-lat" class="control-label ">
+                            Северная широта в градусах
+                        </label>
+
+                            <p class=" form-control-static">{{ geo_object.lat }}</p>
+                    </div>
+                </form>
+                  {{ geo_object.title }}<br>
+                    <br>
+                  {{ geo_object.short_description|safe }}<br>
+                    <br>
+                  <div id="map_canvas" style="width:100%" ></div>
+                  <pre><code>{{ geo_object.get_polygon_in_kml }}</code></pre>
+                  <br>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+
+<script type="text/javascript">
+
+$('#map_canvas').css('height', $('.content').css('height'));
+
+
+function initialize() {
+    var lat = parseFloat('{{ geo_object.lat }}'.replace(',','.')),
+        lon = parseFloat('{{ geo_object.lon }}'.replace(',','.')),
+            location = new google.maps.LatLng(lat, lon);
+    console.log(lat, lon);
+
+    // Определение карты
+    var options = {
+        center: location,
+        zoom: 12,
+        mapTypeId: google.maps.MapTypeId.HYBRID
+    };
+
+    map = new google.maps.Map(document.getElementById("map_canvas"), options);
+
+    // Определение геокодера
+    geocoder = new google.maps.Geocoder();
+
+    marker = new google.maps.Marker({map: map});
+    marker.setPosition(location);
+
+    var layer = new google.maps.KmlLayer({
+        url: "{% url 'GeoObject:get_kml' pk=geo_object.pk %}"
+    });
+    console.log(layer);
+    layer.setMap(map);
+
+}
+$(document).ready(initialize)
+</script>
+{% endblock %}

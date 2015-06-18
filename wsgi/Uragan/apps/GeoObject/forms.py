@@ -17,10 +17,10 @@ class GeoObjectForm(BaseModelForm):
 
     class Media:
          js = (
-             #'uragan/create_GeoObject_step1.min.js'
-             'uragan/create_GeoObject_step1.js',
-             'uragan/nominatim_in_select2.js',
-             'uragan/google_in_select2.js',
+             'uragan/create_GeoObject_step1.min.js'
+             #'uragan/create_GeoObject_step1.js',
+             #'uragan/nominatim_in_select2.js',
+             #'uragan/google_in_select2.js',
          )
 
 
@@ -29,7 +29,7 @@ class GeoObjectFormStep1(BaseModelForm):
         model = GeoObject
         fields = 'title', 'lon', 'lat', 'polygon'
         widgets = {
-            'polygon': Textarea(attrs={'style': 'display: none'}),
+            'polygon': HiddenInput(),
         }
 
     class Media:
@@ -43,7 +43,7 @@ class GeoObjectFormStep1(BaseModelForm):
 class GeoObjectFormStep2(BaseModelForm):
     class Meta:
         model = GeoObject
-        exclude = 'title', 'lon', 'lat', 'images'
+        fields = 'short_description', 'description', 'color'
         widgets = {
             'color': ColorPickerWidget(),
             #'images': Select2MultipleWidget(attrs={'style': 'width: 100%'})

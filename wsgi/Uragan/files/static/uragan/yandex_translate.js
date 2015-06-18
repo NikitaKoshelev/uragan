@@ -2,7 +2,7 @@
  * Created by koshelev on 15.06.15.
  */
 
-html = '<div class="box box-solid collapsed-box" id="translate_container">';
+var html = '<div class="box box-solid collapsed-box" id="translate_container">';
 html += '<div class="box-header with-border">';
 html += '<h3 class="box-title">' + gettext("Translator") + '</h3>';
 html += '<div class="box-tools pull-right">';
@@ -66,20 +66,22 @@ var $translate_container = $('#translate_container'),
 
 lng = lng.split('-')[0];
 
-$.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
-    key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
-    ui: lng
-}, function (data) {
-    var langs = [];
-    $.each(data.langs, function (key, value) {
-        langs.push({id: key, text: value})
-    });
-    $translate_select.select2({data: langs, language: lng});
-    $translate_select.val(lng === 'en' ? 'ru': 'en').change();
+$(document).ready(function () {
+    $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
+        key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
+        ui: lng
+    }, function (data) {
+        var langs = [];
+        $.each(data.langs, function (key, value) {
+            langs.push({id: key, text: value})
+        });
+        $translate_select.select2({data: langs, language: lng});
+        $translate_select.val(lng === 'en' ? 'ru': 'en').change();
 
-    langs.push({id: 'auto', text: 'Determine automatically'});
-    $source_select.select2({data: langs, language: lng});
-    $source_select.val('auto').change();
+        langs.push({id: 'auto', text: 'Determine automatically'});
+        $source_select.select2({data: langs, language: lng});
+        $source_select.val('auto').change();
+    });
 });
 
 
