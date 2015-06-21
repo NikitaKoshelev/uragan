@@ -1,6 +1,6 @@
 from django.utils.translation import gettext as _
-from django.forms import Textarea, HiddenInput
-from apps.common.widgets import ColorPickerWidget
+from django.forms import Textarea, HiddenInput, Form, CharField
+from apps.common.widgets import ColorPickerWidget, StaticWidget
 from apps.common.forms import BaseModelForm
 from .models import GeoObject
 from django_select2.widgets import Select2MultipleWidget
@@ -11,6 +11,7 @@ class GeoObjectForm(BaseModelForm):
         model = GeoObject
         fields = '__all__'
         widgets = {
+            'title': StaticWidget(),
             'color': ColorPickerWidget(),
             'images': Select2MultipleWidget()
         }
@@ -33,8 +34,8 @@ class GeoObjectFormStep1(BaseModelForm):
          js = (
              #'uragan/forms/create_GeoObject_step1.min.js',
              'uragan/forms/create_GeoObject_step1.js',
-             'uragan/forms/nominatim_in_select2.js',
-             'uragan/forms/google_in_select2.js',
+             #'uragan/forms/nominatim_in_select2.js',
+             'uragan/forms/geocoders.js',
          )
 
 class GeoObjectFormStep2(BaseModelForm):
@@ -50,3 +51,6 @@ class GeoObjectFormStep2(BaseModelForm):
         js = (
             'uragan/forms/create_GeoObject_step2.js',
         )
+
+class GeocoderForm(Form):
+    query = CharField(min_length=2)

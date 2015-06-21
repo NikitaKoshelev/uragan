@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.forms.widgets import mark_safe, TextInput, Textarea
+from django.forms.widgets import mark_safe, TextInput, Textarea, Input
 
 
 class VerticalTextarea(Textarea):
@@ -24,3 +24,8 @@ class ColorPickerWidget(TextInput):
     def render(self, name, value, attrs=None):
         html = '<div class="input-group colorpicker-addon"><span class="input-group-addon"><i></i></span>%s</div>'
         return mark_safe(html % super(ColorPickerWidget, self).render(name, value, attrs))
+
+class StaticWidget(Input):
+    def render(self, name, value, attrs=None):
+        html = '<p class="form-control-static">%s</p>' % value
+        return mark_safe(html)

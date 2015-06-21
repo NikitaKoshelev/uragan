@@ -4,9 +4,6 @@
 {% block head %}
   {{ block.super }}
   {{ wizard.form.media.css }}
-
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
-            type="text/javascript"></script>
 {% endblock %}
 
 {% block content-header %}
@@ -61,13 +58,9 @@
             </div>
         </div>
     </div>
-
-
-
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
   {{ wizard.form.media.js }}
-
 {% endblock %}

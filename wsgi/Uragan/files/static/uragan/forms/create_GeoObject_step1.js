@@ -12,7 +12,7 @@ var geocoder, map, marker,
     $lon_container = $form.find('[id^=div_id_][id$=lon]'),
     $lat_container = $form.find('[id^=div_id_][id$=lat]');
 
-$form.find('[id^=div_id_][id$=title]').before($('<div class="row" id="geocoders"></div>'));
+$form.before($('<div class="form-row" id="geocoders"></div>'));
 
 $coords.append($lat_container.addClass('col-sm-6'), $lon_container.addClass('col-sm-6'));
 $form.find('[id^=div_id_][id$=title]').after($coords);
@@ -39,7 +39,7 @@ $btn_reverse.appendTo($('#buttons')).click(function () {
     nominatim_reverse_geocode(location);
 });
 
-$(document).ready(initialize());
+$(document).ready(loadScript());
 
 /*************************************************Functions************************************************************/
 
@@ -50,10 +50,12 @@ function google_reverse_geocode(location) {
     geocoder.geocode({'latLng': location}, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[0]) {
+                $('#nominatim_geocode').val('({0}, {1})'.f(results[0].geometry.lat(), results[0].geometry.lng())).trigger('change');
+
                 var cont = $('#select2-google_geocode-container'),
                     title = results[0].formatted_address;
-                cont.attr('title', title);
-                cont.html('<span class="select2-selection__clear">×</span>' + title);
+                //cont.attr('title', title);
+                //cont.html('<span class="select2-selection__clear">×</span>' + title);
                 $title.val(title);
                 $lat.val(location.lat());
                 $lon.val(location.lng());
@@ -68,7 +70,7 @@ function nominatim_reverse_geocode(location) {
     $.ajax({
        url: "http://nominatim.openstreetmap.org/reverse",
        dataType: 'json',
-       data: {lat: marker.getPosition().lat(), lon: marker.getPosition().lng(), format: 'json'},
+       data: {lat: location.lat(), lon: location.lng(), format: 'json'},
        cache: true,
        ifModified: true,
        timeout: 300,
@@ -111,14 +113,15 @@ function initialize() {
 
 }
 
+function loadScript() {
+  $('<script>', {
+      type: 'text/javascript',
+      src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false&callback=initialize'
+  }).appendTo($('body'));
+}
+
 /*****************************************************End functions****************************************************/
 
-
-/**********************************************************************************************************************
- // Nominatim reverse geocoder
-
-
- *********************************************************************************************/
 
 
 

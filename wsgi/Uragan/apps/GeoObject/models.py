@@ -3,10 +3,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone as tz
-
+from django.core.serializers import serialize
 from datetime import timedelta
 from django.conf import settings
-
+from django.utils.text import capfirst
 from geopy.geocoders import Nominatim
 from pykml.factory import KML_ElementMaker as KML
 from pykml import parser
@@ -37,6 +37,12 @@ class GeoObject(models.Model):
         unique_together = 'lat', 'lon',
         verbose_name = _('geographical object')
         verbose_name_plural = _('geographical objects')
+
+    def __iter__(self):
+        #data = serialize('json', self)
+        #print(data)
+        for field in self._meta.fields:
+            yield (field.name, capfirst(field.verbose_name), capfirst(field.value_to_string(self)))
 
     def get_translate_title(self, lang='en'):
         translator = YandexTranslate(settings.YANDEX_TRANSLATE_KEY)

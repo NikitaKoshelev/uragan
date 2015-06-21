@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n bootstrap_tags %}
 
 {% block head %}
   {{ block.super }}
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false"
-            type="text/javascript"></script>
 {% endblock %}
 
 {% block content-header %}{% trans 'Detail information' %}{% endblock %}
@@ -17,29 +15,74 @@
                     <h3 class="box-title">{{ geo_object.title }}</h3>
                 </div>
                 <div class="box-body">
-                    <form>
-                        <div class="form-group">
-                            <label class="control-label ">
-                                Северная широта в градусах
-                            </label>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label class="control-label">{% trans 'Northern latitude in degrees'|title %}</label>
+
                             <p class=" form-control-static">{{ geo_object.lat }}</p>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label ">
-                                Восточная долгота в градусах
-                            </label>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label">{% trans 'Eastern longitude in degrees'|title %}</label>
+
                             <p class=" form-control-static">{{ geo_object.lon }}</p>
                         </div>
-                    </form>
-                  {{ geo_object.short_description|safe }}<br>
-                    <br>
+                    </div>
+                    <div class="form_group">
+                        <label class="control-label">{% trans 'Short description' %}</label>
 
-                    <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
-                    <pre><code>{{ geo_object.get_polygon_in_kml }}</code></pre>
+                        <div class=" form-control-static">{{ geo_object.short_description }}</div>
+                    </div>
+                    <div class="form_group">
+                        <label class="control-label">{% trans 'Description' %}</label>
+
+                        <div class=" form-control-static">{{ geo_object.description }}</div>
+                    </div>
+                    <div class="box box-solid collapsed-box">
+                        <div class="box-header">
+                            <h3 class="box-title">{% trans 'Map' %}</h3>
+
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <div class="box box-default collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{% trans 'Polygon in KML format' %}</h3>
+
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <a href="{% url 'GeoObject:get_kml' pk=geo_object.pk %}" class="btn btn-box-tool">
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <pre><code>{{ geo_object.get_polygon_in_kml }}</code></pre>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
                 </div>
+                <!-- /.col -->
             </div>
         </div>
     </div>
+  </div>
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -78,6 +121,11 @@
             layer.setMap(map);
 
         }
-        $(document).ready(initialize)
+        $(document).ready(function () {
+            $('<script>', {
+                type: 'text/javascript',
+                src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false&callback=initialize'
+            }).appendTo($('body'));
+        });
     </script>
 {% endblock %}

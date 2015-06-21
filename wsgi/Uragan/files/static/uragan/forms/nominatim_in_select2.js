@@ -2,19 +2,22 @@
  * Created by koshelev on 14.06.15.
  */
 
-var $nominatim_geocode = $('<select class="form-control" id="nominatim_geocode" style="width: 100%"></select>');
+var $nominatim_geocode = $('<select class="form-control" id="nominatim_geocode"></select>');
 $(document).ready(function () {
     $nominatim_geocode.select2({
         placeholder: gettext('Search geo object with Nominatim Geocoder...'),
         allowClear: true,
         minimumInputLength: 3,
         language: "ru",
+        width: '100%',
+
         ajax: {
             url: "http://nominatim.openstreetmap.org/search",
             dataType: 'json',
             delay: 1000,
             type: "GET",
             cache: true,
+            async: false,
             data: function (params, page) {
                 return {
                     q: params.term, // search term

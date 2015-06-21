@@ -1,0 +1,10 @@
+{% load bootstrap_tags %}
+
+<div class="form-static">
+  statics
+{{ f|as_bootstrap }}
+</div>
+
+<script type="text/javascript">
+  $('div.form-static .form-control').prop('disabled', 'true');
+</script>

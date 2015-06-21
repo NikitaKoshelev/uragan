@@ -13,7 +13,7 @@ html += '<button id="reverse_btn" class="btn btn-box-tool" data-toggle="tooltip"
 html += '<i class="fa fa-exchange"></i>';
 html += '</button>';
 html += '<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="' + gettext('Collapse') + '">';
-html += '<i class="fa fa-minus"></i>';
+html += '<i class="fa fa-plus"></i>';
 html += '</button>';
 html += '<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="' + gettext('Remove') + '">';
 html += '<i class="fa fa-times"></i>';
@@ -66,7 +66,7 @@ var $translate_container = $('#translate_container'),
 
 lng = lng.split('-')[0];
 
-$(document).ready(function () {
+//$(document).ready(function () {
     $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
         key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
         ui: lng
@@ -82,7 +82,7 @@ $(document).ready(function () {
         $source_select.select2({data: langs, language: lng});
         $source_select.val('auto').change();
     });
-});
+//});
 
 
 $('#translate_icon').click(function () {
