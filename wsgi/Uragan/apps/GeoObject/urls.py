@@ -10,7 +10,7 @@ urlpatterns = patterns(
     #url(r'^create/$', CreateGeoObject.as_view()),
     url(r'^detail/(?P<pk>\d+)', detail, name='detail'),
     url(r'^kml/(?P<pk>\d+)', get_kml, name='get_kml'),
-    url(r'^create/$', WizardCreateGeoObject.as_view()),
+    url(r'^create/$', WizardCreateGeoObject.as_view(), name='create'),
     url(r'^where_iss/$', where_iss),
 )
 

@@ -7,12 +7,21 @@
 
 {% block content-header %}{% trans 'Detail information' %}{% endblock %}
 
+{% block manage_buttons %}
+<a class="btn bg-olive btn-flat pull-right" href="{% url 'GeoObject:create' %}">
+    <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'Create new geographical object' %}
+</a>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-default">
                 <div class="box-header">
                     <h3 class="box-title">{{ geo_object.title }}</h3>
+                    <div class="box-tools pull-right">
+
+                    </div>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -27,33 +36,22 @@
                             <p class=" form-control-static">{{ geo_object.lon }}</p>
                         </div>
                     </div>
+                  {% if geo_object.description %}
+
                     <div class="form_group">
                         <label class="control-label">{% trans 'Short description' %}</label>
 
                         <div class=" form-control-static">{{ geo_object.short_description }}</div>
                     </div>
+                  {% endif %}
+                  {% if geo_object.description %}
                     <div class="form_group">
                         <label class="control-label">{% trans 'Description' %}</label>
 
                         <div class=" form-control-static">{{ geo_object.description }}</div>
                     </div>
-                    <div class="box box-solid collapsed-box">
-                        <div class="box-header">
-                            <h3 class="box-title">{% trans 'Map' %}</h3>
-
-                            <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                            <!-- /.box-tools -->
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
+                  {% endif %}
+                    <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
                     <div class="box box-default collapsed-box">
                         <div class="box-header with-border">
                             <h3 class="box-title">{% trans 'Polygon in KML format' %}</h3>

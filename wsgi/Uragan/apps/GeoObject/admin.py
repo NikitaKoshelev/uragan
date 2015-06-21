@@ -1,8 +1,33 @@
+from reversion import VersionAdmin
+from suit.widgets import AutosizedTextarea
+
 from django.contrib import admin
+from django.forms import ModelForm
 
 from .models import GeoObject, Images, SurveillancePlan
-# Register your models here.
+from apps.common.widgets import ColorPickerWidget
 
-admin.site.register(GeoObject, admin.ModelAdmin)
-admin.site.register(SurveillancePlan, admin.ModelAdmin)
-admin.site.register(Images, admin.ModelAdmin)
+class GeoObjectAdminForm(ModelForm):
+    class Meta:
+        widgets = {
+            'title': AutosizedTextarea,
+            'short_description': AutosizedTextarea,
+            'description': AutosizedTextarea,
+            'color': ColorPickerWidget,
+        }
+
+
+class GeoObjectAdmin(VersionAdmin):
+    form = GeoObjectAdminForm
+    list_display = ('title', 'lat', 'lon', 'short_description',)
+
+class ImagesAdmin(VersionAdmin):
+    pass
+
+class SurveillancePlanAdmin(VersionAdmin):
+    pass
+
+
+admin.site.register(GeoObject, GeoObjectAdmin)
+admin.site.register(SurveillancePlan, ImagesAdmin)
+admin.site.register(Images, SurveillancePlanAdmin)

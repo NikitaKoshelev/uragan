@@ -30,7 +30,7 @@ class GeoObject(models.Model):
     short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     polygon = models.TextField(verbose_name=_('polygon in KML format'), null=True, blank=True)
-    color = models.TextField(verbose_name=_('color'), null=True, blank=True)
+    color = models.CharField(max_length=20, verbose_name=_('color'), null=True, blank=True)
     images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
 
     class Meta:

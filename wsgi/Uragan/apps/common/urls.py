@@ -23,7 +23,6 @@ urlpatterns = solid_i18n_patterns(
 
 urlpatterns += patterns(
     '',
-    url(r'^grappelli/', include('grappelli.urls')),  # grappelli URLS
     url(r'^select2/', include('django_select2.urls')),
 )
 
