@@ -19,7 +19,7 @@ def where_iss(request):
 class DetailGeoObject(DetailView):
     model = GeoObject
     context_object_name = 'geo_object'
-    template_name = 'GeoObject/detail.html'
+    template_name = 'GeoObject/GeoObject/detail.html'
 
 
 class WizardCreateGeoObject(CookieWizardView):

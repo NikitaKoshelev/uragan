@@ -1,4 +1,4 @@
-{% extends 'TLE/TLE.html' %}
+{% extends 'TLE/base.html' %}
 {% load i18n %}
 
 
@@ -15,7 +15,7 @@
 
 {% block content %}
     <div class="row">
-      {% for obj in object_list|slice:'10' %}
+      {% for obj in object_list %}
           <div class="col-lg-6">
               <div class="box box-solid">
                   <div class="box-header with-border">
@@ -28,5 +28,6 @@
               </div>
           </div>
       {% endfor %}
+    {% include 'includes/paginator.html' %}
     </div>
 {% endblock %}

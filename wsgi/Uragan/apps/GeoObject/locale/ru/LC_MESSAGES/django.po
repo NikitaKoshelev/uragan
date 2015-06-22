@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-21 10:18+0000\n"
+"POT-Creation-Date: 2015-06-22 07:17+0000\n"
 "PO-Revision-Date: 2015-06-16 21:42+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "title"
 msgstr "название"
 
-#: apps/GeoObject/models.py:18 apps/GeoObject/models.py:31
+#: apps/GeoObject/models.py:18 apps/GeoObject/models.py:34
 msgid "description"
 msgstr "описание"
 
@@ -40,54 +40,64 @@ msgstr "изображение географического объекта"
 msgid "images of geographical objects"
 msgstr "изображения географических объектов"
 
-#: apps/GeoObject/models.py:27
+#: apps/GeoObject/models.py:30
 msgid "title geographical object"
 msgstr "название географического объекта"
 
-#: apps/GeoObject/models.py:28
+#: apps/GeoObject/models.py:31
 msgid "northern latitude in degrees"
 msgstr "северная широта в градусах"
 
-#: apps/GeoObject/models.py:29
+#: apps/GeoObject/models.py:32
 msgid "eastern longitude in degrees"
 msgstr "восточная долгота в градусах"
 
-#: apps/GeoObject/models.py:30
+#: apps/GeoObject/models.py:33
 msgid "short description"
 msgstr "краткое описание"
 
-#: apps/GeoObject/models.py:32
+#: apps/GeoObject/models.py:35
 msgid "polygon in KML format"
 msgstr "многоугольник в формате KML"
 
-#: apps/GeoObject/models.py:33
+#: apps/GeoObject/models.py:36
 msgid "color"
 msgstr "цвет"
 
-#: apps/GeoObject/models.py:34
+#: apps/GeoObject/models.py:37
 msgid "images of geographical object"
 msgstr "изображения географических объектов"
 
-#: apps/GeoObject/models.py:38
+#: apps/GeoObject/models.py:41
 msgid "geographical object"
 msgstr "географический объект"
 
-#: apps/GeoObject/models.py:39
+#: apps/GeoObject/models.py:42
 msgid "geographical objects"
 msgstr "географические объекты"
 
-#: apps/GeoObject/models.py:79
+#: apps/GeoObject/models.py:82
+#, fuzzy
+#| msgid "surveillance plan"
+msgid "title surveillance plan"
+msgstr "план наблюдения"
+
+#: apps/GeoObject/models.py:83
 msgid "observed objects"
 msgstr "наблюдаемые объекты"
 
-#: apps/GeoObject/models.py:82
+#: apps/GeoObject/models.py:87
+msgid "date and time created"
+msgstr ""
+
+#: apps/GeoObject/models.py:88
 msgid "researches"
 msgstr "исследования"
 
-#: apps/GeoObject/models.py:85
+#: apps/GeoObject/models.py:91
 msgid "surveillance plan"
 msgstr "план наблюдения"
 
-#: apps/GeoObject/models.py:86
+#: apps/GeoObject/models.py:92
 msgid "surveillance plans"
 msgstr "планы наблюдения"

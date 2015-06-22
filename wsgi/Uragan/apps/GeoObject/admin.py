@@ -15,7 +15,16 @@ class GeoObjectAdminForm(ModelForm):
             'short_description': AutosizedTextarea,
             'description': AutosizedTextarea,
             'color': ColorPickerWidget,
-            'images': Select2MultipleWidget,
+            'images': Select2MultipleWidget(attrs={'style': 'width: 100%'}),
+        }
+
+
+class SurveillancePlanAdminForm(ModelForm):
+    class Meta:
+        widgets = {
+            'title': AutosizedTextarea,
+            'geo_objects': Select2MultipleWidget(attrs={'style': 'width: 100%'}),
+            'researches': Select2MultipleWidget(attrs={'style': 'width: 100%'}),
         }
 
 
@@ -27,7 +36,7 @@ class ImagesAdmin(VersionAdmin):
     list_display = ('title', 'image',)
 
 class SurveillancePlanAdmin(VersionAdmin):
-    pass
+    form = SurveillancePlanAdminForm
 
 
 admin.site.register(GeoObject, GeoObjectAdmin)

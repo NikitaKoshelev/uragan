@@ -77,6 +77,9 @@ class GeoObject(models.Model):
             pass
         return super(GeoObject, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return '{}({}, {})'.format(self.title, self.lat, self.lon)
+
 
 class SurveillancePlan(models.Model):
     title = models.TextField(verbose_name=_('title surveillance plan'))
