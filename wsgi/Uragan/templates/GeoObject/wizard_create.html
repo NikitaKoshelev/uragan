@@ -1,4 +1,4 @@
-{% extends 'GeoObject/GeoObject.html' %}
+{% extends 'GeoObject/base.html' %}
 {% load i18n %}
 
 {% block head %}
@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ block.super }}
-    <li class="active">{% trans 'Create' %}</li>
+  {{ block.super }}
+    <li class="active">{% trans 'Creation' %}</li>
 {% endblock %}
 
 {% block content-header %}

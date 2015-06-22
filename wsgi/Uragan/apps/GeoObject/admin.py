@@ -24,12 +24,12 @@ class GeoObjectAdmin(VersionAdmin):
     list_display = ('title', 'lat', 'lon', 'short_description',)
 
 class ImagesAdmin(VersionAdmin):
-    pass
+    list_display = ('title', 'image',)
 
 class SurveillancePlanAdmin(VersionAdmin):
     pass
 
 
 admin.site.register(GeoObject, GeoObjectAdmin)
-admin.site.register(SurveillancePlan, ImagesAdmin)
-admin.site.register(Images, SurveillancePlanAdmin)
+admin.site.register(SurveillancePlan, SurveillancePlanAdmin)
+admin.site.register(Images, ImagesAdmin)

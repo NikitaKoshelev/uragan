@@ -22,6 +22,9 @@ class Images(models.Model):
         verbose_name = _('geographical object image')
         verbose_name_plural = _('images of geographical objects')
 
+    def __str__(self):
+        return self.title
+
 
 class GeoObject(models.Model):
     title = models.TextField(verbose_name=_('title geographical object'), unique=True)
@@ -76,11 +79,17 @@ class GeoObject(models.Model):
 
 
 class SurveillancePlan(models.Model):
+    title = models.TextField(verbose_name=_('title surveillance plan'))
     geo_objects = models.ManyToManyField(GeoObject, verbose_name=_('observed objects'))
-    time_start = models.DateTimeField(auto_now=True)
+    time_start = models.DateTimeField(auto_now_add=True)
     time_end = models.DateTimeField(default=tz.now() + timedelta(days=3))
+    duration = models.DurationField()
+    last_modification = models.DateTimeField(auto_now_add=True, verbose_name=_('date and time created'))
     researches = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researches'))
 
     class Meta:
         verbose_name = _('surveillance plan')
         verbose_name_plural = _('surveillance plans')
+
+    def __str__(self):
+        return self.title

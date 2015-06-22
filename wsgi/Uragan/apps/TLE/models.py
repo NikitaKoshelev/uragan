@@ -20,7 +20,7 @@ class TLE(models.Model):
         verbose_name_plural = _('two-line element sets')
 
     def __str__(self):
-        return '{} ({})'.format(self.title_line, self.datetime_in_linescd .isoformat())
+        return '{} ({})'.format(self.title_line, self.datetime_in_lines.isoformat())
 
 
 class Satellite(models.Model):

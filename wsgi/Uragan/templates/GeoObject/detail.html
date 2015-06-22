@@ -1,4 +1,4 @@
-{% extends 'GeoObject/GeoObject.html' %}
+{% extends 'GeoObject/base.html' %}
 {% load i18n bootstrap_tags %}
 
 {% block content-header %}{% trans 'Detail information' %}{% endblock %}
@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    <li class="active">{% trans 'Create' %}</li>
+    <li class="active">{% trans 'Details' %}</li>
 {% endblock %}
 
 
@@ -40,7 +40,7 @@
                             <p class=" form-control-static">{{ geo_object.lon }}</p>
                         </div>
                     </div>
-                  {% if geo_object.description %}
+                  {% if geo_object.short_description %}
 
                     <div class="form_group">
                         <label class="control-label">{% trans 'Short description' %}</label>
@@ -64,7 +64,7 @@
                                 <button class="btn btn-box-tool" data-widget="collapse">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <a href="{% url 'GeoObject:get_kml' pk=geo_object.pk %}" class="btn btn-box-tool">
+                                <a href="{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}" class="btn btn-box-tool">
                                     <i class="fa fa-download"></i>
                                 </a>
                             </div>
@@ -115,7 +115,7 @@
             marker.setPosition(location);
 
             var layer = new google.maps.KmlLayer({
-                url: '{0}//{1}{2}'.f(window.location.protocol, window.location.host, "{% url 'GeoObject:get_kml' pk=geo_object.pk %}")
+                url: '{0}//{1}{2}'.f(window.location.protocol, window.location.host, "{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}")
             });
             console.log(layer);
             layer.setMap(map);

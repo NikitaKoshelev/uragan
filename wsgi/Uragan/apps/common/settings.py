@@ -107,14 +107,14 @@ if ON_OPENSHIFT:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
-            #'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            #'NAME': 'uragan',
-            #'USER': 'admingkyfu7m',
-            #'PASSWORD': 'U7TqqYT97xlW',
-            #'HOST': 'uragan-nikitakoshelev.rhcloud.com',
-            #'PORT': '5432',
+            #'ENGINE': 'django.db.backends.sqlite3',
+            #'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'uragan',
+            'USER': 'django',
+            'PASSWORD': '0000',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
 

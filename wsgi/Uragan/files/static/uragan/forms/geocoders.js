@@ -68,6 +68,10 @@ $google_geocode.on('select2:select', function (e) {
     $("[id^=id_][id$=lon]").val(google_geocode.lon);
     $("[id^=id_][id$=title]").val(google_geocode.text);
     $("[id^=id_][id$=polygon]").val(google_geocode.polygon);
+    var layer = new google.maps.KmlLayer({
+        url: '{0}//{1}/geo-object/kml/?title={2}'.f(window.location.protocol, window.location.host, encodeURI(title))
+    });
+    layer.setMap(map);
     var location = new google.maps.LatLng(google_geocode.lat, google_geocode.lon);
     marker.setPosition(location);
     map.setCenter(location);

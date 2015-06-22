@@ -14,5 +14,6 @@ urlpatterns += patterns(
     'apps.GeoObject.api',
     url(r'^api/geocoder/$', 'geocoder', name='geocoder'),
     url(r'^api/geocoder/(?P<lang>[a-zA-z]{2})/$', 'geocoder', name='geocoder_with_lang'),
-    url(r'^kml/(?P<pk>\d+)', 'get_kml', name='get_kml'),
+    url(r'^kml/(?P<pk>\d+)/$', 'get_kml_by_object', name='get_kml_by_object'),
+    url(r'^kml/$', 'get_kml_by_title', name='get_kml_by_title'),
 )

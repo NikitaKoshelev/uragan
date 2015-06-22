@@ -17,7 +17,7 @@ $form.before($('<div class="form-row" id="geocoders"></div>'));
 $coords.append($lat_container.addClass('col-sm-6'), $lon_container.addClass('col-sm-6'));
 $form.find('[id^=div_id_][id$=title]').after($coords);
 
-$('<div id="map_canvas" style="width:100%; height: {0}" ></div>'.f($('.content').css('height'))).appendTo($form);
+$('<div id="map_canvas" style="width:100%; height: {0}" ></div>'.f('800px'/*$('.content').css('height'))*/)).appendTo($form);
 
 $lat.keyup(function (key) {
     var location = new google.maps.LatLng($(this).val(), $lon.val());

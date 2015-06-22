@@ -1,9 +1,13 @@
 from django.utils.translation import gettext as _
-from django.forms import Textarea, HiddenInput, Form, CharField
+from django.forms import Textarea, HiddenInput, Form, CharField, TextInput
 from apps.common.widgets import ColorPickerWidget, StaticWidget
 from apps.common.forms import BaseModelForm
 from .models import GeoObject
 from django_select2.widgets import Select2MultipleWidget
+
+
+class KmlByTitle(Form):
+    title = TextInput()
 
 
 class GeoObjectForm(BaseModelForm):
