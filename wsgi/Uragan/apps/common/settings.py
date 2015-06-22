@@ -63,6 +63,7 @@ THIRD_PARTY_APPS = (
     'django_select2',
     'rosetta',
     'formtools',
+    'reversion',
 )
 
 LOCAL_APPS = (
@@ -210,4 +211,4 @@ ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 #ROSETTA_GOOGLE_TRANSLATE = True
 ROSETTA_WSGI_AUTO_RELOAD = True
 #-----------------------------------------------------------------------------------------------------------------------
-AUTO_RENDER_SELECT2_STATICS = False
+#AUTO_RENDER_SELECT2_STATICS = False

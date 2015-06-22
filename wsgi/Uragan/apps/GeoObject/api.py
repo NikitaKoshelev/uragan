@@ -4,6 +4,7 @@ from geopy import Nominatim, GoogleV3, GeoNames
 from yandex_translate import YandexTranslate
 
 from django.conf import settings
+from django.shortcuts import render_to_response, redirect, RequestContext, get_object_or_404
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -15,26 +16,28 @@ nominatim = Nominatim()
 geo_names = GeoNames(username='nikita.koshelev@gmail.com')
 
 
-def geocoder(request, lng=None):
+def geocoder(request, lang=None):
     if request.GET:
         form = GeocoderForm(request.GET)
         if form.is_valid():
             q = form.cleaned_data['query']
-            if lng:
+            if lang:
                 translator = YandexTranslate(settings.YANDEX_TRANSLATE_KEY)
-                result = translator.translate(q, lng)
+                result = translator.translate(q, lang)
                 q = result['text'][0] if result['code'] == 200 else q
 
-            local = serialize('json', GeoObject.objects.filter(title__icontains=q), fields=('title', 'lat', 'lon'))
-            data = {'results': [{'text': 'Locals', 'children':  local}, ]}
-            #data['results'].append({'text': 'Nominatim', 'children': nominatim.geocode(q, exactly_one=False)})
-            #data['results'].append({'text': 'Geo Names', 'children': geo_names.geocode(q, exactly_one=False)})
-            data['results'].append({'text': 'Google', 'children': google.geocode(q, exactly_one=False)})
-            response = json.dumps(data) if data['results'] else 'Not found'
-            print(data)
+            response = serialize('json', GeoObject.objects.filter(title__icontains=q))
         else:
             response = 'Not valid parameters'
     else:
         response = 'Not get request'
 
     return HttpResponse(response)
+
+
+def get_kml(request, pk):
+    obj = get_object_or_404(GeoObject, pk=pk)
+    polygon = obj.get_polygon_in_kml()
+    response = HttpResponse(polygon)
+    response['Content-Disposition'] = 'attachment; filename="{}.kml"'.format(obj.get_translate_title())
+    return response

@@ -1,5 +1,6 @@
 from reversion import VersionAdmin
 from suit.widgets import AutosizedTextarea
+from django_select2.widgets import Select2MultipleWidget
 
 from django.contrib import admin
 from django.forms import ModelForm
@@ -14,6 +15,7 @@ class GeoObjectAdminForm(ModelForm):
             'short_description': AutosizedTextarea,
             'description': AutosizedTextarea,
             'color': ColorPickerWidget,
+            'images': Select2MultipleWidget,
         }
 
 

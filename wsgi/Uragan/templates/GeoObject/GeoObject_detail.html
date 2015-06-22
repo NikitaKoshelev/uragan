@@ -1,17 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'GeoObject/GeoObject.html' %}
 {% load i18n bootstrap_tags %}
 
-{% block head %}
-  {{ block.super }}
+{% block content-header %}{% trans 'Detail information' %}{% endblock %}
+
+
+{% block breadcrumb %}
+    {{ block.super }}
+    <li class="active">{% trans 'Create' %}</li>
 {% endblock %}
 
-{% block content-header %}{% trans 'Detail information' %}{% endblock %}
 
 {% block manage_buttons %}
 <a class="btn bg-olive btn-flat pull-right" href="{% url 'GeoObject:create' %}">
     <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'Create new geographical object' %}
 </a>
 {% endblock %}
+
 
 {% block content %}
     <div class="row">
@@ -78,10 +82,8 @@
             </div>
         </div>
     </div>
-  </div>
-
-
 {% endblock %}
+
 
 {% block scripts %}
   {{ block.super }}

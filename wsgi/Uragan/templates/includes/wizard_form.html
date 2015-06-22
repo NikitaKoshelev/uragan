@@ -1,0 +1,36 @@
+{% load i18n bootstrap_tags %}
+{% csrf_token %}
+{{ wizard.management_form }}
+{% if wizard.form.forms %}
+  {{ wizard.form.management_form }}
+  {% for form in wizard.form.forms %}
+    {{ form|as_bootstrap }}
+  {% endfor %}
+{% else %}
+  {{ wizard.form|as_bootstrap }}
+{% endif %}
+<div class="form-group clearfix" id="buttons">
+  {% if wizard.steps.current > 2 %}
+      <button name="wizard_goto_step" class="btn btn-primary btn-flat pull-left" type="submit"
+              value="{{ wizard.steps.first }}">
+          <i class="fa fa-angle-double-left fa-fw"></i> {% trans "First step" %}
+      </button>
+  {% endif %}
+
+  {% if wizard.steps.prev %}
+      <button name="wizard_goto_step" class="btn btn-primary btn-flat" type="submit"
+              value="{{ wizard.steps.prev }}">
+          <i class="fa fa-angle-left fa-fw"></i> {% trans 'Previous step' %}
+      </button>
+  {% endif %}
+
+  {% if wizard.steps.current != wizard.steps.last %}
+      <button class="btn btn-primary btn-flat pull-right" type="submit">
+        {% trans 'Next step' %} <i class="fa fa-angle-right fa-fw"></i>
+      </button>
+    {% elif wizard.steps.current == wizard.steps.last %}
+      <button class="btn btn-success btn-flat pull-right" type="submit">
+          <i class="fa fa-save fa-fw"></i>{% trans 'Save' %}
+      </button>
+  {% endif %}
+</div>

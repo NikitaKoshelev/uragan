@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles i18n %}
 <!-- Sidebar user panel (optional) -->
 <div class="user-panel">
     <div class="pull-left image">
@@ -25,15 +25,30 @@
 
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
-    <li class="header">HEADER</li>
     <!-- Optionally, you can add icons to the links -->
-    <li class="active"><a href="#"><span>Link</span></a><</li>
-    <li><a href="#"><span>Another Link</span></a></li>
+    <li class="header">{% trans 'Modules' %}</li>
+    <li>
+        <a href="#" class="translate-icon" role="button">
+            <i class="fa fa-language fa-fw"></i><span>{% trans 'Translator' %}</span>
+        </a>
+    </li>
+    <li class="header">{% trans 'Apps' %}</li>
     <li class="treeview">
-        <a href="#"><span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+        <a href="#">
+            <i class="fa fa-globe fa-fw"></i>
+            <span>{% trans 'Geographical objects' %}</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
         <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
+            <li>
+                <a href="{% url 'GeoObject:create' %}"><i class="fa fa-plus-square-o fa-fw"></i>{% trans 'Create' %}</a>
+            </li>
         </ul>
     </li>
+    <li>
+        <a href="{% url 'TLE:list' %}"><i class="fa fa-space-shuttle fa-fw"></i> <span>TLE</span></a>
+    </li>
+
+
 </ul><!-- /.sidebar-menu -->
+

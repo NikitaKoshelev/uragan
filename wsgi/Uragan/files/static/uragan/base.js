@@ -1,7 +1,10 @@
 $(document).ready(function () {
-    var $manage_buttons = $('#manage_buttons');
+    var $manage_buttons = $('#manage_buttons'),
+        active_items =  $(".sidebar li:has(a[href$='{0}'])".f(window.location.pathname));
 
-    if (!$manage_buttons.html().trim()) $manage_buttons.hide();
+    active_items.addClass('active');
+
+    if ($manage_buttons.html().trim()) $manage_buttons.show();
 
     $('textarea.form-control').css('resize', 'vertical').attr('rows', 1);
 
