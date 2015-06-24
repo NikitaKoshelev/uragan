@@ -43,10 +43,8 @@ html += '<textarea id="destination" class="form-control" rows="1" style="resize:
 html += '</div>';
 html += '</div>';
 html += '</div>';
-html += '<div class="row">';
-html += '<div class="col-xs-12" style="display: none;">';
+html += '<div class="form-row" style="display: none;">';
 html += '<button id="translate_btn" class="btn btn-flat btn-block btn-default">' + gettext("Translate") + '</button>';
-html += '</div>';
 html += '</div>';
 html += '</div>';
 html += '</div>';

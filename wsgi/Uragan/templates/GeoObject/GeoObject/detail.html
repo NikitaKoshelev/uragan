@@ -115,7 +115,7 @@
             marker.setPosition(location);
 
             var layer = new google.maps.KmlLayer({
-                url: window.location.href,//'{0}//{1}{2}'.f(window.location.protocol, window.location.host, "{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}")
+                url: window.location.href.replace('detail', 'kml'),//'{0}//{1}{2}'.f(window.location.protocol, window.location.host, "{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}")
             });
             console.log(layer);
             layer.setMap(map);

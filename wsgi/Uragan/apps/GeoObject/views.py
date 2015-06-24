@@ -26,13 +26,14 @@ class DetailGeoObject(DetailView):
 class ListGeoObject(ListView):
     model = GeoObject
     context_object_name = 'geo_objects'
-    #paginate_by = 10
+    #paginate_by = 100
     template_name = 'GeoObject/GeoObject/list.html'
 
     def render_to_response(self, context, **response_kwargs):
-        if self.request.is_ajax():
+        if self.request.GET.get('get_kml', False):
             return get_kml_for_queryset(context['object_list'])
-        return super(ListGeoObject, self).render_to_response(context, **response_kwargs)
+        else:
+            return super(ListGeoObject, self).render_to_response(context, **response_kwargs)
 
 
 class WizardCreateGeoObject(CookieWizardView):

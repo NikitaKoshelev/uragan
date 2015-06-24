@@ -1,10 +1,12 @@
 {% extends 'GeoObject/base.html' %}
 {% load i18n bootstrap_tags staticfiles %}
 
+
 {% block head %}
   {{ block.super }}
     <link href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
+
 
 {% block content-header %}{% trans 'list geographical objects'|capfirst %}{% endblock %}
 
@@ -21,81 +23,81 @@
     </a>
 {% endblock %}
 
-{% spaceless %}
   {% block content %}
       <div class="row-fluid">
-          <div class="box">
-              <div class="box-body">
-
-                  <table id="example" class="table table-striped table-bordered table-responsive" cellspacing="0">
-                      <thead>
-                      <tr>
-                          <th>id</th>
-                          <th>{% trans 'title'|capfirst %}</th>
-                          <th>
-                          <span data-toggle="tooltip" title="{% trans 'northern latitude in degrees'|capfirst %}">
-                            {% trans 'lat'|capfirst %}, &deg;
-                          </span>
-                          </th>
-                          <th>
+          <div class="box box-solid">
+              <table id="example" class="table table-striped table-bordered table-responsive" cellspacing="0">
+                  <thead>
+                  <tr>
+                      <th>id</th>
+                      <th>{% trans 'title'|capfirst %}</th>
+                      <th>
+                            <span data-toggle="tooltip" title="{% trans 'northern latitude in degrees'|capfirst %}">
+                              {% trans 'lat'|capfirst %}, &deg;
+                            </span>
+                      </th>
+                      <th>
                             <span data-toggle="tooltip" title="{% trans 'eastern longitude in degrees'|capfirst %}">
                               {% trans 'lon'|capfirst %}, &deg;
                             </span>
-                          </th>
-                          <th>KML</th>
-                      </tr>
-                      </thead>
+                      </th>
+                      <th>{% trans 'last modification'|capfirst %}</th>
+                      <th>KML</th>
+                  </tr>
+                  </thead>
 
-                      <tfoot>
-                      <tr>
-                          <th>id</th>
-                          <th>{% trans 'title'|capfirst %}</th>
-                          <th>
+                  <tfoot>
+                  <tr>
+                      <th>id</th>
+                      <th>{% trans 'title'|capfirst %}</th>
+                      <th>
                           <span data-toggle="tooltip" title="{% trans 'northern latitude in degrees'|capfirst %}">
                             {% trans 'lat'|capfirst %}, &deg;
                           </span>
-                          </th>
-                          <th>
+                      </th>
+                      <th>
                             <span data-toggle="tooltip" title="{% trans 'eastern longitude in degrees'|capfirst %}">
                               {% trans 'lon'|capfirst %}, &deg;
                             </span>
-                          </th>
-                          <th>KML</th>
-                      </tr>
-                      </tfoot>
+                      </th>
+                      <th>{% trans 'last modification'|capfirst %}</th>
+                      <th>KML</th>
+                  </tr>
+                  </tfoot>
 
-                      <tbody>
-                      {% for geo_object in geo_objects %}
-                          <tr>
-                          <td>{{ geo_object.id }}</td>
-                          <td>
-                            <span data-toggle="tooltip" title="{{ geo_object.short_description|safe }}" data-html="true"
-                                  data-placement="left">
-                              {{ geo_object.title|capfirst }}
-                            </span>
-                          </td>
-                          <td>{{ geo_object.lat }}</td>
-                          <td>{{ geo_object.lon }}</td>
-                          <td>
-                            {% if geo_object.polygon %}
-                                Yes
-                                <a href="{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}"
-                                   class="btn btn-box-tool">
-                                    <i class="fa fa-download"></i>
-                                </a>
-                            {% else %}
-                                No
-                            {% endif %}
-                          </td>
-                      {% endfor %}
-                      </tbody>
-                  </table>
-              </div>
+                  <tbody>
+                  {% for geo_object in geo_objects %}
+                      <tr>
+                      <td>{{ geo_object.id }}</td>
+                      <td>
+                          <a href="javascript: void(0);" data-placement="left" data-html="true" data-trigger="focus" data-toggle="popover"
+                             title="<a href='{% url 'GeoObject:detail' pk=geo_object.pk %}'>{% trans 'go to detail view'|capfirst %}</a>"
+                             data-content="{{ geo_object.short_description|safe }}">
+                            {{ geo_object.title|capfirst }}
+                          </a>
+                      </td>
+                      <td>{{ geo_object.lat }}</td>
+                      <td>{{ geo_object.lon }}</td>
+                      <td>{{ geo_object.last_modification }}</td>
+                      <td>
+                        {% if geo_object.polygon %}
+                            Yes
+                            <a href="{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}"
+                               class="btn btn-box-tool">
+                                <i class="fa fa-download"></i>
+                            </a>
+                        {% else %}
+                            No
+                        {% endif %}
+                      </td>
+                  {% endfor %}
+                  </tbody>
+              </table>
           </div>
       </div>
     {% include 'includes/paginator.html' %}
       <div class="row-fluid">
-          <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
+          <div id="map_canvas" style="width:100%; margin-bottom: 15px; background-color: inherit"></div>
       </div>
   {% endblock %}
 
@@ -114,17 +116,34 @@
               };
 
               var map = new google.maps.Map(document.getElementById("map_canvas"), options);
+              var kml = new google.maps.KmlLayer(window.location.href.split('#', 1)[0] + '?get_kml=true');
+              kml.setMap(map);
+              console.log(kml);
           }
 
 
           $(document).ready(function () {
-              $("#example").DataTable();
+              var table = $("#example");
+              table.DataTable({
+                  dom: '<"box-header with-border"<"col-md-4"l><"col-md-4 text-center"T><"col-md-4"f>>' +
+                  '<"box-body"<"text-center"T>t>' +
+                  '<"box-footer clearfix"<"col-sm-6"l><"col-sm-6 text-right"p>>',
+                  ordering: false,
+                  pagingType: "full_numbers"
+
+              });
+
+              //$('#button').click(function () {
+              //    alert(table.rows('.selected').data().length + ' row(s) selected');
+              //});
+              //var tt = new $.fn.dataTable.TableTools(table);
+              //$( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
               $("#map_canvas").css('height', '600px');//$('.content').css('height'));
               $('<script>', {
                   type: 'text/javascript',
-                  src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false&language={{ request.LANGUAGE_CODE }}&callback=initialize'
+                  src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false' +
+                  '&callback=initialize&language=' + page_language_code
               }).appendTo($('body'));
           });
       </script>
   {% endblock %}
-{% endspaceless %}

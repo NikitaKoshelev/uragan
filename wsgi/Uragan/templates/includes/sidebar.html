@@ -38,7 +38,7 @@
     <!-- Optionally, you can add icons to the links -->
     <li class="header">{% trans 'Modules' %}</li>
     <li>
-        <a href="#" class="translate-icon" role="button">
+        <a href="javascript: void(0);" class="translate-icon" role="button">
             <i class="fa fa-language fa-fw"></i><span>{% trans 'Translator' %}</span>
         </a>
     </li>
@@ -51,7 +51,10 @@
         </a>
         <ul class="treeview-menu">
             <li>
-                <a href="{% url 'GeoObject:create' %}"><i class="fa fa-plus-square-o fa-fw"></i>{% trans 'Create' %}</a>
+                <a href="{% url 'GeoObject:create' %}"><i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create'|capfirst %}</a>
+            </li>
+            <li>
+                <a href="{% url 'GeoObject:list' %}"><i class="fa fa-list fa-fw"></i>{% trans 'list'|capfirst %}</a>
             </li>
         </ul>
     </li>

@@ -1,3 +1,6 @@
+var page_language_code = window.location.pathname.split('/', 1)[0] == 'en' ? 'en' : 'ru',
+    page_language = page_language_code == 'en' ? 'English' : 'Russian';
+
 $(document).ready(function () {
     var $manage_buttons = $('#manage_buttons'),
         active_items =  $(".sidebar li:has(a[href$='{0}'])".f(window.location.pathname));
@@ -12,6 +15,7 @@ $(document).ready(function () {
         .parent($('div'))
         .append($('<small>').addClass('pull-right text-yellow').html(gettext('*Required field').italics()));
 
+     $('[data-toggle="popover"]').popover();
 
 });
 

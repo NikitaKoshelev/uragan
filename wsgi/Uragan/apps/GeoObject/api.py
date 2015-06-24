@@ -14,6 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import GeoObject
 from .forms import GeocoderForm, KmlByTitle
+from .utils import convert_color_hex_to_kml
+
 
 google = GoogleV3('AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw')
 nominatim = Nominatim()
@@ -69,15 +71,27 @@ def get_kml_file_response(kml, filename):
 
 
 def get_kml_for_queryset(queryset):
+    """
+    :param queryset: GeoObject queryset
+    :return: KML file from GeoObject queryset
+    """
     kml = KML.kml(KML.Document())
-    for item in queryset.values('title', 'lat', 'lon', 'polygon'):
+    for item in queryset.values('title', 'lat', 'lon', 'polygon', 'color', 'id'):
         polygon = item.get('polygon', None)
+        line_color, polygon_color = convert_color_hex_to_kml(item['color'])
         fld = KML.Folder(
             KML.name(item['title']),
             KML.Placemark(KML.name(item['title']), KML.Point(KML.coordinates("{},{}".format(item['lon'], item['lat']))))
         )
         if polygon:
-            fld.append(KML.Placemark(KML.name(item['title']), parser.fromstring(polygon)))
+            print(line_color, polygon_color)
+            id = 'geo_object_%s' % item['id']
+            fld.append(KML.Style(
+                KML.PolyStyle(KML.color(polygon_color)),
+                KML.LineStyle(KML.color(line_color), KML.width(2)),
+                id=id))
+            fld.append(KML.Placemark(KML.name(item['title']), KML.styleUrl('#' + id), parser.fromstring(polygon)))
 
         kml.Document.append(fld)
+
     return get_kml_file_response(etree.tostring(kml), _('Geographical objects'))

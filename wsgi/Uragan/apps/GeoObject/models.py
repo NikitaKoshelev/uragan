@@ -1,17 +1,20 @@
 # coding: utf-8
-# from django.contrib.gis.db import models
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone as tz
-from django.core.serializers import serialize
-from datetime import timedelta
-from django.conf import settings
-from django.utils.text import capfirst
 from geopy.geocoders import Nominatim
 from pykml.factory import KML_ElementMaker as KML
 from pykml import parser
 from lxml import etree
 from yandex_translate import YandexTranslate
+
+# from django.contrib.gis.db import models
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone as tz
+from datetime import timedelta
+from django.conf import settings
+from django.utils.text import capfirst
+
+from .utils import convert_color_hex_to_kml
+
 
 class Images(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('title'))
@@ -33,12 +36,13 @@ class GeoObject(models.Model):
     short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     polygon = models.TextField(verbose_name=_('polygon in KML format'), null=True, blank=True)
-    color = models.CharField(max_length=20, verbose_name=_('color'), null=True, blank=True)
+    color = models.CharField(max_length=20, verbose_name=_('color'), default='#0000ff', null=True, blank=True)
     creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date'))
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('last modification'))
     images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
 
     class Meta:
+        ordering = 'title',
         unique_together = 'lat', 'lon',
         verbose_name = _('geographical object')
         verbose_name_plural = _('geographical objects')
@@ -58,7 +62,16 @@ class GeoObject(models.Model):
         polygon = self.polygon
         if polygon:
             if full:
-                kml = KML.kml(KML.Document(KML.Placemark(KML.name(self.title), parser.fromstring(self.polygon))))
+                line_color, polygon_color = convert_color_hex_to_kml(self.color)
+                id = 'geo_object_%s' % self.id
+                kml = KML.kml(KML.Document(
+                    KML.Style(
+                        KML.PolyStyle(KML.color(polygon_color)),
+                        KML.LineStyle(KML.color(line_color), KML.width(2)),
+                        id=id
+                    ),
+                    KML.Placemark(KML.name(self.title),  KML.styleUrl('#' + id), parser.fromstring(self.polygon))
+                ))
                 polygon = etree.tostring(kml, pretty_print=True)
 
             elif placemark:
