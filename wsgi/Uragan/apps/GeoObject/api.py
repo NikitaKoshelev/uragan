@@ -1,4 +1,5 @@
 # coding: utf-8
+import tempfile
 from geopy import Nominatim, GoogleV3, GeoNames
 from yandex_translate import YandexTranslate
 from pykml.factory import KML_ElementMaker as KML
@@ -7,7 +8,7 @@ from lxml import etree
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, FileResponse
 from django.utils.http import urlquote
 from django.core.serializers import serialize
 from django.utils.translation import ugettext_lazy as _
@@ -44,7 +45,7 @@ def geocoder(request, lang=None):
 def get_kml_by_object(request, pk):
     obj = get_object_or_404(GeoObject, pk=pk)
     polygon = obj.get_polygon_in_kml()
-    response = get_kml_file_response(polygon, obj.title)
+    response = get_file_response(polygon, obj.title)
     return response
 
 
@@ -55,7 +56,7 @@ def get_kml_by_title(request):
         if polygon:
             kml = KML.kml(KML.Document(KML.Placemark(KML.name(query), parser.fromstring(polygon))))
             polygon = etree.tostring(kml)
-            response = get_kml_file_response(polygon, query)
+            response = get_file_response(polygon, query)
         else:
             response = HttpResponseBadRequest()
     else:
@@ -64,9 +65,9 @@ def get_kml_by_title(request):
     return response
 
 
-def get_kml_file_response(kml, filename):
-    response = HttpResponse(kml, content_type='application/vnd.google-earth.kml+xml')
-    response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'{}.kml'.format(urlquote(filename))
+def get_file_response(kml, filename, content_type='application/vnd.google-earth.kml+xml', fmt='kml'):
+    response = HttpResponse(kml, content_type=content_type)
+    response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'{}.{}'.format(urlquote(filename), fmt)
     return response
 
 
@@ -94,4 +95,16 @@ def get_kml_for_queryset(queryset):
 
         kml.Document.append(fld)
 
-    return get_kml_file_response(etree.tostring(kml), _('Geographical objects'))
+    return get_file_response(etree.tostring(kml), _('Geographical objects'))
+
+
+def get_lst_for_queryset(queryset):
+    lines = [
+        "{} {} '{}'".format(item['lon'], item['lat'], item['title']) for item in queryset.values('title', 'lat', 'lon')
+        ]
+    handle, tmp_path = tempfile.mkstemp()
+    tmp = open(tmp_path, 'w', encoding='cp866')
+    tmp.write('\r\n'.join(lines))
+    response = FileResponse(open(tmp_path, 'rb'))
+    response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'{}.lst'.format(urlquote(_('Geographical objects')))
+    return response

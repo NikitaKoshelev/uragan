@@ -115,17 +115,12 @@
             marker.setPosition(location);
 
             var layer = new google.maps.KmlLayer({
-                url: window.location.href.replace('detail', 'kml'),//'{0}//{1}{2}'.f(window.location.protocol, window.location.host, "{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}")
+                url: window.location.href.replace('detail', 'kml')
             });
             console.log(layer);
             layer.setMap(map);
 
         }
-        $(document).ready(function () {
-            $('<script>', {
-                type: 'text/javascript',
-                src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false&callback=initialize'
-            }).appendTo($('body'));
-        });
+        $(document).ready(async_gmaps());
     </script>
 {% endblock %}

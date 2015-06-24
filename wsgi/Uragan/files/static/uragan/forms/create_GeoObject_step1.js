@@ -39,7 +39,7 @@ $btn_reverse.appendTo($('#buttons')).click(function () {
     nominatim_reverse_geocode(location);
 });
 
-$(document).ready(loadScript());
+$(document).ready(async_gmaps());
 
 /*************************************************Functions************************************************************/
 
@@ -111,13 +111,6 @@ function initialize() {
         google_reverse_geocode(marker.getPosition());
     });
 
-}
-
-function loadScript() {
-  $('<script>', {
-      type: 'text/javascript',
-      src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false&callback=initialize'
-  }).appendTo($('body'));
 }
 
 /*****************************************************End functions****************************************************/

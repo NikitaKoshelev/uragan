@@ -1,9 +1,9 @@
-var page_language_code = window.location.pathname.split('/', 1)[0] == 'en' ? 'en' : 'ru',
-    page_language = page_language_code == 'en' ? 'English' : 'Russian';
+var page_language_code = window.location.pathname.split('/', 2)[1] === 'en' ? 'en' : 'ru',
+    page_language = page_language_code === 'en' ? 'English' : 'Russian';
 
 $(document).ready(function () {
     var $manage_buttons = $('#manage_buttons'),
-        active_items =  $(".sidebar li:has(a[href$='{0}'])".f(window.location.pathname));
+        active_items = $(".sidebar li:has(a[href$='{0}'])".f(window.location.pathname));
 
     active_items.addClass('active');
 
@@ -15,9 +15,19 @@ $(document).ready(function () {
         .parent($('div'))
         .append($('<small>').addClass('pull-right text-yellow').html(gettext('*Required field').italics()));
 
-     $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]').popover();
 
 });
+
+
+function async_gmaps() {
+    $('<script>', {
+        type: 'text/javascript',
+        src: 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw&sensor=false&callback=initialize' +
+        '&language=' + page_language_code
+    }).appendTo($('body'));
+}
+
 
 function showMessage(hasError, messages) {
 

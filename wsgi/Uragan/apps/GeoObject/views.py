@@ -7,7 +7,7 @@ from django.views.generic import CreateView, DeleteView, FormView, DetailView, L
 
 from formtools.wizard.views import CookieWizardView
 
-from .api import get_kml_for_queryset
+from .api import get_kml_for_queryset, get_lst_for_queryset
 from .models import GeoObject
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
@@ -32,6 +32,8 @@ class ListGeoObject(ListView):
     def render_to_response(self, context, **response_kwargs):
         if self.request.GET.get('get_kml', False):
             return get_kml_for_queryset(context['object_list'])
+        elif self.request.GET.get('get_lst', False):
+            return get_lst_for_queryset(context['object_list'])
         else:
             return super(ListGeoObject, self).render_to_response(context, **response_kwargs)
 
