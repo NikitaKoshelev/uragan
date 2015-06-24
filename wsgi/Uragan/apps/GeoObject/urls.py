@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, url
-from .views import DetailGeoObject, where_iss, WizardCreateGeoObject
+from .views import DetailGeoObject, where_iss, WizardCreateGeoObject, ListGeoObject
 
 
 urlpatterns = patterns(
     '',
-    url(r'^detail/(?P<pk>\d+)', DetailGeoObject.as_view(), name='detail'),
+    url(r'^list/$', ListGeoObject.as_view(), name='list'),
+    url(r'^detail/(?P<pk>\d+)/$', DetailGeoObject.as_view(), name='detail'),
     url(r'^create/$', WizardCreateGeoObject.as_view(), name='create'),
     url(r'^where_iss/$', where_iss),
 )

@@ -3,10 +3,11 @@ import json
 from django.shortcuts import render_to_response, redirect, RequestContext, get_object_or_404
 from django.http import HttpResponse, FileResponse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DeleteView, FormView, DetailView
+from django.views.generic import CreateView, DeleteView, FormView, DetailView, ListView
 
 from formtools.wizard.views import CookieWizardView
 
+from .api import get_kml_for_queryset
 from .models import GeoObject
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
@@ -22,8 +23,20 @@ class DetailGeoObject(DetailView):
     template_name = 'GeoObject/GeoObject/detail.html'
 
 
+class ListGeoObject(ListView):
+    model = GeoObject
+    context_object_name = 'geo_objects'
+    #paginate_by = 10
+    template_name = 'GeoObject/GeoObject/list.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.is_ajax():
+            return get_kml_for_queryset(context['object_list'])
+        return super(ListGeoObject, self).render_to_response(context, **response_kwargs)
+
+
 class WizardCreateGeoObject(CookieWizardView):
-    template_name = 'GeoObject/wizard_create.html'
+    template_name = 'GeoObject/GeoObject/wizard_create.html'
     form_list = (GeoObjectFormStep1, GeoObjectFormStep2)
 
     def done(self, form_list, **kwargs):

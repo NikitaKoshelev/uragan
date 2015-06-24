@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
+from django.utils.timezone import utc
+import datetime
 
 
 class Migration(migrations.Migration):
@@ -13,18 +15,18 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.RemoveField(
             model_name='surveillanceplan',
             name='researches',
-            field=models.ManyToManyField(to=settings.AUTH_USER_MODEL, verbose_name='researches'),
         ),
         migrations.AddField(
-            model_name='images',
-            name='geo_object',
-            field=models.ForeignKey(to='GeoObject.GeoObject', verbose_name='geographical object'),
+            model_name='surveillanceplan',
+            name='researchers',
+            field=models.ManyToManyField(verbose_name='researchers', to=settings.AUTH_USER_MODEL),
         ),
-        migrations.AlterUniqueTogether(
-            name='geoobject',
-            unique_together=set([('lat', 'lon')]),
+        migrations.AlterField(
+            model_name='surveillanceplan',
+            name='time_end',
+            field=models.DateTimeField(default=datetime.datetime(2015, 6, 27, 0, 59, 28, 61864, tzinfo=utc)),
         ),
     ]

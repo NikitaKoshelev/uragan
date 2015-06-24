@@ -40,9 +40,9 @@ class Command(BaseCommand):
         for sat in satellites:
             try:
                 credentials = {'identity': 'nikita.koshelev@gmail.com', 'password': 'K0SHeLeV21101994'}
-                date_time_start = sat.tle_set.first()
-                date_time_start = date_time_start.datetime_in_lines.date() if date_time_start else date(1998, 11, 20)
-                query = spacetrack.tle_query_build(date_range=(date_time_start, date.today()),
+                first_tle = sat.tle_set.first()
+                date_start = first_tle.datetime_in_lines.date() if first_tle else date(1998, 11, 20)
+                query = spacetrack.tle_query_build(date_range=(date_start, date.today()+timedelta(days=1)),
                                                    norad_id=str(sat.satellite_number), sort='asc')
 
                 self.stdout.write('Start download object - ' + sat.title)
@@ -50,7 +50,7 @@ class Command(BaseCommand):
                 self.stdout.write('Finished download object - ' + sat.title)
 
                 self.stdout.write('Start create and save object - ' + sat.title)
-                TLE.objects.bulk_create(unique_tle(r, sat, date_time_start))
+                TLE.objects.bulk_create(unique_tle(r, sat, date_start))
                 self.stdout.write('\nFinished create and save object - ' + sat.title)
             except:
                 self.stdout.write('Fail download, create or save object - ' + sat.title)

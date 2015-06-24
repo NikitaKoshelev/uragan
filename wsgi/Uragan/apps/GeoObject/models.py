@@ -34,6 +34,8 @@ class GeoObject(models.Model):
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     polygon = models.TextField(verbose_name=_('polygon in KML format'), null=True, blank=True)
     color = models.CharField(max_length=20, verbose_name=_('color'), null=True, blank=True)
+    creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date'))
+    last_modification = models.DateTimeField(auto_now=True, verbose_name=_('last modification'))
     images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
 
     class Meta:
@@ -86,9 +88,8 @@ class SurveillancePlan(models.Model):
     geo_objects = models.ManyToManyField(GeoObject, verbose_name=_('observed objects'))
     time_start = models.DateTimeField(auto_now_add=True)
     time_end = models.DateTimeField(default=tz.now() + timedelta(days=3))
-    duration = models.DurationField()
-    last_modification = models.DateTimeField(auto_now_add=True, verbose_name=_('date and time created'))
-    researches = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researches'))
+    last_modification = models.DateTimeField(auto_now=True, verbose_name=_('date and time created'))
+    researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'))
 
     class Meta:
         verbose_name = _('surveillance plan')

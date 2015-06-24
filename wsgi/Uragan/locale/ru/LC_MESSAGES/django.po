@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-22 07:17+0000\n"
-"PO-Revision-Date: 2015-06-21 17:51+0000\n"
+"POT-Creation-Date: 2015-06-23 11:28+0000\n"
+"PO-Revision-Date: 2015-06-23 11:28+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,52 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.6\n"
+
+#: templates/GeoObject/GeoObject/detail.html:4
+#, fuzzy
+#| msgid "Detail information"
+msgid "detail information"
+msgstr "Подробная информация"
+
+#: templates/GeoObject/GeoObject/detail.html:9
+msgid "details"
+msgstr ""
+
+#: templates/GeoObject/GeoObject/detail.html:15
+#, fuzzy
+#| msgid "Create geographical object"
+msgid "create new geographical object"
+msgstr "Создать географический объект"
+
+#: templates/GeoObject/GeoObject/detail.html:33
+#, fuzzy
+#| msgid "Northern latitude in degrees"
+msgid "northern latitude in degrees"
+msgstr "Северной широта в градусах"
+
+#: templates/GeoObject/GeoObject/detail.html:38
+#, fuzzy
+#| msgid "Eastern longitude in degrees"
+msgid "eastern longitude in degrees"
+msgstr "Восточная долгота в градусах"
+
+#: templates/GeoObject/GeoObject/detail.html:46
+#, fuzzy
+#| msgid "Short description"
+msgid "short description"
+msgstr "Краткое описание"
+
+#: templates/GeoObject/GeoObject/detail.html:53
+#, fuzzy
+#| msgid "Description"
+msgid "description"
+msgstr "Описание"
+
+#: templates/GeoObject/GeoObject/detail.html:61
+#, fuzzy
+#| msgid "Polygon in KML format"
+msgid "polygon in KML format"
+msgstr "Полигон в формате kml"
 
 #: templates/GeoObject/GeoObject_form.html:11
 #: templates/GeoObject/wizard_create.html:15
@@ -41,48 +87,12 @@ msgid "Save"
 msgstr "Сохранить"
 
 #: templates/GeoObject/base.html:6
-#, fuzzy
-#| msgid "Create geographical object"
 msgid "Geographical object"
-msgstr "Создать географический объект"
-
-#: templates/GeoObject/detail.html:4
-msgid "Detail information"
-msgstr "Подробная информация"
-
-#: templates/GeoObject/detail.html:9
-msgid "Details"
-msgstr ""
-
-#: templates/GeoObject/detail.html:15
-#, fuzzy
-#| msgid "Create geographical object"
-msgid "Create new geographical object"
-msgstr "Создать географический объект"
-
-#: templates/GeoObject/detail.html:33
-msgid "Northern latitude in degrees"
-msgstr "Северной широта в градусах"
-
-#: templates/GeoObject/detail.html:38
-msgid "Eastern longitude in degrees"
-msgstr "Восточная долгота в градусах"
-
-#: templates/GeoObject/detail.html:46
-msgid "Short description"
-msgstr "Краткое описание"
-
-#: templates/GeoObject/detail.html:53
-msgid "Description"
-msgstr "Описание"
-
-#: templates/GeoObject/detail.html:61
-msgid "Polygon in KML format"
-msgstr "Полигон в формате kml"
+msgstr "Географический объект"
 
 #: templates/GeoObject/wizard_create.html:11
 msgid "Creation"
-msgstr ""
+msgstr "Создание"
 
 #: templates/GeoObject/wizard_create.html:16
 msgid "Step"
@@ -92,13 +102,13 @@ msgstr "Шаг"
 msgid "of"
 msgstr "из"
 
-#: templates/TLE/TLE_list.html:6
+#: templates/TLE/list.html:6
 msgid "Two-line element sets"
 msgstr "Двустрочные наборы элементов орбиты"
 
-#: templates/TLE/TLE_list.html:12
+#: templates/TLE/list.html:12
 msgid "List"
-msgstr ""
+msgstr "Список"
 
 #: templates/includes/navbar.html:5 templates/includes/sidebar.html:42
 msgid "Translator"
@@ -107,6 +117,16 @@ msgstr "Переводчик"
 #: templates/includes/navbar.html:131
 msgid "Member since"
 msgstr "Участник с"
+
+#: templates/includes/paginator.html:8
+#, fuzzy
+#| msgid "Previous step"
+msgid "previous"
+msgstr "Предыдущий шаг"
+
+#: templates/includes/paginator.html:52
+msgid "next"
+msgstr ""
 
 #: templates/includes/sidebar.html:39
 msgid "Modules"
