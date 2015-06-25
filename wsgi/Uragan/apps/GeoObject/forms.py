@@ -14,6 +14,7 @@ class GeoObjectForm(BaseModelForm):
     class Meta:
         model = GeoObject
         fields = '__all__'
+        exclude = 'polygon',
         widgets = {
             'title': StaticWidget(),
             'color': ColorPickerWidget(),
@@ -22,8 +23,9 @@ class GeoObjectForm(BaseModelForm):
 
     class Media:
          js = (
-             'uragan/create_GeoObject_step1.min.js'
-             #'uragan/create_GeoObject_step1.js',
+             #'uragan/create_GeoObject_step1.min.js'
+             'uragan/forms/create_GeoObject_step1.js',
+             'uragan/forms/create_GeoObject_step2.js',
              #'uragan/nominatim_in_select2.js',
              #'uragan/google_in_select2.js',
          )

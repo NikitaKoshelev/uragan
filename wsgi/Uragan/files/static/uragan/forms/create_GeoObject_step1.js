@@ -68,49 +68,50 @@ function google_reverse_geocode(location) {
 function nominatim_reverse_geocode(location) {
 
     $.ajax({
-       url: "http://nominatim.openstreetmap.org/reverse",
-       dataType: 'json',
-       data: {lat: location.lat(), lon: location.lng(), format: 'json'},
-       cache: true,
-       ifModified: true,
-       timeout: 300,
-       success: function (data, status) {
-           if (status === 'success') {
-               var cont = $('#select2-nominatim_geocode-container'),title = data.display_name;
-               cont.attr('title', title);
-               cont.html('<span class="select2-selection__clear">×</span>' + title);
-               $title.val(title);
-           }
-       }
+        url: "http://nominatim.openstreetmap.org/reverse",
+        dataType: 'json',
+        data: {lat: location.lat(), lon: location.lng(), format: 'json'},
+        cache: true,
+        ifModified: true,
+        timeout: 300,
+        success: function (data, status) {
+            if (status === 'success') {
+                var cont = $('#select2-nominatim_geocode-container'), title = data.display_name;
+                cont.attr('title', title);
+                cont.html('<span class="select2-selection__clear">×</span>' + title);
+                $title.val(title);
+            }
+        }
     });
 }
 
 
 function initialize() {
     var location = $lat.val() && $lon.val() ?
-        new google.maps.LatLng($lat.val(), $lon.val()) : new google.maps.LatLng(55.920963, 37.80495829999995);
-
-    // Определение карты
-    var options = {
-        center: location,
-        zoom: 12,
-        mapTypeId: google.maps.MapTypeId.HYBRID
-    };
-
-    map = new google.maps.Map(document.getElementById("map_canvas"), options);
-
-    // Определение геокодера
-    geocoder = new google.maps.Geocoder();
-
-    // Отображаем положение маркера на форме
-    marker = new google.maps.Marker({map: map, draggable: true});
-    marker.setPosition(location);
+            new google.maps.LatLng($lat.val(), $lon.val()) : new google.maps.LatLng(55.920963, 37.80495829999995),
+        // Определение карты
+        map = new google.maps.Map(document.getElementById("map_canvas"), {
+            center: location,
+            zoom: 12,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        }),
+        // Объявление геокодера
+        geocoder = new google.maps.Geocoder(),
+        // Отображаем положение маркера на форме
+        marker = new google.maps.Marker({map: map, draggable: true, position: location});
 
     // Добавляем слушателя события обратного геокодирования для маркера при его перемещении
     google.maps.event.addListener(marker, 'drag', function () {
         google_reverse_geocode(marker.getPosition());
     });
 
+    if (window.location.pathname.search('edit')) {
+        var layer = new google.maps.KmlLayer({
+            url: window.location.href.replace('edit', 'kml'),
+            map: map
+        });
+        console.log(layer);
+    }
 }
 
 /*****************************************************End functions****************************************************/

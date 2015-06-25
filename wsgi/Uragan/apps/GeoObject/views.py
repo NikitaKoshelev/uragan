@@ -3,7 +3,8 @@ import json
 from django.shortcuts import render_to_response, redirect, RequestContext, get_object_or_404
 from django.http import HttpResponse, FileResponse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DeleteView, FormView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, FormView, DetailView, ListView, UpdateView
+from django.core.serializers import serialize
 
 from formtools.wizard.views import CookieWizardView
 
@@ -21,6 +22,13 @@ class DetailGeoObject(DetailView):
     model = GeoObject
     context_object_name = 'geo_object'
     template_name = 'GeoObject/GeoObject/detail.html'
+
+
+class UpdateGeoObject(UpdateView):
+    model = GeoObject
+    form_class = GeoObjectForm
+    #fields = 'lat', 'lon', 'short_description', 'color'
+    template_name = 'GeoObject/GeoObject/update.html'
 
 
 class ListGeoObject(ListView):

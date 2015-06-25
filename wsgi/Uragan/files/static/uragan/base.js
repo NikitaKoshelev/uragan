@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     if ($manage_buttons.html().trim()) $manage_buttons.show();
 
-    $('textarea.form-control').css('resize', 'vertical').attr('rows', 1);
+    //$('textarea.form-control').css('resize', 'vertical').attr('rows', 1);
 
     $('.required-field')
         .parent($('div'))

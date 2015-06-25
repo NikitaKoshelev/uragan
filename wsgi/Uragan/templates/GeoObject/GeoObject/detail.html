@@ -1,85 +1,84 @@
 {% extends 'GeoObject/base.html' %}
-{% load i18n bootstrap_tags %}
+{% load i18n bootstrap_tags staticfiles %}
 
 {% block content-header %}{% trans 'detail information'|capfirst %}{% endblock %}
 
 
 {% block breadcrumb %}
-    {{ block.super }}
+  {{ block.super }}
     <li class="active">{% trans 'details'|capfirst %}</li>
 {% endblock %}
 
 
 {% block manage_buttons %}
-<a class="btn bg-olive btn-flat pull-right" href="{% url 'GeoObject:create' %}">
-    <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create new geographical object'|capfirst %}
-</a>
+    <a class="btn bg-olive btn-flat pull-right" href="{% url 'GeoObject:create' %}">
+        <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create new geographical object'|capfirst %}
+    </a>
 {% endblock %}
 
 
 {% block content %}
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box box-default">
-                <div class="box-header">
-                    <h3 class="box-title">{{ geo_object.title|capfirst }}</h3>
-                    <div class="box-tools pull-right">
+    <div class="row-fluid">
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">{{ geo_object.title|capfirst }}</h3>
 
-                    </div>
+                <div class="box-tools pull-right">
+
                 </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="control-label">{% trans 'northern latitude in degrees'|capfirst %}</label>
-
-                            <p class=" form-control-static">{{ geo_object.lat }}</p>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="control-label">{% trans 'eastern longitude in degrees'|capfirst %}</label>
-
-                            <p class=" form-control-static">{{ geo_object.lon }}</p>
-                        </div>
-                    </div>
-                  {% if geo_object.short_description %}
-
-                    <div class="form_group">
-                        <label class="control-label">{% trans 'short description'|capfirst %}</label>
-
-                        <div class=" form-control-static">{{ geo_object.short_description|safe }}</div>
-                    </div>
-                  {% endif %}
-                  {% if geo_object.description %}
-                    <div class="form_group">
-                        <label class="control-label">{% trans 'description'|capfirst %}</label>
-
-                        <div class=" form-control-static">{{ geo_object.description|safe }}</div>
-                    </div>
-                  {% endif %}
-                    <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
-                    <div class="box box-default collapsed-box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">{% trans 'polygon in KML format'|capfirst %}</h3>
-
-                            <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <a href="{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}" class="btn btn-box-tool">
-                                    <i class="fa fa-download"></i>
-                                </a>
-                            </div>
-                            <!-- /.box-tools -->
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <pre><code>{{ geo_object.get_polygon_in_kml }}</code></pre>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-                <!-- /.col -->
             </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">{% trans 'northern latitude in degrees'|capfirst %}</label>
+
+                        <p class=" form-control-static">{{ geo_object.lat }}</p>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">{% trans 'eastern longitude in degrees'|capfirst %}</label>
+
+                        <p class=" form-control-static">{{ geo_object.lon }}</p>
+                    </div>
+                </div>
+              {% if geo_object.short_description %}
+
+                  <div class="form_group">
+                      <label class="control-label">{% trans 'short description'|capfirst %}</label>
+
+                      <div class=" form-control-static">{{ geo_object.short_description|safe }}</div>
+                  </div>
+              {% endif %}
+              {% if geo_object.description %}
+                  <div class="form_group">
+                      <label class="control-label">{% trans 'description'|capfirst %}</label>
+
+                      <div class=" form-control-static">{{ geo_object.description|safe }}</div>
+                  </div>
+              {% endif %}
+                <div id="map_canvas" style="width:100%; margin-bottom: 15px"></div>
+                <div class="box box-default collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">{% trans 'polygon in KML format'|capfirst %}</h3>
+
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <a href="{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}" class="btn btn-box-tool">
+                                <i class="fa fa-download"></i>
+                            </a>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <pre><code>{{ geo_object.get_polygon_in_kml }}</code></pre>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
         </div>
     </div>
 {% endblock %}
@@ -87,40 +86,9 @@
 
 {% block scripts %}
   {{ block.super }}
-
     <script type="text/javascript">
-
-        $('#map_canvas').css('height', '600px');//$('.content').css('height'));
-
-
-        function initialize() {
-            var lat = parseFloat('{{ geo_object.lat }}'.replace(',', '.')),
-                    lon = parseFloat('{{ geo_object.lon }}'.replace(',', '.')),
-                    location = new google.maps.LatLng(lat, lon);
-            console.log(lat, lon);
-
-            // Определение карты
-            var options = {
-                center: location,
-                zoom: 12,
-                mapTypeId: google.maps.MapTypeId.HYBRID
-            };
-
-            map = new google.maps.Map(document.getElementById("map_canvas"), options);
-
-            // Определение геокодера
-            geocoder = new google.maps.Geocoder();
-
-            marker = new google.maps.Marker({map: map});
-            marker.setPosition(location);
-
-            var layer = new google.maps.KmlLayer({
-                url: window.location.href.replace('detail', 'kml')
-            });
-            console.log(layer);
-            layer.setMap(map);
-
-        }
-        $(document).ready(async_gmaps());
+        var lat = parseFloat('{{ geo_object.lat }}'.replace(',', '.')),
+        lon = parseFloat('{{ geo_object.lon }}'.replace(',', '.'));
     </script>
+    <script type="text/javascript" src="{% static 'uragan/GeoObject/detail&update.js' %}"></script>
 {% endblock %}
