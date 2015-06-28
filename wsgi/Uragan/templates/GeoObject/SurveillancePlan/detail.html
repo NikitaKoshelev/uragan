@@ -9,7 +9,7 @@
 
 
 {% block content-header %}{{ surv_plan.title }}
-  {% trans 'detail information for survillance plan'|capfirst %}{% endblock %}
+  {% trans 'detail information for surveillance plan'|capfirst %}{% endblock %}
 
 
 {% block breadcrumb %}
@@ -20,10 +20,10 @@
 
 {% block manage_buttons %}
     <a class="btn bg-olive btn-flat" href="{% url 'GeoObject:create_plan' %}">
-        <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create new survillance plan'|capfirst %}
+        <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create new surveillance plan'|capfirst %}
     </a>
     <a class="btn bg-orange btn-flat pull-right" href="{% url 'GeoObject:edit_plan' pk=surv_plan.pk %}">
-        <i class="fa fa-edit fa-fw"></i>{% trans 'edit survillance plan'|capfirst %}
+        <i class="fa fa-edit fa-fw"></i>{% trans 'edit surveillance plan'|capfirst %}
     </a>
 
 {% endblock %}

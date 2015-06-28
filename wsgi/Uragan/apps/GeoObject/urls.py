@@ -6,8 +6,8 @@ from .api import get_kml_by_title, get_kml_by_object, geocoder
 
 # Views GeoObject
 urlpatterns = [
-    url(r'^list/$', ListGeoObject.as_view(), name='list'),
-    url(r'^detail/(?P<pk>\d+)/$', DetailGeoObject.as_view(), name='detail'),
+    url(r'^$', ListGeoObject.as_view(), name='list'),
+    url(r'^(?P<pk>\d+)/$', DetailGeoObject.as_view(), name='detail'),
     url(r'^create/$', WizardCreateGeoObject.as_view(), name='create'),
     url(r'^edit/(?P<pk>\d+)/$', UpdateGeoObject.as_view(), name='edit'),
     url(r'^where_iss/$', where_iss),
@@ -25,8 +25,8 @@ urlpatterns += [
 
 # Views SurveillancePlan
 urlpatterns += [
+    url(r'^surveillance-plan/$', ListSurveillancePlan.as_view(), name='plans_list'),
+    url(r'^surveillance-plan/(?P<pk>\d+)/$', DetailSurveillancePlan.as_view(), name='detail_plan'),
     url(r'^surveillance-plan/create/$', CreateSurveillancePlan.as_view(), name='create_plan'),
-    url(r'^surveillance-plan/detail/(?P<pk>\d+)/$', DetailSurveillancePlan.as_view(), name='detail_plan'),
     url(r'^surveillance-plan/edit/(?P<pk>\d+)/$', UpdateSurveillancePlan.as_view(), name='edit_plan'),
-    url(r'^surveillance-plan/list/$', ListSurveillancePlan.as_view(), name='plans_list'),
 ]

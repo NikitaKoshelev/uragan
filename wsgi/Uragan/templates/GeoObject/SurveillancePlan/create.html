@@ -1,19 +1,23 @@
 {% extends 'GeoObject/GeoObject/base.html' %}
 {% load i18n bootstrap_tags %}
 
+
 {% block head %}
   {{ block.super }}
   {{ form.media.css }}
 {% endblock %}
+
 
 {% block breadcrumb %}
   {{ block.super }}
     <li class="active">{% trans 'creation'|capfirst %}</li>
 {% endblock %}
 
+
 {% block content-header %}
-  {% trans 'create surveliance plan'|capfirst %}
+  {% trans 'create surveillance plan'|capfirst %}
 {% endblock %}
+
 
 {% block content %}
     <div class="row-fluid">
@@ -32,6 +36,7 @@
         </div>
     </div>
 {% endblock %}
+
 
 {% block scripts %}
   {{ block.super }}

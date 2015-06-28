@@ -2,74 +2,147 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-23 11:28+0000\n"
-"PO-Revision-Date: 2015-06-23 11:28+0000\n"
+"POT-Creation-Date: 2015-06-28 10:31+0000\n"
+"PO-Revision-Date: 2015-06-28 10:32+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.6\n"
 
+#: templates/GeoObject/GeoObject/base.html:6
+msgid "Geographical object"
+msgstr "Географический объект"
+
 #: templates/GeoObject/GeoObject/detail.html:4
-#, fuzzy
-#| msgid "Detail information"
 msgid "detail information"
-msgstr "Подробная информация"
+msgstr "подробная информация"
 
 #: templates/GeoObject/GeoObject/detail.html:9
 msgid "details"
-msgstr ""
+msgstr "детали"
 
 #: templates/GeoObject/GeoObject/detail.html:15
-#, fuzzy
-#| msgid "Create geographical object"
+#: templates/GeoObject/GeoObject/list.html:22
 msgid "create new geographical object"
-msgstr "Создать географический объект"
+msgstr "создать новый географический объект"
 
-#: templates/GeoObject/GeoObject/detail.html:33
-#, fuzzy
-#| msgid "Northern latitude in degrees"
+#: templates/GeoObject/GeoObject/detail.html:18
+msgid "edit geographical object"
+msgstr "редактирование географических объектов"
+
+#: templates/GeoObject/GeoObject/detail.html:36
+#: templates/GeoObject/GeoObject/list.html:35
+#: templates/GeoObject/GeoObject/list.html:54
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:97
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:118
 msgid "northern latitude in degrees"
-msgstr "Северной широта в градусах"
+msgstr "северная широта в градусах"
 
-#: templates/GeoObject/GeoObject/detail.html:38
-#, fuzzy
-#| msgid "Eastern longitude in degrees"
+#: templates/GeoObject/GeoObject/detail.html:41
+#: templates/GeoObject/GeoObject/list.html:40
+#: templates/GeoObject/GeoObject/list.html:59
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:103
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:124
 msgid "eastern longitude in degrees"
-msgstr "Восточная долгота в градусах"
+msgstr "восточная долгота в градусах"
 
-#: templates/GeoObject/GeoObject/detail.html:46
-#, fuzzy
-#| msgid "Short description"
+#: templates/GeoObject/GeoObject/detail.html:49
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:72
 msgid "short description"
-msgstr "Краткое описание"
+msgstr "краткое описание"
 
-#: templates/GeoObject/GeoObject/detail.html:53
-#, fuzzy
-#| msgid "Description"
+#: templates/GeoObject/GeoObject/detail.html:56
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:79
 msgid "description"
-msgstr "Описание"
+msgstr "описание"
 
-#: templates/GeoObject/GeoObject/detail.html:61
-#, fuzzy
-#| msgid "Polygon in KML format"
+#: templates/GeoObject/GeoObject/detail.html:64
 msgid "polygon in KML format"
-msgstr "Полигон в формате kml"
+msgstr "полигон в формате kml"
 
+#: templates/GeoObject/GeoObject/list.html:11
+msgid "list geographical objects"
+msgstr "список географических объектов"
+
+#: templates/GeoObject/GeoObject/list.html:16
+#: templates/GeoObject/SurveillancePlan/list.html:12
+#: templates/includes/sidebar.html:57 templates/includes/sidebar.html.py:72
+msgid "list"
+msgstr "список"
+
+#: templates/GeoObject/GeoObject/list.html:33
+#: templates/GeoObject/GeoObject/list.html:52
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:94
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:115
+msgid "title"
+msgstr "название"
+
+#: templates/GeoObject/GeoObject/list.html:36
+#: templates/GeoObject/GeoObject/list.html:55
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:98
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:119
+msgid "lat"
+msgstr "широта"
+
+#: templates/GeoObject/GeoObject/list.html:41
+#: templates/GeoObject/GeoObject/list.html:60
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:104
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:125
+msgid "lon"
+msgstr "долгота"
+
+#: templates/GeoObject/GeoObject/list.html:44
+#: templates/GeoObject/GeoObject/list.html:63
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:51
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:107
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:128
+msgid "last modification"
+msgstr "последняя модификация"
+
+#: templates/GeoObject/GeoObject/list.html:78
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:143
+msgid "go to detail view"
+msgstr "перейдите в подробный вид"
+
+#: templates/GeoObject/GeoObject/update.html:11
+#: templates/GeoObject/GeoObject/wizard_create.html:11
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:11
+msgid "Creation"
+msgstr "Создание"
+
+#: templates/GeoObject/GeoObject/update.html:15
+msgid "Edit geographical object"
+msgstr "Редактирование географического объекта"
+
+#: templates/GeoObject/GeoObject/update.html:27
+msgid "apply changes"
+msgstr "применить изменения"
+
+#: templates/GeoObject/GeoObject/wizard_create.html:15
 #: templates/GeoObject/GeoObject_form.html:11
-#: templates/GeoObject/wizard_create.html:15
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:15
 msgid "Create geographical object"
 msgstr "Создать географический объект"
+
+#: templates/GeoObject/GeoObject/wizard_create.html:16
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:16
+msgid "Step"
+msgstr "Шаг"
+
+#: templates/GeoObject/GeoObject/wizard_create.html:16
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:16
+msgid "of"
+msgstr "из"
 
 #: templates/GeoObject/GeoObject_form.html:20
 #: templates/includes/wizard_form.html:23
@@ -86,21 +159,85 @@ msgstr "Следующий шаг"
 msgid "Save"
 msgstr "Сохранить"
 
-#: templates/GeoObject/base.html:6
-msgid "Geographical object"
-msgstr "Географический объект"
+#: templates/GeoObject/SurveillancePlan/base.html:6
+msgid "surveillance plan"
+msgstr "план наблюдения"
 
-#: templates/GeoObject/wizard_create.html:11
-msgid "Creation"
-msgstr "Создание"
+#: templates/GeoObject/SurveillancePlan/create.html:13
+msgid "creation"
+msgstr "создание"
 
-#: templates/GeoObject/wizard_create.html:16
-msgid "Step"
-msgstr "Шаг"
+#: templates/GeoObject/SurveillancePlan/create.html:18
+msgid "create surveillance plan"
+msgstr "создание плана наблюдения"
 
-#: templates/GeoObject/wizard_create.html:16
-msgid "of"
-msgstr "из"
+#: templates/GeoObject/SurveillancePlan/create.html:31
+#: templates/includes/sidebar.html:54 templates/includes/sidebar.html.py:69
+msgid "create"
+msgstr "создать"
+
+#: templates/GeoObject/SurveillancePlan/detail.html:12
+msgid "detail information for surveillance plan"
+msgstr "подробная информация о плане наблюдения "
+
+#: templates/GeoObject/SurveillancePlan/detail.html:17
+#, fuzzy
+msgid "detail"
+msgstr "деталь"
+
+#: templates/GeoObject/SurveillancePlan/detail.html:23
+msgid "create new surveillance plan"
+msgstr "создать новый план наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/detail.html:26
+msgid "edit surveillance plan"
+msgstr "редактирование плана наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/home.html:9
+msgid "dashboard"
+msgstr "приборная панель"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:15
+msgid "get LST file"
+msgstr "получить файл lst"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:20
+msgid "get KML file"
+msgstr "получить kml файл"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:31
+msgid "go to the detail"
+msgstr "перейти к деталям"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:41
+msgid "time start"
+msgstr "время начала"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:46
+msgid "time end"
+msgstr "время окончания"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:56
+msgid "creation date and time"
+msgstr "дата и время создания"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:62
+msgid "researchers"
+msgstr "исследователи"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:87
+#| msgid "Geographical object"
+msgid "geographical objects"
+msgstr "географические объекты"
+
+#: templates/GeoObject/SurveillancePlan/list.html:6
+#: templates/includes/sidebar.html:64
+msgid "surveillance plans"
+msgstr "планы наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/list.html:25
+msgid "surveillance plans not found"
+msgstr "планы наблюдения не найдены"
 
 #: templates/TLE/list.html:6
 msgid "Two-line element sets"
@@ -119,38 +256,33 @@ msgid "Member since"
 msgstr "Участник с"
 
 #: templates/includes/paginator.html:8
-#, fuzzy
-#| msgid "Previous step"
 msgid "previous"
-msgstr "Предыдущий шаг"
+msgstr "предыдущий"
 
 #: templates/includes/paginator.html:52
 msgid "next"
-msgstr ""
+msgstr "далее"
 
 #: templates/includes/sidebar.html:39
 msgid "Modules"
-msgstr ""
+msgstr "Модули"
 
 #: templates/includes/sidebar.html:45
 msgid "Apps"
-msgstr ""
+msgstr "Приложения"
 
 #: templates/includes/sidebar.html:49
 msgid "Geo objects"
-msgstr ""
-
-#: templates/includes/sidebar.html:54
-msgid "Create"
-msgstr ""
+msgstr "Гео объекты"
 
 #: templates/includes/translate.html:4
+#, fuzzy
 msgid "Tranlslate"
-msgstr ""
+msgstr "Tranlslate"
 
 #: templates/includes/translate.html:8
 msgid "Sync translate"
-msgstr "Перевести синхронизации"
+msgstr "Снхронный перевод"
 
 #: templates/includes/translate.html:11
 msgid "Reverse"
@@ -177,8 +309,6 @@ msgid "Translate"
 msgstr "Перевести"
 
 #: templates/includes/wizard_form.html:16
-#, fuzzy
-#| msgid "Next step"
 msgid "First step"
 msgstr "Первый шаг"
 

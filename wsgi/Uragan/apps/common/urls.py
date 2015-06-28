@@ -14,7 +14,7 @@ urlpatterns = solid_i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls', namespace='accounts')),
-    url(r'^geo-object/', include('apps.GeoObject.urls', namespace='GeoObject')),
+    url(r'^', include('apps.GeoObject.urls', namespace='GeoObject')),
     url(r'^TLE/', include('apps.TLE.urls', namespace='TLE')),
     url(r'^translate/$', translate_string),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),

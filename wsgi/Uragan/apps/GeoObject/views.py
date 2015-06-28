@@ -12,13 +12,14 @@ from .api import get_kml_for_queryset, get_lst_for_queryset
 from .models import GeoObject, SurveillancePlan
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2, SurveillancePlanForm
 from apps.common.mixins import LoginRequiredMixin
+from apps.TLE.mixins import SatellitesTemplateResponseMixin
 
 
 def where_iss(request):
     return render_to_response('includes/where_is_iss.html')
 
 
-class DetailGeoObject(DetailView):
+class DetailGeoObject(SatellitesTemplateResponseMixin, DetailView):
     model = GeoObject
     context_object_name = 'geo_object'
     template_name = 'GeoObject/GeoObject/detail.html'
@@ -31,7 +32,7 @@ class UpdateGeoObject(UpdateView):
     template_name = 'GeoObject/GeoObject/update.html'
 
 
-class ListGeoObject(ListView):
+class ListGeoObject(SatellitesTemplateResponseMixin, ListView):
     model = GeoObject
     context_object_name = 'geo_objects'
     # paginate_by = 100
@@ -58,7 +59,7 @@ class WizardCreateGeoObject(CookieWizardView):
 
 class CreateSurveillancePlan(LoginRequiredMixin, CreateView):
     model = SurveillancePlan
-    fields = '__all__'
+    form_class = SurveillancePlanForm
     template_name = 'GeoObject/SurveillancePlan/create.html'
 
     def get_initial(self):
@@ -73,14 +74,13 @@ class CreateSurveillancePlan(LoginRequiredMixin, CreateView):
         return super(CreateSurveillancePlan, self).form_valid(form)
 
 
-class UpdateSurveillancePlan(UpdateView):
+class UpdateSurveillancePlan(LoginRequiredMixin, UpdateView):
     model = SurveillancePlan
     form_class = SurveillancePlanForm
-    #fields = '__all__'
     template_name = 'GeoObject/SurveillancePlan/create.html'
 
 
-class DetailSurveillancePlan(DetailView):
+class DetailSurveillancePlan(SatellitesTemplateResponseMixin, DetailView):
     model = SurveillancePlan
     context_object_name = 'surv_plan'
     template_name = 'GeoObject/SurveillancePlan/detail.html'
@@ -103,8 +103,8 @@ class DetailSurveillancePlan(DetailView):
         return super(DetailSurveillancePlan, self).render_to_response(context, **response_kwargs)
 
 
-class ListSurveillancePlan(ListView):
+class ListSurveillancePlan(SatellitesTemplateResponseMixin, ListView):
     model = SurveillancePlan
     context_object_name = 'surv_plans'
-    # paginate_by = 100
+    paginate_by = 20
     template_name = 'GeoObject/SurveillancePlan/list.html'

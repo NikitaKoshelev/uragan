@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-22 21:20+0000\n"
+"POT-Creation-Date: 2015-06-28 08:41+0000\n"
 "PO-Revision-Date: 2015-06-21 17:45+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,15 @@ msgstr ""
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.6\n"
 
-#: files/static/uragan/base.js:13
+#: files/static/uragan/base.js:16
 msgid "*Required field"
 msgstr "*Обзательное для заполнения поле"
 
-#: files/static/uragan/base.js:24
+#: files/static/uragan/base.js:39
 msgid "Error!"
 msgstr "Ошибка!"
 
-#: files/static/uragan/base.js:24
+#: files/static/uragan/base.js:39
 msgid "Success!"
 msgstr "Удачно!"
 
@@ -46,11 +46,17 @@ msgstr "Поиск географического объекта с помощь
 msgid "Search geo object with Google Geocoder..."
 msgstr "Поиск географического объекта с помощью геокодера Google ..."
 
-#: files/static/uragan/forms/geocoders.js:10
+#: files/static/uragan/forms/geocoders.js:9
 msgid "Search geo object with geocoders..."
 msgstr "Поиск географического объекта с помощью геокодеров..."
 
-#: files/static/uragan/forms/geocoders.js:38
+#: files/static/uragan/forms/geocoders.js:18
+#, fuzzy
+#| msgid "Reverse"
+msgid "Reverse find"
+msgstr "Развернуть"
+
+#: files/static/uragan/forms/geocoders.js:42
 msgid "Not found"
 msgstr "Не найдено"
 
@@ -90,7 +96,7 @@ msgstr "Исходный язык"
 msgid "Destination language"
 msgstr "Язык назначения"
 
-#: files/static/uragan/yandex_translate.js:48
+#: files/static/uragan/yandex_translate.js:47
 #: files/static/uragan/yandex_translate.min.js:1
 msgid "Translate"
 msgstr "Перевести"
