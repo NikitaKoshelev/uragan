@@ -33,7 +33,7 @@ $(document).ready(function () {
 
                               query.callback(select2data);
                           });
-            else query.callback({results: [reverse_find]});
+            else if (reverse_find.children.length != 0) query.callback({results: [reverse_find]});
         },
         templateResult: function (geocode_select2) {
             if (geocode_select2.children && geocode_select2.children.length === 0) {

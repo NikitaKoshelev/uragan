@@ -60,11 +60,10 @@ var $translate_container = $('#translate_container'),
     $sync_toggle = $($translate_container.find('#sync_toggle')),
     $translate_btn = $($translate_container.find('#translate_btn')),
     $reverse_btn = $($translate_container.find('#reverse_btn')),
-    lng = navigator.browserLanguage || navigator.language || navigator.userLanguage;
+    lng = page_language_code;
 
-lng = lng.split('-')[0];
 
-//$(document).ready(function () {
+$(document).ready(function () {
     $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
         key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
         ui: lng
@@ -80,7 +79,7 @@ lng = lng.split('-')[0];
         $source_select.select2({data: langs, language: lng});
         $source_select.val('auto').change();
     });
-//});
+});
 
 
 $('.translate-icon').click(function () {

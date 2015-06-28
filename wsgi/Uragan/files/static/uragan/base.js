@@ -16,6 +16,7 @@ $(document).ready(function () {
         .append($('<small>').addClass('pull-right text-yellow').html(gettext('*Required field').italics()));
 
     $('[data-toggle="popover"]').popover();
+    $(".select2-container").removeClass("form-control");
 
 });
 

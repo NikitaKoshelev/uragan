@@ -14,7 +14,7 @@ from django.core.serializers import serialize
 from django.utils.translation import ugettext_lazy as _
 
 from .models import GeoObject
-from .forms import GeocoderForm, KmlByTitle
+from .forms import GeocoderForm
 from .utils import convert_color_hex_to_kml
 
 
@@ -73,14 +73,14 @@ def get_file_response(kml, filename, content_type='application/vnd.google-earth.
     return response
 
 
-def get_kml_for_queryset(queryset):
+def get_kml_for_queryset(queryset, filename=_('Geographical objects')):
     """
     :param queryset: GeoObject queryset
     :return: KML file from GeoObject queryset
     """
     kml = KML.kml(KML.Document(KML.open(1)))
 
-    geo_objects = queryset.values_list('color', 'title', 'lat', 'lon', 'polygon')
+    geo_objects = queryset.values_list('color', 'title', 'lat', 'lon', 'polygon', 'short_description')
     colors = set(items[0] for items in sorted(geo_objects))
     colors_dict = {color: convert_color_hex_to_kml(color) for color in colors}
 
@@ -92,28 +92,30 @@ def get_kml_for_queryset(queryset):
         ))
         print(line_color, polygon_color)
 
-    for (color, title, lat, lon, polygon) in geo_objects:
+    for (color, title, lat, lon, polygon, short_description) in geo_objects:
             style_id = colors_dict[color][0]
             fld = KML.Folder(
                 KML.name(title),
                 KML.Placemark(
                     KML.name(title),
                     KML.styleUrl('#' + style_id),
+                    KML.description(short_description),
                     KML.Point(KML.coordinates("{},{},0".format(lon, lat)))
                 )
             )
 
             if polygon:
                 polygon = parser.fromstring(polygon)
-                fld.append(KML.Placemark(KML.name(title), KML.styleUrl('#' + style_id), polygon))
+                fld.append(KML.Placemark(KML.name(title), KML.styleUrl('#' + style_id),
+                                         KML.description(short_description), polygon))
 
             kml.Document.append(fld)
 
     kml_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + etree.tostring(kml, pretty_print=True).decode()
-    return get_file_response(kml_str, _('Geographical objects'))
+    return get_file_response(kml_str, filename)
 
 
-def get_lst_for_queryset(queryset):
+def get_lst_for_queryset(queryset, filename=_('Geographical objects')):
     lines = [
         "{} {} '{}'".format(item['lon'], item['lat'], item['title']) for item in queryset.values('title', 'lat', 'lon')
         ]
@@ -121,5 +123,5 @@ def get_lst_for_queryset(queryset):
     tmp = open(tmp_path, 'w', encoding='cp866')
     tmp.write('\r\n'.join(lines))
     response = FileResponse(open(tmp_path, 'rb'))
-    response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'{}.lst'.format(urlquote(_('Geographical objects')))
+    response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'{}.lst'.format(urlquote(filename))
     return response

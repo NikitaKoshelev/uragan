@@ -8,8 +8,26 @@
                   <button class="btn btn-box-tool" data-widget="collapse">
                       <i class="fa fa-plus"></i>
                   </button>
+
+                  <div class="btn-group">
+                      <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                          <i class="fa fa-download"></i>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                          <li>
+                              <a href="{% url 'GeoObject:detail_plan' pk=surv_plan.pk %}?get_lst=true">
+                                {% trans 'get LST file'|capfirst %}
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url 'GeoObject:detail_plan' pk=surv_plan.pk %}?get_kml=true">
+                                {% trans 'get KML file'|capfirst %}
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
                   <a href="{% url 'GeoObject:detail_plan' pk=surv_plan.pk %}" class="btn btn-box-tool"
-                          data-toggle="tooltip" title="{% trans 'go to the detail'|capfirst %}">
+                     data-toggle="tooltip" title="{% trans 'go to the detail'|capfirst %}">
                       <i class="fa fa-angle-double-right"></i>
                   </a>
               </div>
@@ -25,18 +43,23 @@
               </div>
           {% endif %}
             <div class="row">
-                <div class="form-group col-sm-4">
+                <div class="form-group col-md-3">
                     <label class="control-label">{% trans 'time start'|capfirst %}</label>
 
                     <p class=" form-control-static">{{ surv_plan.time_start }}</p>
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-md-3">
                     <label class="control-label">{% trans 'time end'|capfirst %}</label>
 
                     <p class=" form-control-static">{{ surv_plan.time_end }}</p>
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-md-3">
                     <label class="control-label">{% trans 'last modification'|capfirst %}</label>
+
+                    <p class=" form-control-static">{{ surv_plan.last_modification }}</p>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">{% trans 'creation dtae and time'|capfirst %}</label>
 
                     <p class=" form-control-static">{{ surv_plan.last_modification }}</p>
                 </div>

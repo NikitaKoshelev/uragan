@@ -105,9 +105,10 @@ class SurveillancePlan(models.Model):
     short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     geo_objects = models.ManyToManyField(GeoObject, verbose_name=_('observed objects'))
-    time_start = models.DateTimeField(auto_now_add=True)
-    time_end = models.DateTimeField(default=tz.now() + timedelta(days=3))
-    last_modification = models.DateTimeField(auto_now=True, verbose_name=_('date and time created'))
+    time_start = models.DateTimeField(auto_now=True, verbose_name=_('date and time start'))
+    time_end = models.DateTimeField(default=tz.now() + timedelta(days=3), verbose_name=_('date and time end'))
+    creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date and time'))
+    last_modification = models.DateTimeField(auto_now=True, verbose_name=_('modification date and time'))
     researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'),  blank=True)
 
     class Meta:

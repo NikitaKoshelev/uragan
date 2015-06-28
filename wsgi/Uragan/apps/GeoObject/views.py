@@ -10,7 +10,7 @@ from formtools.wizard.views import CookieWizardView
 
 from .api import get_kml_for_queryset, get_lst_for_queryset
 from .models import GeoObject, SurveillancePlan
-from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
+from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2, SurveillancePlanForm
 from apps.common.mixins import LoginRequiredMixin
 
 
@@ -27,14 +27,14 @@ class DetailGeoObject(DetailView):
 class UpdateGeoObject(UpdateView):
     model = GeoObject
     form_class = GeoObjectForm
-    #fields = 'lat', 'lon', 'short_description', 'color'
+    # fields = 'lat', 'lon', 'short_description', 'color'
     template_name = 'GeoObject/GeoObject/update.html'
 
 
 class ListGeoObject(ListView):
     model = GeoObject
     context_object_name = 'geo_objects'
-    #paginate_by = 100
+    # paginate_by = 100
     template_name = 'GeoObject/GeoObject/list.html'
 
     def render_to_response(self, context, **response_kwargs):
@@ -55,6 +55,7 @@ class WizardCreateGeoObject(CookieWizardView):
         pk = GeoObject.objects.create(**data).pk
         return redirect('GeoObject:detail', pk=pk)
 
+
 class CreateSurveillancePlan(LoginRequiredMixin, CreateView):
     model = SurveillancePlan
     fields = '__all__'
@@ -72,10 +73,10 @@ class CreateSurveillancePlan(LoginRequiredMixin, CreateView):
         return super(CreateSurveillancePlan, self).form_valid(form)
 
 
-
 class UpdateSurveillancePlan(UpdateView):
     model = SurveillancePlan
-    fields = '__all__'
+    form_class = SurveillancePlanForm
+    #fields = '__all__'
     template_name = 'GeoObject/SurveillancePlan/create.html'
 
 
@@ -84,17 +85,26 @@ class DetailSurveillancePlan(DetailView):
     context_object_name = 'surv_plan'
     template_name = 'GeoObject/SurveillancePlan/detail.html'
 
+    def get_kml(self):
+        filename = '{} ({}--{})'.format(self.object.title, self.object.time_start.date(), self.object.time_end.date())
+        query = self.object.geo_objects.all()
+        return get_kml_for_queryset(query, filename)
+
+    def get_lst(self):
+        filename = '{} ({}--{})'.format(self.object.title, self.object.time_start.date(), self.object.time_end.date())
+        query = self.object.geo_objects.all()
+        return get_lst_for_queryset(query, filename)
+
     def render_to_response(self, context, **response_kwargs):
         if self.request.GET.get('get_kml', False):
-            return get_kml_for_queryset(context['surv_plan'].geo_objects.all())
+            return self.get_kml()
         elif self.request.GET.get('get_lst', False):
-            return get_lst_for_queryset(context['surv_plan'].geo_objects.all())
-        else:
-            return super(DetailSurveillancePlan, self).render_to_response(context, **response_kwargs)
+            return self.get_lst()
+        return super(DetailSurveillancePlan, self).render_to_response(context, **response_kwargs)
 
 
 class ListSurveillancePlan(ListView):
     model = SurveillancePlan
     context_object_name = 'surv_plans'
-    #paginate_by = 100
+    # paginate_by = 100
     template_name = 'GeoObject/SurveillancePlan/list.html'
