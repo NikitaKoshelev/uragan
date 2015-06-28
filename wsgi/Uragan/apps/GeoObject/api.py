@@ -50,17 +50,19 @@ def get_kml_by_object(request, pk):
 
 
 def get_kml_by_title(request):
-    if request.GET:
+    if request.GET or request.is_ajax():
         query = request.GET['title']
-        polygon = nominatim.geocode(query=query, geometry='kml').raw['geokml']
+        result = nominatim.geocode(query=query, geometry='kml')
+        polygon = result.raw['geokml'] if result else None
         if polygon:
+            polygon = result.raw['geokml']
             kml = KML.kml(KML.Document(KML.Placemark(KML.name(query), parser.fromstring(polygon))))
             polygon = etree.tostring(kml)
             response = get_file_response(polygon, query)
         else:
-            response = HttpResponseBadRequest()
+            response = HttpResponseBadRequest('Not found')
     else:
-        response = HttpResponseBadRequest()
+        response = HttpResponseBadRequest('Request is not GET')
 
     return response
 

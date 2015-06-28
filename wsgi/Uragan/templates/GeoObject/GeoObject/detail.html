@@ -1,4 +1,4 @@
-{% extends 'GeoObject/base.html' %}
+{% extends 'GeoObject/GeoObject/base.html' %}
 {% load i18n bootstrap_tags staticfiles %}
 
 {% block content-header %}{% trans 'detail information'|capfirst %}{% endblock %}
@@ -13,6 +13,9 @@
 {% block manage_buttons %}
     <a class="btn bg-olive btn-flat pull-right" href="{% url 'GeoObject:create' %}">
         <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create new geographical object'|capfirst %}
+    </a>
+    <a class="btn bg-yellow btn-flat" href="{% url 'GeoObject:edit' pk=geo_object.pk %}">
+        <i class="fa fa-edit fa-fw"></i>{% trans 'edit geographical object'|capfirst %}
     </a>
 {% endblock %}
 

@@ -2,77 +2,81 @@
  * Created by koshelev on 14.06.15.
  */
 
-var lng = navigator.browserLanguage || navigator.language || navigator.userLanguage,
-    $google_geocode = $('<select class="form-control" id="geocode"></select>');
+var $geocode_select2 = $('<select class="form-control" id="geocode_select2"></select>');
 
 $(document).ready(function () {
-    $google_geocode.select2({
+    $geocode_select2.select2({
         placeholder: gettext('Search geo object with geocoders...'),
         allowClear: true,
         minimumInputLength: 2,
-        language: lng,
+        language: page_language_code,
         width: '100%',
 
         query: function (query) {
             // here we check whether the user has entered some search term
             // and enforce a min term length to 2 chars
-            if (query.term)
+            var reverse_find = {text: gettext('Reverse find'), children: $geocode_select2.children().map(function (i, item){
+                var elem = $(item);
+                if (elem.text().search(query.term) !== -1) return optionToData(elem);
+            })};
+            if (query.term && query.term.length > 1)
                 $.when(ajax_google_geocode(query.term),
                        ajax_nominatim_geocode(query.term),
                        ajax_geonames_geocode(query.term))
                     .done(function (g, n, gn) {
-                              var select2data = {
-                                  results: [
-                                      ajax_nominatim_geocode.select2_format(n),
-                                      ajax_google_geocode.select2_format(g),
-                                      ajax_geonames_geocode.select2_format(gn)
-                                  ]
-                              };
+                              var select2data = {results: []};
+                              if (reverse_find.children.length != 0) select2data.results.push(reverse_find);
+                              //console.log(reverse_find.children.length, reverse_find);
+                              select2data.results.push(ajax_nominatim_geocode.select2_format(n));
+                              select2data.results.push(ajax_google_geocode.select2_format(g));
+                              select2data.results.push(ajax_geonames_geocode.select2_format(gn));
+
                               query.callback(select2data);
                           });
+            else query.callback({results: [reverse_find]});
         },
-        templateResult: function (google_geocode) {
-            if (google_geocode.children && google_geocode.children.length === 0) {
-                console.log(google_geocode);
+        templateResult: function (geocode_select2) {
+            if (geocode_select2.children && geocode_select2.children.length === 0) {
+                //console.log(geocode_select2);
                 return $('<span>{0} <small class="text-muted">{1}</small></span>'
-                             .f(google_geocode.text, gettext('Not found')));
+                             .f(geocode_select2.text, gettext('Not found')));
             }
-            else if (google_geocode.loading || google_geocode.children) return google_geocode.text;
+            else if (geocode_select2.loading || geocode_select2.children) return geocode_select2.text;
             else {
                 return $('<strong>{0}</strong><span class="pull-right">({1}, {2})</span>'
-                             .f(google_geocode.text, google_geocode.lat, google_geocode.lon));
+                             .f(geocode_select2.text, geocode_select2.lat, geocode_select2.lon));
             }
         } // omitted for brevity, see the source of this page
 
-        //templateSelection: function (google_geocode) {
-        //    return google_geocode.text ? google_geocode.text : gettext('Not found');
+        //templateSelection: function (geocode_select2) {
+        //    return geocode_select2.text ? geocode_select2.text : gettext('Not found');
         //} // omitted for brevity, see the source of this page
     });
 });
 
 $('#geocoders')
     .append($('<div>', {class: 'form-group'})
-                .append($('<label>', {for: "google_geocode", class: "control-label"})
+                .append($('<label>', {for: "geocode", class: "control-label"})
                             .append('Geocoder'),
-                        $google_geocode)
+                        $geocode_select2)
 );
 
 
-$google_geocode.on('select2:select', function (e) {
-    console.log(e);
-    var google_geocode = e.params.data;
-    var cont = $('#select2-google_geocode-container'), title = google_geocode.text;
+$geocode_select2.on('select2:select', function (e) {
+    //console.log(e);
+    var geocode_select2 = e.params.data;
+    var cont = $('#select2-geocode_select2-container'), title = geocode_select2.text;
     cont.attr('title', title);
     cont.html('<span class="select2-selection__clear">?</span>' + title);
-    $("[id^=id_][id$=lat]").val(google_geocode.lat);
-    $("[id^=id_][id$=lon]").val(google_geocode.lon);
-    $("[id^=id_][id$=title]").val(google_geocode.text);
-    $("[id^=id_][id$=polygon]").val(google_geocode.polygon);
+    $("[id^=id_][id$=lat]").val(geocode_select2.lat);
+    $("[id^=id_][id$=lon]").val(geocode_select2.lon);
+    $("[id^=id_][id$=title]").val(geocode_select2.text);
     var layer = new google.maps.KmlLayer({
-        url: '{0}//{1}/geo-object/kml/?title={2}'.f(window.location.protocol, window.location.host, encodeURI(title))
+        url: '{0}//{1}/geo-object/kml/?title={2}'.f(window.location.protocol, window.location.host, encodeURI(title)),
+        map: map
     });
-    layer.setMap(map);
-    var location = new google.maps.LatLng(google_geocode.lat, google_geocode.lon);
+    //console.log(layer);
+    var location = new google.maps.LatLng(geocode_select2.lat, geocode_select2.lon);
     marker.setPosition(location);
     map.setCenter(location);
 
@@ -83,7 +87,7 @@ function ajax_google_geocode(term) {
     return $.getJSON("https://maps.googleapis.com/maps/api/geocode/json", {
         address: term,
         key: 'AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw',
-        language: lng
+        language: page_language_code
     });
 }
 
@@ -102,7 +106,7 @@ ajax_google_geocode.select2_format = function (data) {
 };
 
 function ajax_nominatim_geocode(term) {
-    return $.getJSON("http://nominatim.openstreetmap.org/search", {q: term, format: 'json', 'accept-language': lng});
+    return $.getJSON("http://nominatim.openstreetmap.org/search", {q: term, format: 'json', 'accept-language': page_language_code});
 }
 
 ajax_nominatim_geocode.select2_format = function (data) {
@@ -123,7 +127,7 @@ function ajax_geonames_geocode(term) {
         q: term,
         username: 'nikita.koshelev',
         maxRows: 10,
-        lang: lng
+        lang: page_language_code
     })
 }
 
@@ -142,3 +146,17 @@ ajax_geonames_geocode.select2_format = function (data) {
         })
     }
 };
+
+function optionToData(element) {
+    //console.log(element);
+        return {
+            id: element.prop("value"),
+            lat: element.prop("value").split(', ')[0].replace('(', ''),
+            lon: element.prop("value").split(', ')[1].replace(')', ''),
+            text: element.text(),
+            element: element.get(),
+            css: element.attr("class"),
+            disabled: element.prop("disabled")
+            //locked: equal(element.attr("locked"), "locked") || equal(element.data("locked"), true)
+        };
+}

@@ -16,9 +16,9 @@ class GeoObjectForm(BaseModelForm):
         fields = '__all__'
         exclude = 'polygon',
         widgets = {
-            'title': StaticWidget(),
+            #'title': StaticWidget(),
             'color': ColorPickerWidget(),
-            'images': Select2MultipleWidget()
+            #'images': Select2MultipleWidget()
         }
 
     class Media:
@@ -35,6 +35,10 @@ class GeoObjectFormStep1(BaseModelForm):
     class Meta:
         model = GeoObject
         fields = 'title', 'lon', 'lat'
+        widgets = {
+            'title': Textarea(attrs={'rows': 1}),
+            #'images': Select2MultipleWidget(attrs={'style': 'width: 100%'})
+        }
 
     class Media:
          js = (
@@ -43,6 +47,7 @@ class GeoObjectFormStep1(BaseModelForm):
              #'uragan/forms/nominatim_in_select2.js',
              'uragan/forms/geocoders.js',
          )
+
 
 class GeoObjectFormStep2(BaseModelForm):
     class Meta:

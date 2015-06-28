@@ -6,6 +6,7 @@ from lxml import etree
 from yandex_translate import YandexTranslate
 
 # from django.contrib.gis.db import models
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone as tz
@@ -83,6 +84,9 @@ class GeoObject(models.Model):
 
         return polygon
 
+    def get_absolute_url(self):
+        return reverse('GeoObject:detail', args=[self.pk])
+
     def save(self, *args, **kwargs):
         try:
             kml = Nominatim().geocode(self.title, geometry='kml').raw.get('geokml', False)
@@ -98,11 +102,13 @@ class GeoObject(models.Model):
 
 class SurveillancePlan(models.Model):
     title = models.TextField(verbose_name=_('title surveillance plan'))
+    short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
+    description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     geo_objects = models.ManyToManyField(GeoObject, verbose_name=_('observed objects'))
     time_start = models.DateTimeField(auto_now_add=True)
     time_end = models.DateTimeField(default=tz.now() + timedelta(days=3))
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('date and time created'))
-    researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'))
+    researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'),  blank=True)
 
     class Meta:
         verbose_name = _('surveillance plan')
@@ -110,3 +116,10 @@ class SurveillancePlan(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('GeoObject:detail_plan', args=[self.pk])
+
+
+
+

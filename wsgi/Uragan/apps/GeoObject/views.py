@@ -9,7 +9,7 @@ from django.core.serializers import serialize
 from formtools.wizard.views import CookieWizardView
 
 from .api import get_kml_for_queryset, get_lst_for_queryset
-from .models import GeoObject
+from .models import GeoObject, SurveillancePlan
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2
 from apps.common.mixins import LoginRequiredMixin
 
@@ -54,3 +54,47 @@ class WizardCreateGeoObject(CookieWizardView):
         data = {k: v for form in form_list for k, v in form.cleaned_data.items()}
         pk = GeoObject.objects.create(**data).pk
         return redirect('GeoObject:detail', pk=pk)
+
+class CreateSurveillancePlan(LoginRequiredMixin, CreateView):
+    model = SurveillancePlan
+    fields = '__all__'
+    template_name = 'GeoObject/SurveillancePlan/create.html'
+
+    def get_initial(self):
+        init = super(CreateSurveillancePlan, self).get_initial()
+        init.update({'researchers': [self.request.user.id]})
+        return init
+
+    def form_valid(self, form):
+        self.object = form.save()
+        if self.object.researchers.filter(pk=self.request.user.pk).count():
+            self.object.researchers.add(self.request.user)
+        return super(CreateSurveillancePlan, self).form_valid(form)
+
+
+
+class UpdateSurveillancePlan(UpdateView):
+    model = SurveillancePlan
+    fields = '__all__'
+    template_name = 'GeoObject/SurveillancePlan/create.html'
+
+
+class DetailSurveillancePlan(DetailView):
+    model = SurveillancePlan
+    context_object_name = 'surv_plan'
+    template_name = 'GeoObject/SurveillancePlan/detail.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.GET.get('get_kml', False):
+            return get_kml_for_queryset(context['surv_plan'].geo_objects.all())
+        elif self.request.GET.get('get_lst', False):
+            return get_lst_for_queryset(context['surv_plan'].geo_objects.all())
+        else:
+            return super(DetailSurveillancePlan, self).render_to_response(context, **response_kwargs)
+
+
+class ListSurveillancePlan(ListView):
+    model = SurveillancePlan
+    context_object_name = 'surv_plans'
+    #paginate_by = 100
+    template_name = 'GeoObject/SurveillancePlan/list.html'

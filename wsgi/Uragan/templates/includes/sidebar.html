@@ -58,6 +58,21 @@
             </li>
         </ul>
     </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-binoculars fa-fw"></i>
+            <span>{% trans 'surveillance plans'|capfirst %}</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="{% url 'GeoObject:create_plan' %}"><i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create'|capfirst %}</a>
+            </li>
+            <li>
+                <a href="{% url 'GeoObject:plans_list' %}"><i class="fa fa-list fa-fw"></i>{% trans 'list'|capfirst %}</a>
+            </li>
+        </ul>
+    </li>
     <li>
         <a href="{% url 'TLE:list' %}"><i class="fa fa-space-shuttle fa-fw"></i> <span>TLE</span></a>
     </li>
