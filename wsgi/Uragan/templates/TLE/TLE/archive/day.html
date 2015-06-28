@@ -1,8 +1,8 @@
 <h1>{{ day }}</h1>
 
 <ul>
-    {% for article in object_list %}
-        <li>{{ article.datetime_in_lines|date:"F j, Y" }}: {{ article.title_line }}</li>
+    {% for object in object_list %}
+        <li>{{ object.datetime_in_lines.date }}: {{ object.title_line }}</li>
     {% endfor %}
 </ul>
 

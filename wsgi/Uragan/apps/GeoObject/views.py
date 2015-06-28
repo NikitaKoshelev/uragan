@@ -8,7 +8,7 @@ from django.core.serializers import serialize
 
 from formtools.wizard.views import CookieWizardView
 
-from .api import get_kml_for_queryset, get_lst_for_queryset
+from .api import get_kml_for_queryset, get_lst_for_queryset, get_kml_by_object
 from .models import GeoObject, SurveillancePlan
 from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2, SurveillancePlanForm
 from apps.common.mixins import LoginRequiredMixin
@@ -24,12 +24,30 @@ class DetailGeoObject(SatellitesTemplateResponseMixin, DetailView):
     context_object_name = 'geo_object'
     template_name = 'GeoObject/GeoObject/detail.html'
 
+    def get_kml(self):
+        return get_kml_by_object(self.object)
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.GET.get('get_kml', False):
+            return self.get_kml()
+        else:
+            return super(DetailGeoObject, self).render_to_response(context, **response_kwargs)
+
 
 class UpdateGeoObject(UpdateView):
     model = GeoObject
     form_class = GeoObjectForm
     # fields = 'lat', 'lon', 'short_description', 'color'
     template_name = 'GeoObject/GeoObject/update.html'
+
+    def get_kml(self):
+        return get_kml_by_object(self.object)
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.GET.get('get_kml', False):
+            return self.get_kml()
+        else:
+            return super(UpdateGeoObject, self).render_to_response(context, **response_kwargs)
 
 
 class ListGeoObject(SatellitesTemplateResponseMixin, ListView):

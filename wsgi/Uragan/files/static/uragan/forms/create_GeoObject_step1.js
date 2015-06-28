@@ -105,10 +105,10 @@ function initialize() {
     });
     if (window.location.pathname.search('edit') !== -1) {
         var layer = new google.maps.KmlLayer({
-            url: window.location.href.replace('edit', 'kml'),
+            url: window.location.href.split('#')[0] + '?get_kml=true',
             map: map
         });
-        //console.log(layer);
+        console.log(layer);
     }
 
 }

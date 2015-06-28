@@ -42,8 +42,14 @@ def geocoder(request, lang=None):
     return HttpResponse(response)
 
 
-def get_kml_by_object(request, pk):
+def get_kml_by_object_id(request, pk):
     obj = get_object_or_404(GeoObject, pk=pk)
+    polygon = obj.get_polygon_in_kml()
+    response = get_file_response(polygon, obj.title)
+    return response
+
+
+def get_kml_by_object(obj):
     polygon = obj.get_polygon_in_kml()
     response = get_file_response(polygon, obj.title)
     return response

@@ -125,6 +125,11 @@
             console.log(kml);
         }
 
+        ///$("#list tbody tr").click(function () {
+        ///        $(this).toggleClass('success');
+        ///    });
+
+
         $(document).ready(function () {
             var table = $("#list");
             table.DataTable({
@@ -136,10 +141,6 @@
                 language: {
                     url: "https://cdn.datatables.net/plug-ins/1.10.7/i18n/{0}.json".f(page_language)
                 }
-            });
-
-            table.find("tbody tr").click(function () {
-                $(this).toggleClass('success');
             });
 
             $("#map_canvas").css('height', '600px');//$('.content').css('height'));

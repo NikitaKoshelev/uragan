@@ -14,7 +14,7 @@ function initialize() {
         }),
         marker = new google.maps.Marker({map: map, position: location}),
         kml = new google.maps.KmlLayer({
-            url: window.location.href.replace('detail', 'kml'),
+            url: window.location.href.split('#')[0] + '?get_kml=true',
             map: map
         });
 }
