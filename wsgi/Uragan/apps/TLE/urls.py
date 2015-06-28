@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, url
-from .views import TLE_ListView, TLEDayArchiveView, TLETodayArchiveView
+from .views import TLE_ListView, TLEDayArchiveView, TLETodayArchiveView, TLE
 from .views import SatelliteDetailView, SatelliteListView
 from .api import satellites_list, tle
+
 
 urlpatterns = [
     url(r'^$', TLE_ListView.as_view(), name='list'),

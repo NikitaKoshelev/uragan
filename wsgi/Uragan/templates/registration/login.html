@@ -28,7 +28,7 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
-        <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        <form method="post" action="{% url 'accounts:login' %}">
           {% csrf_token %}
           <div class="form-group has-feedback">
             <input id="id_{{ form.username.name }}"  type="text"  name="{{ form.username.name }}" class="form-control" placeholder="{{ form.username.label }}"/>
