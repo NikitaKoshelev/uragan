@@ -71,8 +71,8 @@ $geocode_select2.on('select2:select', function (e) {
     $("[id^=id_][id$=lat]").val(geocode_select2.lat);
     $("[id^=id_][id$=lon]").val(geocode_select2.lon);
     $("[id^=id_][id$=title]").val(geocode_select2.text);
-    layer = new google.maps.KmlLayer({
-        url: window.location.href.replace('create', 'kml') + '?title=' + encodeURI(title),
+    var layer = new google.maps.KmlLayer({
+        url: window.location.href.replace(window.location.pathname, '/kml/?title=' + encodeURI(title)),
         map: map
     });
     console.log(layer);

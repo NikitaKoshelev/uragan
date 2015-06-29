@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from .views import DetailGeoObject, where_iss, WizardCreateGeoObject, ListGeoObject, UpdateGeoObject
+from .views import DetailGeoObject, where_iss, WizardCreateGeoObject, ListGeoObject, UpdateGeoObject, CreateGeoObject
 from .views import CreateSurveillancePlan, DetailSurveillancePlan, UpdateSurveillancePlan, ListSurveillancePlan
 from .api import get_kml_by_title, get_kml_by_object, geocoder
 
@@ -8,7 +8,8 @@ from .api import get_kml_by_title, get_kml_by_object, geocoder
 urlpatterns = [
     url(r'^$', ListGeoObject.as_view(), name='list'),
     url(r'^(?P<pk>\d+)/$', DetailGeoObject.as_view(), name='detail'),
-    url(r'^create/$', WizardCreateGeoObject.as_view(), name='create'),
+    url(r'^create/wizard/$', WizardCreateGeoObject.as_view(), name='create'),
+    url(r'^create/$', CreateGeoObject.as_view(), name='create_full'),
     url(r'^edit/(?P<pk>\d+)/$', UpdateGeoObject.as_view(), name='edit'),
     url(r'^where_iss/$', where_iss),
 ]

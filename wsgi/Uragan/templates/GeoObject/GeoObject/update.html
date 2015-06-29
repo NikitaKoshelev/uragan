@@ -8,7 +8,7 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-    <li class="active">{% trans 'Creation' %}</li>
+    <li class="active">{% trans 'Edit' %}</li>
 {% endblock %}
 
 {% block content-header %}
@@ -20,7 +20,7 @@
         <div class="box box-solid">
             <div class="box-body">
                 <form id="create-geo_object" action="" method="post">
-                    {% csrf_token %}
+                  {% csrf_token %}
                   {{ form|as_bootstrap }}
                     <div class="form-group">
                         <button class="btn bg-olive btn-flat" type="submit">

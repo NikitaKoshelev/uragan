@@ -18,6 +18,10 @@ from apps.TLE.mixins import SatellitesTemplateResponseMixin
 def where_iss(request):
     return render_to_response('includes/where_is_iss.html')
 
+class CreateGeoObject(CreateView):
+    model = GeoObject
+    form_class = GeoObjectForm
+    template_name = 'GeoObject/GeoObject/create.html'
 
 class DetailGeoObject(SatellitesTemplateResponseMixin, DetailView):
     model = GeoObject

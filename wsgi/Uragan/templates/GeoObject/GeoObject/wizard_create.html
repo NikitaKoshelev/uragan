@@ -20,7 +20,7 @@
     <div class="row-fluid">
         <div class="box box-solid">
             <div class="box-body">
-                <form id="create-geo_object" action="" method="post">
+                <form id="create-geo_object" action="{% url 'GeoObject:create' %}" method="post">
                   {% include 'includes/wizard_form.html' %}
                 </form>
             </div>
