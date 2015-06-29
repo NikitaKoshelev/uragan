@@ -8,8 +8,9 @@
 {% endblock %}
 
 
-{% block content-header %}{{ surv_plan.title }}
-  {% trans 'detail information for surveillance plan'|capfirst %}{% endblock %}
+{% block content-header %}
+  {% trans 'detail information for surveillance plan'|capfirst %}
+{% endblock %}
 
 
 {% block breadcrumb %}
@@ -52,7 +53,7 @@
             var map = new google.maps.Map(document.getElementById("map_canvas"), options);
             var kml = new google.maps.KmlLayer(window.location.href.split('#', 1)[0] + '?get_kml=true');
             kml.setMap(map);
-            console.log(kml);
+            console.log('KmlLayer:', kml);
         }
 
         $(document).ready(function () {
@@ -68,9 +69,9 @@
                 }
             });
 
-            table.find("tbody tr").click(function () {
-                $(this).toggleClass('success');
-            });
+            //table.find("tbody tr").click(function () {
+            //    $(this).toggleClass('success');
+            //});
 
             $("#map_canvas").css('height', '600px');//$('.content').css('height'));
             async_gmaps()

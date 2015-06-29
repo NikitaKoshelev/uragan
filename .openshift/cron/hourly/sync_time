@@ -1,0 +1,4 @@
+#!/bin/bash
+# .openshift/cron/hourly/sync_time
+
+ntpdate us.pool.ntp.org

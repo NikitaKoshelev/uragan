@@ -71,11 +71,11 @@ $geocode_select2.on('select2:select', function (e) {
     $("[id^=id_][id$=lat]").val(geocode_select2.lat);
     $("[id^=id_][id$=lon]").val(geocode_select2.lon);
     $("[id^=id_][id$=title]").val(geocode_select2.text);
-    var layer = new google.maps.KmlLayer({
-        url: '{0}//{1}/geo-object/kml/?title={2}'.f(window.location.protocol, window.location.host, encodeURI(title)),
+    layer = new google.maps.KmlLayer({
+        url: window.location.href.replace('create', 'kml') + '?title=' + encodeURI(title),
         map: map
     });
-    //console.log(layer);
+    console.log(layer);
     var location = new google.maps.LatLng(geocode_select2.lat, geocode_select2.lon);
     marker.setPosition(location);
     map.setCenter(location);

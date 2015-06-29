@@ -40,7 +40,7 @@ class GeoObject(models.Model):
     color = models.CharField(max_length=20, verbose_name=_('color'), default='#0000ff', null=True, blank=True)
     creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date'))
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('last modification'))
-    images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
+    images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True, null=True)
 
     class Meta:
         ordering = 'title',

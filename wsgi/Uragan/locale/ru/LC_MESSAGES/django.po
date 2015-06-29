@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-28 10:31+0000\n"
-"PO-Revision-Date: 2015-06-28 10:32+0000\n"
+"POT-Creation-Date: 2015-06-29 00:39+0000\n"
+"PO-Revision-Date: 2015-06-29 00:41+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -76,7 +76,8 @@ msgstr "список географических объектов"
 
 #: templates/GeoObject/GeoObject/list.html:16
 #: templates/GeoObject/SurveillancePlan/list.html:12
-#: templates/includes/sidebar.html:57 templates/includes/sidebar.html.py:72
+#: templates/includes/sidebar.html:79 templates/includes/sidebar.html.py:98
+#: templates/includes/sidebar.html:140
 msgid "list"
 msgstr "список"
 
@@ -172,7 +173,7 @@ msgid "create surveillance plan"
 msgstr "создание плана наблюдения"
 
 #: templates/GeoObject/SurveillancePlan/create.html:31
-#: templates/includes/sidebar.html:54 templates/includes/sidebar.html.py:69
+#: templates/includes/sidebar.html:75 templates/includes/sidebar.html.py:92
 msgid "create"
 msgstr "создать"
 
@@ -181,9 +182,8 @@ msgid "detail information for surveillance plan"
 msgstr "подробная информация о плане наблюдения "
 
 #: templates/GeoObject/SurveillancePlan/detail.html:17
-#, fuzzy
 msgid "detail"
-msgstr "деталь"
+msgstr "детально"
 
 #: templates/GeoObject/SurveillancePlan/detail.html:23
 msgid "create new surveillance plan"
@@ -198,10 +198,12 @@ msgid "dashboard"
 msgstr "приборная панель"
 
 #: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:15
+#: templates/includes/sidebar.html:114
 msgid "get LST file"
 msgstr "получить файл lst"
 
 #: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:20
+#: templates/includes/sidebar.html:109
 msgid "get KML file"
 msgstr "получить kml файл"
 
@@ -226,12 +228,11 @@ msgid "researchers"
 msgstr "исследователи"
 
 #: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:87
-#| msgid "Geographical object"
 msgid "geographical objects"
 msgstr "географические объекты"
 
 #: templates/GeoObject/SurveillancePlan/list.html:6
-#: templates/includes/sidebar.html:64
+#: templates/includes/sidebar.html:86
 msgid "surveillance plans"
 msgstr "планы наблюдения"
 
@@ -239,15 +240,24 @@ msgstr "планы наблюдения"
 msgid "surveillance plans not found"
 msgstr "планы наблюдения не найдены"
 
-#: templates/TLE/list.html:6
-msgid "Two-line element sets"
-msgstr "Двустрочные наборы элементов орбиты"
+#: templates/TLE/Satellites/detail.html:6 templates/TLE/Satellites/list.html:6
+msgid "satellites list"
+msgstr "список спутников"
 
-#: templates/TLE/list.html:12
+#: templates/TLE/Satellites/detail.html:12
+#: templates/TLE/Satellites/list.html:12 templates/TLE/TLE/list.html:12
 msgid "List"
 msgstr "Список"
 
-#: templates/includes/navbar.html:5 templates/includes/sidebar.html:42
+#: templates/TLE/Satellites/detail.html:30
+msgid "count tle"
+msgstr "количество TLE"
+
+#: templates/TLE/TLE/list.html:6
+msgid "Two-line element sets"
+msgstr "Двустрочные наборы элементов орбиты"
+
+#: templates/includes/navbar.html:5 templates/includes/sidebar.html:62
 msgid "Translator"
 msgstr "Переводчик"
 
@@ -263,17 +273,30 @@ msgstr "предыдущий"
 msgid "next"
 msgstr "далее"
 
-#: templates/includes/sidebar.html:39
+#: templates/includes/sidebar.html:46
+#| msgid "Source language"
+msgid "languages"
+msgstr "языки"
+
+#: templates/includes/sidebar.html:59
 msgid "Modules"
 msgstr "Модули"
 
-#: templates/includes/sidebar.html:45
+#: templates/includes/sidebar.html:65
 msgid "Apps"
 msgstr "Приложения"
 
-#: templates/includes/sidebar.html:49
+#: templates/includes/sidebar.html:69
 msgid "Geo objects"
 msgstr "Гео объекты"
+
+#: templates/includes/sidebar.html:104
+msgid "view"
+msgstr "смотреть"
+
+#: templates/includes/sidebar.html:127
+msgid "Satellites"
+msgstr "Спутники"
 
 #: templates/includes/translate.html:4
 #, fuzzy

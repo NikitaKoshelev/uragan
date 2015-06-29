@@ -26,11 +26,11 @@
                 <form id="create-geo_object" action="" method="post">
                   {% csrf_token %}
                   {{ form|as_bootstrap }}
-                  <div class="form-row">
-                    <button type="submit" class="btn btn-flat bg-olive">
-                      <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create'|capfirst %}
-                    </button>
-                  </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-flat bg-olive">
+                            <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'save'|capfirst %}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

@@ -5,7 +5,7 @@ MIN=$(date '+%M')
 source ${VIRTUAL_ENV}/bin/activate
 cd ${OPENSHIFT_REPO_DIR}wsgi/Uragan
 
-let "GO = MIN % 10"
+let "GO = MIN % 15"
 
 if [ $GO == 0 ]; then
     echo "Start update TLE script."

@@ -33,7 +33,7 @@ class GeoObjectFormStep2(BaseModelForm):
             'short_description': WYSIHTML5Widget,
             'description': WYSIHTML5Widget,
             'color': ColorPickerWidget,
-            'images': Select2Widget,
+            'images': MultipleSelect2Widget,
         }
 
 

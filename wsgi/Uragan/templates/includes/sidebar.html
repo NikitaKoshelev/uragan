@@ -75,8 +75,29 @@
                     <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create'|capfirst %}
                 </a>
             </li>
-            <li>
-                <a href="{% url 'GeoObject:list' %}"><i class="fa fa-list fa-fw"></i>{% trans 'list'|capfirst %}</a>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-list fa-fw"></i>
+                    <span>{% trans 'list'|capfirst %}</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="{% url 'GeoObject:list' %}">
+                            <i class="fa fa-eye fa-fw"></i>{% trans 'view'|capfirst %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'GeoObject:list' %}?get_kml=true">
+                            <i class="fa fa-file-code-o fa-fw"></i>{% trans 'get KML file'|capfirst %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'GeoObject:list' %}?get_lst=true">
+                            <i class="fa fa-file-text-o fa-fw"></i>{% trans 'get LST file'|capfirst %}
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </li>

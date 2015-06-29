@@ -72,7 +72,8 @@ class Select2Widget(Select):
     def render(self, name, value, attrs=None, choices=()):
         html = super(Select2Widget, self).render(name, value, attrs=None, choices=())
         html += ('<script type="text/javascript">'
-                 '$(document).ready(function () { $("#id_%s").select2(); });'
+                 '$(document).ready(function () { '
+                 '$("[name=%s]").select2({language: page_language_code}); });'
                  '</script>' % name)
         return html
 
