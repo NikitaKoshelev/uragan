@@ -73,7 +73,7 @@ class Select2Widget(Select):
         html = super(Select2Widget, self).render(name, value, attrs=None, choices=())
         html += ('<script type="text/javascript">'
                  '$(document).ready(function () { '
-                 '$("[name=%s]").select2({language: page_language_code}); });'
+                 '$("[name=%s]").select2({language: page_language_code, width: "100%%"}); });'
                  '</script>' % name)
         return html
 
@@ -87,7 +87,7 @@ class MultipleSelect2Widget(SelectMultiple):
         html = super(MultipleSelect2Widget, self).render(name, value, attrs, choices=())
         html += ('<script type="text/javascript">'
                  '$(document).ready(function () { '
-                 '$("#id_%s").select2({language: page_language_code}); });'
+                 '$("#id_%s").select2({language: page_language_code, width: "100%%"});});'
                  '</script>' % name)
         return html
 
