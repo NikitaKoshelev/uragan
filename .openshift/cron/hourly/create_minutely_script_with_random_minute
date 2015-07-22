@@ -8,7 +8,7 @@ from os import environ, path
 repo_dir = environ.get('OPENSHIFT_REPO_DIR')
 minute = randint(1, 59)
 
-print('Create minutely script with minute={}'.format(minute))
+print('Create minutely script activate on the {} minute of the current hour'.format(minute))
 template = """#!/bin/env bash
 # .openshift/cron/minutely/update_TLE
 MINUTE=$(date '+%M')
@@ -16,7 +16,7 @@ MINUTE=$(date '+%M')
 if [ $MINUTE == {} ]; then
     echo "Start update TLE script."
     echo "Date and time: $(date -u)"
-    python manage.py update_TLE
+    python manage.py update_TLE_from_spacetrack
 fi
 
 exit
