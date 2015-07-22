@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteRule ^application/files/media/(.+)$ /static/media/$1 [L]
+RewriteRule ^application/files/statics/(.+)$ /static/statics/$1 [L]
+
+<FilesMatch ".(gif|jpg|jpeg|png|ico|css|pdf)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>

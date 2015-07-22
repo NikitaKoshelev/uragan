@@ -1,0 +1,34 @@
+{% extends 'GeoObject/GeoObject/base.html' %}
+{% load i18n %}
+
+{% block head %}
+  {{ block.super }}
+  {{ wizard.form.media.css }}
+{% endblock %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+    <li class="active">{% trans 'Creation' %}</li>
+{% endblock %}
+
+{% block content-header %}
+  {% trans 'Create geographical object' %}
+    <small>{% trans 'Step' %} {{ wizard.steps.step1 }} {% trans 'of' %} {{ wizard.steps.count }}</small>
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="box box-solid">
+            <div class="box-body">
+                <form id="create-geo_object" action="" method="post">
+                  {% include 'includes/wizard_form.html' %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  {{ wizard.form.media.js }}
+{% endblock %}

@@ -280,13 +280,12 @@ $ git push</pre>
 </section>
 </body>
 </html>'''
-    response_body = response_body.encode('utf-8')
 
     status = '200 OK'
     response_headers = [('Content-Type', ctype), ('Content-Length', str(len(response_body)))]
     #
     start_response(status, response_headers)
-    return [response_body ]
+    return [response_body.encode('utf-8') ]
 
 #
 # Below for testing only

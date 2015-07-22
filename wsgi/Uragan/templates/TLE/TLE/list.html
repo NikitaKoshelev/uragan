@@ -1,0 +1,24 @@
+{% extends 'TLE/TLE/base.html' %}
+{% load i18n %}
+
+
+{% block content-header %}
+  {% trans 'Two-line element sets' %}
+{% endblock %}
+
+
+{% block breadcrumb %}
+  {{ block.super }}
+    <li class="active">{% trans 'List' %}</li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+      {% for obj in object_list %}
+        {% include 'TLE/TLE/tle.html' %}
+      {% endfor %}
+      {% include 'includes/paginator.html' %}
+    </div>
+{% endblock %}
+

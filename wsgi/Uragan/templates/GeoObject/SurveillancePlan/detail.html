@@ -1,0 +1,80 @@
+{% extends 'GeoObject/SurveillancePlan/base.html' %}
+{% load i18n bootstrap_tags staticfiles %}
+
+
+{% block head %}
+  {{ block.super }}
+    <link href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block content-header %}
+  {% trans 'detail information for surveillance plan'|capfirst %}
+{% endblock %}
+
+
+{% block breadcrumb %}
+  {{ block.super }}
+    <li class="active">{% trans 'detail'|capfirst %}</li>
+{% endblock %}
+
+
+{% block manage_buttons %}
+    <a class="btn bg-olive btn-flat" href="{% url 'GeoObject:create_plan' %}">
+        <i class="fa fa-plus-square-o fa-fw"></i>{% trans 'create new surveillance plan'|capfirst %}
+    </a>
+    <a class="btn bg-orange btn-flat pull-right" href="{% url 'GeoObject:edit_plan' pk=surv_plan.pk %}">
+        <i class="fa fa-edit fa-fw"></i>{% trans 'edit surveillance plan'|capfirst %}
+    </a>
+
+{% endblock %}
+
+{% block content %}
+    {% include 'GeoObject/SurveillancePlan/includes/surveillance_plan.html' %}
+    <div class="row-fluid">
+        <div id="map_canvas" style="width:100%; margin-bottom: 15px; background-color: inherit"></div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+  {{ block.super }}
+    <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/datatables/dataTables.bootstrap.js' %}" type="text/javascript"></script>
+    <script type="text/javascript">
+        function initialize() {
+            // Определение карты
+            var options = {
+                center: {lat: 0, lng: 0},
+                zoom: 2,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+
+            var map = new google.maps.Map(document.getElementById("map_canvas"), options);
+            var kml = new google.maps.KmlLayer(window.location.href.split('#', 1)[0] + '?get_kml=true');
+            kml.setMap(map);
+            console.log('KmlLayer:', kml);
+        }
+
+        $(document).ready(function () {
+            var table = $("#list");
+            table.DataTable({
+                dom: '<"box-header with-border"<"col-sm-6"l><"col-sm-6"f>>' +
+                '<"box-body table-responsive"t>' +
+                '<"box-footer clearfix"<"col-md-6"i><"col-md-6 text-right"p>>',
+                ordering: false,
+                deferRender: true,
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.10.7/i18n/{0}.json".f(page_language)
+                }
+            });
+
+            //table.find("tbody tr").click(function () {
+            //    $(this).toggleClass('success');
+            //});
+
+            $("#map_canvas").css('height', '600px');//$('.content').css('height'));
+            async_gmaps()
+        });
+    </script>
+{% endblock %}

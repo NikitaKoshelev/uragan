@@ -1,0 +1,339 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-29 00:39+0000\n"
+"PO-Revision-Date: 2015-06-29 00:41+0000\n"
+"Last-Translator: b'  <>'\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Translated-Using: django-rosetta 0.7.6\n"
+
+#: templates/GeoObject/GeoObject/base.html:6
+msgid "Geographical object"
+msgstr "Географический объект"
+
+#: templates/GeoObject/GeoObject/detail.html:4
+msgid "detail information"
+msgstr "подробная информация"
+
+#: templates/GeoObject/GeoObject/detail.html:9
+msgid "details"
+msgstr "детали"
+
+#: templates/GeoObject/GeoObject/detail.html:15
+#: templates/GeoObject/GeoObject/list.html:22
+msgid "create new geographical object"
+msgstr "создать новый географический объект"
+
+#: templates/GeoObject/GeoObject/detail.html:18
+msgid "edit geographical object"
+msgstr "редактирование географических объектов"
+
+#: templates/GeoObject/GeoObject/detail.html:36
+#: templates/GeoObject/GeoObject/list.html:35
+#: templates/GeoObject/GeoObject/list.html:54
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:97
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:118
+msgid "northern latitude in degrees"
+msgstr "северная широта в градусах"
+
+#: templates/GeoObject/GeoObject/detail.html:41
+#: templates/GeoObject/GeoObject/list.html:40
+#: templates/GeoObject/GeoObject/list.html:59
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:103
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:124
+msgid "eastern longitude in degrees"
+msgstr "восточная долгота в градусах"
+
+#: templates/GeoObject/GeoObject/detail.html:49
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:72
+msgid "short description"
+msgstr "краткое описание"
+
+#: templates/GeoObject/GeoObject/detail.html:56
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:79
+msgid "description"
+msgstr "описание"
+
+#: templates/GeoObject/GeoObject/detail.html:64
+msgid "polygon in KML format"
+msgstr "полигон в формате kml"
+
+#: templates/GeoObject/GeoObject/list.html:11
+msgid "list geographical objects"
+msgstr "список географических объектов"
+
+#: templates/GeoObject/GeoObject/list.html:16
+#: templates/GeoObject/SurveillancePlan/list.html:12
+#: templates/includes/sidebar.html:79 templates/includes/sidebar.html.py:98
+#: templates/includes/sidebar.html:140
+msgid "list"
+msgstr "список"
+
+#: templates/GeoObject/GeoObject/list.html:33
+#: templates/GeoObject/GeoObject/list.html:52
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:94
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:115
+msgid "title"
+msgstr "название"
+
+#: templates/GeoObject/GeoObject/list.html:36
+#: templates/GeoObject/GeoObject/list.html:55
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:98
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:119
+msgid "lat"
+msgstr "широта"
+
+#: templates/GeoObject/GeoObject/list.html:41
+#: templates/GeoObject/GeoObject/list.html:60
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:104
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:125
+msgid "lon"
+msgstr "долгота"
+
+#: templates/GeoObject/GeoObject/list.html:44
+#: templates/GeoObject/GeoObject/list.html:63
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:51
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:107
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:128
+msgid "last modification"
+msgstr "последняя модификация"
+
+#: templates/GeoObject/GeoObject/list.html:78
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:143
+msgid "go to detail view"
+msgstr "перейдите в подробный вид"
+
+#: templates/GeoObject/GeoObject/update.html:11
+#: templates/GeoObject/GeoObject/wizard_create.html:11
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:11
+msgid "Creation"
+msgstr "Создание"
+
+#: templates/GeoObject/GeoObject/update.html:15
+msgid "Edit geographical object"
+msgstr "Редактирование географического объекта"
+
+#: templates/GeoObject/GeoObject/update.html:27
+msgid "apply changes"
+msgstr "применить изменения"
+
+#: templates/GeoObject/GeoObject/wizard_create.html:15
+#: templates/GeoObject/GeoObject_form.html:11
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:15
+msgid "Create geographical object"
+msgstr "Создать географический объект"
+
+#: templates/GeoObject/GeoObject/wizard_create.html:16
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:16
+msgid "Step"
+msgstr "Шаг"
+
+#: templates/GeoObject/GeoObject/wizard_create.html:16
+#: templates/GeoObject/SurveillancePlan/wizard_create.html:16
+msgid "of"
+msgstr "из"
+
+#: templates/GeoObject/GeoObject_form.html:20
+#: templates/includes/wizard_form.html:23
+msgid "Previous step"
+msgstr "Предыдущий шаг"
+
+#: templates/GeoObject/GeoObject_form.html:23
+#: templates/includes/wizard_form.html:29
+msgid "Next step"
+msgstr "Следующий шаг"
+
+#: templates/GeoObject/GeoObject_form.html:26
+#: templates/includes/wizard_form.html:33
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/GeoObject/SurveillancePlan/base.html:6
+msgid "surveillance plan"
+msgstr "план наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/create.html:13
+msgid "creation"
+msgstr "создание"
+
+#: templates/GeoObject/SurveillancePlan/create.html:18
+msgid "create surveillance plan"
+msgstr "создание плана наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/create.html:31
+#: templates/includes/sidebar.html:75 templates/includes/sidebar.html.py:92
+msgid "create"
+msgstr "создать"
+
+#: templates/GeoObject/SurveillancePlan/detail.html:12
+msgid "detail information for surveillance plan"
+msgstr "подробная информация о плане наблюдения "
+
+#: templates/GeoObject/SurveillancePlan/detail.html:17
+msgid "detail"
+msgstr "детально"
+
+#: templates/GeoObject/SurveillancePlan/detail.html:23
+msgid "create new surveillance plan"
+msgstr "создать новый план наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/detail.html:26
+msgid "edit surveillance plan"
+msgstr "редактирование плана наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/home.html:9
+msgid "dashboard"
+msgstr "приборная панель"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:15
+#: templates/includes/sidebar.html:114
+msgid "get LST file"
+msgstr "получить файл lst"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:20
+#: templates/includes/sidebar.html:109
+msgid "get KML file"
+msgstr "получить kml файл"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:31
+msgid "go to the detail"
+msgstr "перейти к деталям"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:41
+msgid "time start"
+msgstr "время начала"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:46
+msgid "time end"
+msgstr "время окончания"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:56
+msgid "creation date and time"
+msgstr "дата и время создания"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:62
+msgid "researchers"
+msgstr "исследователи"
+
+#: templates/GeoObject/SurveillancePlan/includes/surveillance_plan.html:87
+msgid "geographical objects"
+msgstr "географические объекты"
+
+#: templates/GeoObject/SurveillancePlan/list.html:6
+#: templates/includes/sidebar.html:86
+msgid "surveillance plans"
+msgstr "планы наблюдения"
+
+#: templates/GeoObject/SurveillancePlan/list.html:25
+msgid "surveillance plans not found"
+msgstr "планы наблюдения не найдены"
+
+#: templates/TLE/Satellites/detail.html:6 templates/TLE/Satellites/list.html:6
+msgid "satellites list"
+msgstr "список спутников"
+
+#: templates/TLE/Satellites/detail.html:12
+#: templates/TLE/Satellites/list.html:12 templates/TLE/TLE/list.html:12
+msgid "List"
+msgstr "Список"
+
+#: templates/TLE/Satellites/detail.html:30
+msgid "count tle"
+msgstr "количество TLE"
+
+#: templates/TLE/TLE/list.html:6
+msgid "Two-line element sets"
+msgstr "Двустрочные наборы элементов орбиты"
+
+#: templates/includes/navbar.html:5 templates/includes/sidebar.html:62
+msgid "Translator"
+msgstr "Переводчик"
+
+#: templates/includes/navbar.html:131
+msgid "Member since"
+msgstr "Участник с"
+
+#: templates/includes/paginator.html:8
+msgid "previous"
+msgstr "предыдущий"
+
+#: templates/includes/paginator.html:52
+msgid "next"
+msgstr "далее"
+
+#: templates/includes/sidebar.html:46
+#| msgid "Source language"
+msgid "languages"
+msgstr "языки"
+
+#: templates/includes/sidebar.html:59
+msgid "Modules"
+msgstr "Модули"
+
+#: templates/includes/sidebar.html:65
+msgid "Apps"
+msgstr "Приложения"
+
+#: templates/includes/sidebar.html:69
+msgid "Geo objects"
+msgstr "Гео объекты"
+
+#: templates/includes/sidebar.html:104
+msgid "view"
+msgstr "смотреть"
+
+#: templates/includes/sidebar.html:127
+msgid "Satellites"
+msgstr "Спутники"
+
+#: templates/includes/translate.html:4
+#, fuzzy
+msgid "Tranlslate"
+msgstr "Tranlslate"
+
+#: templates/includes/translate.html:8
+msgid "Sync translate"
+msgstr "Снхронный перевод"
+
+#: templates/includes/translate.html:11
+msgid "Reverse"
+msgstr "Развернуть"
+
+#: templates/includes/translate.html:17
+msgid "Collapse"
+msgstr "Свернуть"
+
+#: templates/includes/translate.html:20
+msgid "Remove"
+msgstr "Удалить"
+
+#: templates/includes/translate.html:32 templates/includes/translate.html:36
+msgid "Source language"
+msgstr "Исходный язык"
+
+#: templates/includes/translate.html:42 templates/includes/translate.html:46
+msgid "Destination language"
+msgstr "Язык назначения"
+
+#: templates/includes/translate.html:53
+msgid "Translate"
+msgstr "Перевести"
+
+#: templates/includes/wizard_form.html:16
+msgid "First step"
+msgstr "Первый шаг"
+
+#~ msgid "Map"
+#~ msgstr "Карта"

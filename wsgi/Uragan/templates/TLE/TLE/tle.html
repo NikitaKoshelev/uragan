@@ -1,0 +1,19 @@
+<div class="col-lg-6">
+    <div class="box box-solid {% if is_sat_list %}collapsed-box{% endif %}">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{ obj.title_line }}</h3>
+
+            <h3 class="box-title text-muted pull-right">{{ obj.datetime_in_lines|date:'c' }}</h3>
+          {% if is_sat_list %}
+              <div class="box-tools">
+                  <button class="btn btn-box-tool" data-widget="collapse">
+                      <i class="fa fa-plus"></i>
+                  </button>
+              </div>
+          {% endif %}
+        </div>
+        <div class="box-body">
+            <pre>{{ obj.title_line }}<br/>{{ obj.line1 }}<br/>{{ obj.line2 }}</pre>
+        </div>
+    </div>
+</div>

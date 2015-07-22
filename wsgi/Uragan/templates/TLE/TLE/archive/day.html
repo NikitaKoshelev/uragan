@@ -1,0 +1,18 @@
+<h1>{{ day }}</h1>
+
+<ul>
+    {% for object in object_list %}
+        <li>{{ object.datetime_in_lines.date }}: {{ object.title_line }}</li>
+    {% endfor %}
+</ul>
+
+<p>
+    {% if previous_day %}
+        Previous Day: {{ previous_day }}
+    {% endif %}
+    {% if previous_day and next_day %}--{% endif %}
+    {% if next_day %}
+        Next Day: {{ next_day }}
+    {% endif %}
+</p>
+
