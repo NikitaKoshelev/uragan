@@ -56,6 +56,7 @@ DEFAULT_APPS = (
     'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.gis',
 )
 
 THIRD_PARTY_APPS = (
@@ -96,7 +97,7 @@ WSGI_APPLICATION = 'apps.common.wsgi.application'
 if ON_OPENSHIFT:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': os.environ['OPENSHIFT_APP_NAME'],
             'USER': os.environ['OPENSHIFT_POSTGRESQL_DB_USERNAME'],
             'PASSWORD': os.environ['OPENSHIFT_POSTGRESQL_DB_PASSWORD'],
@@ -109,7 +110,7 @@ else:
         'default': {
             #'ENGINE': 'django.db.backends.sqlite3',
             #'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': 'uragan',
             'USER': 'django',
             'PASSWORD': '0000',
@@ -212,3 +213,6 @@ ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_WSGI_AUTO_RELOAD = True
 #-----------------------------------------------------------------------------------------------------------------------
 #AUTO_RENDER_SELECT2_STATICS = False
+
+if not ON_OPENSHIFT:
+    GEOS_LIBRARY_PATH = r"C:\OSGeo4W64\bin\geos_c.dll"

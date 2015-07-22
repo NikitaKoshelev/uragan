@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -37,3 +37,19 @@ class Satellite(models.Model):
 
     def __str__(self):
         return '{} ({})'.format(self.title, self.satellite_number)
+
+
+class SubsattellitePoints(models.Model):
+    satellite = models.ForeignKey(Satellite)
+    datetime = models.DateTimeField(verbose_name=_('date and time'))
+    location = models.PointField(verbose_name=_('subsatellite point location'), geography=True)
+
+    class Meta:
+        ordering = '-datetime',
+        verbose_name = _('subsatellite point')
+        verbose_name_plural = _('subsatellite points')
+
+    def __str__(self):
+        return '{}: '.format(self._meta.verbose_name)
+
+    objects = models.GeoManager()

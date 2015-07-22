@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import TLE,Satellite
+from .models import TLE, Satellite, SubsattellitePoints
 # Register your models here.
 
 class TLE_Admin(admin.ModelAdmin):
@@ -29,3 +29,4 @@ class SatelliteAdmin(admin.ModelAdmin):
 
 admin.site.register(TLE, TLE_Admin)
 admin.site.register(Satellite, admin.ModelAdmin)
+admin.site.register(SubsattellitePoints, admin.ModelAdmin)

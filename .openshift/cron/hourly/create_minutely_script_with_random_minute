@@ -1,0 +1,26 @@
+#!/bin/env python
+# .openshift/cron/hourly/create_minutely_script_with_random_minute
+# coding: utf-8
+
+from random import randint
+from os import environ, path
+
+repo_dir = environ.get('OPENSHIFT_REPO_DIR')
+minute = randint(1, 59)
+
+print('Create minutely script with minute={}'.format(minute))
+template = """#!/bin/env bash
+# .openshift/cron/minutely/update_TLE
+MINUTE=$(date '+%M')
+
+if [ $MINUTE == {} ]; then
+    echo "Start update TLE script."
+    echo "Date and time: $(date -u)"
+    python manage.py update_TLE
+fi
+
+exit
+""".format(minute)
+
+with open(path.join(repo_dir, '.openshift', 'cron', 'minutely', 'update_TLE'), 'w') as fh:
+    fh.write(template)

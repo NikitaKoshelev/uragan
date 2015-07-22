@@ -10,6 +10,8 @@ from pytz import utc
 
 from django.core.management.base import BaseCommand
 from apps.TLE.models import TLE, Satellite
+from .init_TLE_ISS_formfile import unique_tle
+
 
 if sys.version_info.major == 2:
     from urllib import urlretrieve  # python 2.x
@@ -25,7 +27,7 @@ class Command(BaseCommand):
 
         if count:
             last_TLE = TLE.objects.first()
-            last_mktime = mktime_tz(parsedate_tz(last_TLE.datetime_created.ctime()))
+            last_mktime = mktime_tz(parsedate_tz(last_TLE.datetime_in_lines.ctime()))
         else:
             last_mktime = 0
 
@@ -35,52 +37,23 @@ class Command(BaseCommand):
 
         url_mktime = mktime_tz(parsedate_tz(resp.headers['last-modified']))
         url_datetime = datetime.utcfromtimestamp(url_mktime)
-
         if url_mktime > last_mktime:
             self.stdout.write('Date and time of creation TLE: {}'.format(url_datetime.isoformat()))
             self.stdout.write('New TLE found, downloading...')
 
-            result = urlretrieve(url, 'TLE.txt'.format(url_mktime))
-
+            result = urlretrieve(url, 'TLE.txt')
             fh = open(result[0], 'r', encoding='utf8')
-            lines = fh.readlines()
+            lines = fh.readlines()[:3]
             fh.close()
             os.remove(result[0])
-
-            len_lines = len(lines)
-            TLE_list = []
-            for title, line1, line2 in zip(lines[::3], lines[1:len_lines:3], lines[2:len_lines:3]):
-                year = int('20' + line1[18:20])
-                datetime_created = url_datetime.replace(tzinfo=utc)
-                datetime_in_lines = datetime(year, 1, 1, 0, 0, 0, 0, utc) + timedelta(days=float(line1[20:32]) - 1)
-                satellite_number = line1[2:7]
-
-                sat = Satellite.objects.get_or_create(title=title.strip(), satellite_number=satellite_number)[0]
-
-                title_line = '{:<24}'.format(title.strip())
-                line1 = '{:<69}'.format(line1.strip())
-                line2 = '{:<69}'.format(line2.strip())
-
-                if sat.tle_set.first():
-                    if datetime_in_lines != sat.tle_set.first().datetime_in_lines:
-                        TLE_list.append(TLE(datetime_created=datetime_created,
-                                            title_line=title_line,
-                                            line1=line1,
-                                            line2=line2,
-                                            datetime_in_lines=datetime_in_lines,
-                                            satellite=sat)
-                                        )
-                else:
-                    TLE_list.append(TLE(datetime_created=datetime_created,
-                                            title_line=title_line,
-                                            line1=line1,
-                                            line2=line2,
-                                            datetime_in_lines=datetime_in_lines,
-                                            satellite=sat)
-                                        )
-
-            TLE.objects.bulk_create(TLE_list)
-
-            self.stdout.write('Download finished')
+            title = lines[0].strip()
+            norad_id = int(lines[1][2:7])
+            sat, status = Satellite.objects.get_or_create(title=title, satellite_number=norad_id)
+            try:
+                self.stdout.write('Start create and save object - ' + sat.title + '\n')
+                TLE.objects.bulk_create(unique_tle(lines, sat))
+                self.stdout.write('Finished create and save object - ' + sat.title + '\n')
+            except:
+                self.stdout.write('Fail create and save object - ' + sat.title + '\n')
         else:
             self.stdout.write('No new TLE. A new attempt after 5 minutes...')
