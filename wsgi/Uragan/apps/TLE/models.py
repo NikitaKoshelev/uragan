@@ -39,17 +39,18 @@ class Satellite(models.Model):
         return '{} ({})'.format(self.title, self.satellite_number)
 
 
-class SubsattellitePoints(models.Model):
-    satellite = models.ForeignKey(Satellite)
-    datetime = models.DateTimeField(verbose_name=_('date and time'))
+class SubsatellitePoint(models.Model):
+    tle = models.ForeignKey(TLE)
+    date_time = models.DateTimeField(verbose_name=_('date and time'))
     location = models.PointField(verbose_name=_('subsatellite point location'), geography=True)
 
     class Meta:
-        ordering = '-datetime',
+        ordering = '-date_time',
         verbose_name = _('subsatellite point')
         verbose_name_plural = _('subsatellite points')
 
     def __str__(self):
-        return '{}: '.format(self._meta.verbose_name)
+        return '{0} {1}:  {2:%Y-%m-%d %H:%M:%S.%f};{3}'.format(self.tle.satellite.title, self._meta.verbose_name,
+                                                               self.date_time, self.location)
 
     objects = models.GeoManager()

@@ -84,9 +84,9 @@
                     <td>{{ geo_object.lon }}</td>
                     <td>{{ geo_object.last_modification }}</td>
                     <td>
-                      {% if geo_object.polygon %}
+                      {% if geo_object.geometry %}
                           Yes
-                          <a href="{% url 'GeoObject:get_kml_by_object' pk=geo_object.pk %}"
+                          <a href="{% url 'GeoObject:get_kml_by_object' geo_object.pk %}"
                              class="btn btn-box-tool">
                               <i class="fa fa-download"></i>
                           </a>

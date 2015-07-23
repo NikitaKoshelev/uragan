@@ -6,21 +6,26 @@ from random import randint
 from os import environ, path
 
 repo_dir = environ.get('OPENSHIFT_REPO_DIR')
-minute = randint(1, 59)
+minute = randint(5, 59)
 
 print('Create minutely script activate on the {} minute of the current hour'.format(minute))
 template = """#!/bin/env bash
-# .openshift/cron/minutely/update_TLE
+# .openshift/cron/minutely/update_TLE_and_SubsatellitePoints
+
+source ${VIRTUAL_ENV}/bin/activate
+cd ${OPENSHIFT_REPO_DIR}wsgi/Uragan
+
 MINUTE=$(date '+%M')
 
 if [ $MINUTE == {} ]; then
     echo "Start update TLE script."
     echo "Date and time: $(date -u)"
     python manage.py update_TLE_from_spacetrack
+    python manage.py update_SubsatellitePoints
 fi
 
 exit
 """.format(minute)
 
-with open(path.join(repo_dir, '.openshift', 'cron', 'minutely', 'update_TLE'), 'w') as fh:
+with open(path.join(repo_dir, '.openshift', 'cron', 'minutely', 'update_TLE_and_SubsatellitePoints'), 'w') as fh:
     fh.write(template)

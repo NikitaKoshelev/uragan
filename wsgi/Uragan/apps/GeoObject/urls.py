@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 from .views import DetailGeoObject, where_iss, WizardCreateGeoObject, ListGeoObject, UpdateGeoObject, CreateGeoObject
 from .views import CreateSurveillancePlan, DetailSurveillancePlan, UpdateSurveillancePlan, ListSurveillancePlan
-from .api import get_kml_by_title, get_kml_by_object, geocoder
+from .api import get_kml_by_title, get_kml_by_object_id, geocoder
 
 
 # Views GeoObject
@@ -19,7 +19,7 @@ urlpatterns = [
 urlpatterns += [
     url(r'^api/geocoder/$', geocoder, name='geocoder'),
     url(r'^api/geocoder/(?P<lang>[a-zA-z]{2})/$', geocoder, name='geocoder_with_lang'),
-    url(r'^kml/(?P<pk>\d+)/$', get_kml_by_object, name='get_kml_by_object'),
+    url(r'^kml/(?P<pk>\d+)/$', get_kml_by_object_id, name='get_kml_by_object'),
     url(r'^kml/$', get_kml_by_title, name='get_kml_by_title'),
 ]
 

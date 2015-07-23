@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import TLE, Satellite, SubsattellitePoints
+from .models import TLE, Satellite, SubsatellitePoint
 # Register your models here.
 
 class TLE_Admin(admin.ModelAdmin):
@@ -27,6 +27,13 @@ class SatelliteAdmin(admin.ModelAdmin):
     ]
 
 
+class SubsatellitePoint_Admin(admin.ModelAdmin):
+    readonly_fields = 'date_time', 'location', 'tle',
+    list_display = 'date_time', 'location', 'tle',
+    date_hierarchy = 'date_time'
+    list_filter = 'tle',
+
+
 admin.site.register(TLE, TLE_Admin)
 admin.site.register(Satellite, admin.ModelAdmin)
-admin.site.register(SubsattellitePoints, admin.ModelAdmin)
+admin.site.register(SubsatellitePoint, SubsatellitePoint_Admin)
