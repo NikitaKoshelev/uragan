@@ -15,9 +15,9 @@ template = """#!/bin/env bash
 source ${VIRTUAL_ENV}/bin/activate
 cd ${OPENSHIFT_REPO_DIR}wsgi/Uragan
 
-MINUTE=$(date '+%M')
+MINUTE=$(date '+%%M')
 
-if [ $MINUTE == {} ]; then
+if [ $MINUTE == %d ]; then
     echo "Start update TLE script."
     echo "Date and time: $(date -u)"
     python manage.py update_TLE_from_spacetrack
@@ -25,7 +25,7 @@ if [ $MINUTE == {} ]; then
 fi
 
 exit
-""".format(minute)
+""" % minute
 
 with open(path.join(repo_dir, '.openshift', 'cron', 'minutely', 'update_TLE_and_SubsatellitePoints'), 'w') as fh:
     fh.write(template)
