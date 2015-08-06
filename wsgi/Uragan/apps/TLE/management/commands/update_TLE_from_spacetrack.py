@@ -8,6 +8,7 @@ from dateutil.parser import parse
 from tqdm import tqdm
 from pytz import utc
 
+
 def unique_tle(seq, satellite, start):
     seen = set(satellite.tle_set.filter(datetime_in_lines__gte=start).values_list('datetime_in_lines', 'satellite'))
     seen_add = seen.add
@@ -39,7 +40,7 @@ class Command(BaseCommand):
 
         for sat in satellites:
             try:
-                credentials = {'identity': 'nikita.koshelev.94@yandex.ru', 'password': 'K0SHeLeV21101994'}
+                credentials = {'identity': 'rkk.experiments@mail.ru', 'password': 'rkkexperiments2015'}
                 first_tle = sat.tle_set.first()
                 date_start = first_tle.datetime_in_lines.date() if first_tle else date(1998, 11, 20)
                 query = spacetrack.tle_query_build(date_range=(date_start, date.today()+timedelta(days=1)),

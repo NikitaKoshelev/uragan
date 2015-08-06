@@ -35,14 +35,10 @@ DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost', '127.3.161.130']
+ALLOWED_HOSTS = ['localhost']
 if os.environ.get('OPENSHIFT_GEAR_DNS', False):
     ALLOWED_HOSTS.append(os.environ['OPENSHIFT_GEAR_DNS'])
 
-ADMINS = (
-    ('NikitaKoshelev', 'nikita.koshelev@gmail.com'),
-)
-MANAGERS = ADMINS
 
 # Application definition
 
@@ -85,7 +81,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-
 ROOT_URLCONF = 'apps.common.urls'
 
 WSGI_APPLICATION = 'apps.common.wsgi.application'
@@ -103,19 +98,48 @@ if ON_OPENSHIFT:
             'PASSWORD': os.environ['OPENSHIFT_POSTGRESQL_DB_PASSWORD'],
             'HOST': os.environ['OPENSHIFT_POSTGRESQL_DB_HOST'],
             'PORT': os.environ['OPENSHIFT_POSTGRESQL_DB_PORT'],
+            'CONN_MAX_AGE': None
+        }
+    }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+        'subsatpoints': {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': os.path.join(os.environ['OPENSHIFT_DATA_DIR'], 'django_cache'),
+            'TIMEOUT': None,
+            'OPTIONS': {
+                'MAX_ENTRIES': 1500000
+            }
         }
     }
 else:
     DATABASES = {
         'default': {
-            #'ENGINE': 'django.db.backends.sqlite3',
-            #'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            # 'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
             'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': 'uragan',
             'USER': 'django',
-            'PASSWORD': '0000',
+            'PASSWORD': 'django',
             'HOST': 'localhost',
             'PORT': '5432',
+            'CONN_MAX_AGE': None
+        }
+    }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+        'subsatpoints': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            #'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
+            'KEY_FUNCTION': 'apps.TLE.utils.make_key',
+            'TIMEOUT': None,
+            'OPTIONS': {
+                'MAX_ENTRIES': 1500000
+            }
         }
     }
 
@@ -132,7 +156,7 @@ LANGUAGES = (
 
 LOCALE_PATHS = tuple(os.path.join(BASE_DIR, os.path.normpath(app.replace('.', '/')), 'locale') for app in LOCAL_APPS)
 LOCALE_PATHS += (
-     os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 # Optional. If you want to use redirects, set this to True
@@ -181,9 +205,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 AUTH_USER_MODEL = 'User.Profile'
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 """
 LOGGING = {
     'version': 1,
@@ -204,15 +228,15 @@ LOGGING = {
     }
 }
 """
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 YANDEX_TRANSLATE_KEY = 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9'
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
-#ROSETTA_GOOGLE_TRANSLATE = True
+# ROSETTA_GOOGLE_TRANSLATE = True
 ROSETTA_WSGI_AUTO_RELOAD = True
-#-----------------------------------------------------------------------------------------------------------------------
-#AUTO_RENDER_SELECT2_STATICS = False
+# -----------------------------------------------------------------------------------------------------------------------
+# AUTO_RENDER_SELECT2_STATICS = False
 
 if not ON_OPENSHIFT:
-    GEOS_LIBRARY_PATH = r"C:\OSGeo4W64\bin\geos_c.dll"
+    GEOS_LIBRARY_PATH = r"F:\Programs\OSGeo4W64\bin\geos_c.dll"

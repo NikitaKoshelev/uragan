@@ -21,7 +21,7 @@ if [ $MINUTE == %d ]; then
     echo "Start update TLE script."
     echo "Date and time: $(date -u)"
     python manage.py update_TLE_from_spacetrack
-    python manage.py update_SubsatellitePoints
+    # python manage.py update_SubsatellitePoints
 fi
 
 exit

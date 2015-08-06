@@ -7,6 +7,11 @@ from tqdm import tqdm
 from django.contrib.gis.geos import Point
 from .models import SubsatellitePoint
 
+
+def make_key(key, key_prefix, version):
+    return '::'.join([key_prefix, str(version), str(key).replace(' ', '_')])
+
+
 class DateTimeRange(object):
     def __init__(self, start, stop, step=1):
         self.start = start
@@ -51,17 +56,20 @@ def chunker(chunk_size, iterable):
         iterable = iterable[chunk_size:]
 
 
-def update_track(tle, delta=timedelta(days=3), step_in_sec=1):
+def get_ISS_subsatpoint(tle, iss_time):
+    iss = readtle(tle.title_line, tle.line1, tle.line2)
+    iss.compute(iss_time)
+    sublong, sublat = map(degrees, (iss.sublong, iss.sublat))
+    return iss_time, Point(sublong, sublat)
+
+
+def update_track(tle, delta=timedelta(days=1), step_in_sec=1):
     start = tle.datetime_in_lines
     stop = start+delta
     SubsatellitePoint.objects.filter(date_time__gte=start).delete()
     iss = readtle(tle.title_line, tle.line1, tle.line2)
-    for loc_start, loc_stop in tqdm(DayRange(start, stop, 1), leave=True):
-        subsat_points = []
-        print('\n{}'.format(loc_start.date()))
-        for iss_time, next_time in tqdm(DateTimeRange(loc_start, loc_stop, step_in_sec), leave=True):
-            iss.compute(iss_time)
-            sublong, sublat = map(degrees, (iss.sublong, iss.sublat))
-            subsat_points.append(SubsatellitePoint(date_time=iss_time, location=Point(sublong, sublat), tle=tle))
-
-        yield loc_start.date(), subsat_points
+    for iss_time, next_time in tqdm(DateTimeRange(start, stop, step_in_sec), leave=True):
+        iss.compute(iss_time)
+        sublong, sublat = map(degrees, (iss.sublong, iss.sublat))
+        #yield SubsatellitePoint(date_time=iss_time, location=Point(sublong, sublat), tle=tle), (iss_time, Point(sublong, sublat))
+        yield iss_time, Point(sublong, sublat)

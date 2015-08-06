@@ -86,7 +86,7 @@ def get_kml_for_queryset(queryset, filename=_('Geographical objects')):
     """
     kml = KML.kml(KML.Document(KML.open(1)))
 
-    geo_objects = queryset.values_list('color', 'title', 'lat', 'lon', 'polygon', 'short_description')
+    geo_objects = queryset.values_list('color', 'title', 'lat', 'lon', 'geometry', 'short_description')
     colors = set(items[0] for items in sorted(geo_objects))
     colors_dict = {color: convert_color_hex_to_kml(color) for color in colors}
 
@@ -111,7 +111,7 @@ def get_kml_for_queryset(queryset, filename=_('Geographical objects')):
             )
 
             if polygon:
-                polygon = parser.fromstring(polygon)
+                polygon = parser.fromstring(polygon.kml)
                 fld.append(KML.Placemark(KML.name(title), KML.styleUrl('#' + style_id),
                                          KML.description(short_description), polygon))
 

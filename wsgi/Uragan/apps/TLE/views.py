@@ -1,9 +1,26 @@
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
 from django.core.serializers import serialize
 from django.views.generic import ListView, DayArchiveView, TodayArchiveView, DetailView
 from .models import TLE, Satellite
 from .mixins import SatellitesTemplateResponseMixin
+from django.core.cache import caches
+from dateutil import parser
+from .utils import get_ISS_subsatpoint
+
+cache = caches['subsatpoints']
+cache.set('TLE', TLE.objects.all())
+
+
+def point_from_datetime(request, date, time):
+    iss_time = parser.parse('%sT%s' % (date, time.replace('-', ':')))
+    cache_TLE = cache.get('TLE')
+    tle = cache_TLE.filter(datetime_in_lines__lte=iss_time).first()
+    print(tle)
+    point = get_ISS_subsatpoint(tle, iss_time)
+    print(point)
+    return HttpResponse((point[0], point[1].wkt))
 
 
 class TLE_ListView(SatellitesTemplateResponseMixin, ListView):

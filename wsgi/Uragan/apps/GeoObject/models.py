@@ -5,7 +5,7 @@ from pykml import parser
 from lxml import etree
 from yandex_translate import YandexTranslate
 
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import GEOSGeometry, Point
 from django.core.urlresolvers import reverse
 from django.contrib.gis.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -31,22 +31,22 @@ class Images(models.Model):
 
 
 class GeoObject(models.Model):
-    title = models.TextField(verbose_name=_('title geographical object'), unique=True)
-    lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
-    lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
-    short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
-    description = models.TextField(verbose_name=_('description'), null=True, blank=True)
-    geometry = models.GeometryField(srid=4326, verbose_name=_('geometry in KML format'), null=True, blank=True)
     color = models.CharField(max_length=20, verbose_name=_('color'), default='#0000ff', null=True, blank=True)
     creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date'))
+    description = models.TextField(verbose_name=_('description'), null=True, blank=True)
+    geometry = models.GeometryField(srid=4326, verbose_name=_('geometry in KML format'), null=True, blank=True)
+    images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('last modification'))
-    images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True, null=True)
+    lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
+    location = models.PointField(geography=True, spatial_index=True, srid=4326, verbose_name=_('location point'), unique=True)
+    lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
+    short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
+    title = models.TextField(verbose_name=_('title geographical object'), unique=True, db_index=True)
 
     objects = models.GeoManager
 
     class Meta:
         ordering = 'title',
-        unique_together = 'lat', 'lon',
         verbose_name = _('geographical object')
         verbose_name_plural = _('geographical objects')
 
@@ -88,9 +88,7 @@ class GeoObject(models.Model):
 
     def get_WKT_from_nominatim(self):
         try:
-            wkt = Nominatim().geocode(self.title, geometry='wkt').raw.get('geotext', False)
-            if wkt:
-                return wkt
+            return Nominatim().geocode(self.title, geometry='wkt').raw.get('geotext', None)
         except:
             return None
 
@@ -98,11 +96,14 @@ class GeoObject(models.Model):
         return reverse('GeoObject:detail', args=[self.pk])
 
     def save(self, *args, **kwargs):
-        self.geometry = GEOSGeometry(self.get_WKT_from_nominatim())
+        wkt = self.get_WKT_from_nominatim()
+        if wkt:
+            self.geometry = GEOSGeometry(wkt)
+        self.location = Point(self.lon, self.lat, srid=4326)
         return super(GeoObject, self).save(*args, **kwargs)
 
     def __str__(self):
-        return '{}({}, {})'.format(self.title, self.lat, self.lon)
+        return '{}{}'.format(self.title, self.location)
 
 
 class SurveillancePlan(models.Model):
@@ -111,7 +112,7 @@ class SurveillancePlan(models.Model):
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
     geo_objects = models.ManyToManyField(GeoObject, verbose_name=_('observed objects'))
     time_start = models.DateTimeField(auto_now=True, verbose_name=_('date and time start'))
-    time_end = models.DateTimeField(default=tz.now() + timedelta(days=3), verbose_name=_('date and time end'))
+    time_end = models.DateTimeField(default=tz.now() + timedelta(days=7), verbose_name=_('date and time end'))
     creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date and time'))
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('modification date and time'))
     researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'),  blank=True)

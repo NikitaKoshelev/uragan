@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from .views import TLE_ListView, TLEDayArchiveView, TLETodayArchiveView, TLE
+from .views import TLE_ListView, TLEDayArchiveView, TLETodayArchiveView, TLE, point_from_datetime
 from .views import SatelliteDetailView, SatelliteListView
 from .api import satellites_list, tle
 
@@ -7,6 +7,7 @@ from .api import satellites_list, tle
 urlpatterns = [
     url(r'^$', TLE_ListView.as_view(), name='list'),
     url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]{2})/$', TLEDayArchiveView.as_view(), name='archive_day'),
+    url(r'^point/(?P<date>[0-9\-]+)/(?P<time>[0-9\-]+)/$', point_from_datetime, name='point'),
     url(r'^today/$', TLETodayArchiveView.as_view(), name="today"),
 ]
 
