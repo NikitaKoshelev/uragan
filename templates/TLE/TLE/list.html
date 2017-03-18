@@ -9,16 +9,16 @@
 
 {% block breadcrumb %}
   {{ block.super }}
-    <li class="active">{% trans 'List' %}</li>
+  <li class="active">{% trans 'List' %}</li>
 {% endblock %}
 
 
 {% block content %}
-    <div class="row">
-      {% for obj in object_list %}
-        {% include 'TLE/TLE/tle.html' %}
-      {% endfor %}
-      {% include 'includes/paginator.html' %}
-    </div>
+  <div class="row">
+    {% for obj in object_list %}
+      {% include 'TLE/TLE/tle.html' %}
+    {% endfor %}
+    {% include 'includes/paginator.html' %}
+  </div>
 {% endblock %}
 

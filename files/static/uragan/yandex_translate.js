@@ -53,79 +53,79 @@ $('#yandex_translate').append($(html));
 
 
 var $translate_container = $('#translate_container'),
-    $source_select = $($translate_container.find('#source_select')),
-    $source = $($translate_container.find('textarea')[0]),
-    $destination = $($translate_container.find('textarea')[1]),
-    $translate_select = $($translate_container.find('#translate_select')),
-    $sync_toggle = $($translate_container.find('#sync_toggle')),
-    $translate_btn = $($translate_container.find('#translate_btn')),
-    $reverse_btn = $($translate_container.find('#reverse_btn')),
-    lng = page_language_code;
+  $source_select = $($translate_container.find('#source_select')),
+  $source = $($translate_container.find('textarea')[0]),
+  $destination = $($translate_container.find('textarea')[1]),
+  $translate_select = $($translate_container.find('#translate_select')),
+  $sync_toggle = $($translate_container.find('#sync_toggle')),
+  $translate_btn = $($translate_container.find('#translate_btn')),
+  $reverse_btn = $($translate_container.find('#reverse_btn')),
+  lng = page_language_code;
 
 
 $(document).ready(function () {
-    $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
-        key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
-        ui: lng
-    }, function (data) {
-        var langs = [];
-        $.each(data.langs, function (key, value) {
-            langs.push({id: key, text: value})
-        });
-        $translate_select.select2({data: langs, language: lng});
-        $translate_select.val(lng === 'en' ? 'ru': 'en').change();
-
-        langs.push({id: 'auto', text: 'Determine automatically'});
-        $source_select.select2({data: langs, language: lng});
-        $source_select.val('auto').change();
+  $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
+    key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
+    ui: lng
+  }, function (data) {
+    var langs = [];
+    $.each(data.langs, function (key, value) {
+      langs.push({id: key, text: value})
     });
+    $translate_select.select2({data: langs, language: lng});
+    $translate_select.val(lng === 'en' ? 'ru' : 'en').change();
+
+    langs.push({id: 'auto', text: 'Determine automatically'});
+    $source_select.select2({data: langs, language: lng});
+    $source_select.val('auto').change();
+  });
 });
 
 
 $('.translate-icon').click(function () {
-    $translate_container.slideToggle('fast');
+  $translate_container.slideToggle('fast');
 });
 
 
 $source.keyup(function (eventObject) {
-    if ($sync_toggle.data().status) yandex_translate($source.val());
+  if ($sync_toggle.data().status) yandex_translate($source.val());
 });
 
 $sync_toggle.click(function () {
-    if ($sync_toggle.data().status) {
-        $sync_toggle.data('status', false);
-        $sync_toggle.find('i').removeClass('fa-toggle-on text-olive').addClass('fa-toggle-off text-red');
-    }
-    else {
-        $sync_toggle.data('status', true);
-        $sync_toggle.find('i').removeClass('fa-toggle-off text-red').addClass('fa-toggle-on text-olive');
-    }
-    $translate_btn.parent().slideToggle('fast');
+  if ($sync_toggle.data().status) {
+    $sync_toggle.data('status', false);
+    $sync_toggle.find('i').removeClass('fa-toggle-on text-olive').addClass('fa-toggle-off text-red');
+  }
+  else {
+    $sync_toggle.data('status', true);
+    $sync_toggle.find('i').removeClass('fa-toggle-off text-red').addClass('fa-toggle-on text-olive');
+  }
+  $translate_btn.parent().slideToggle('fast');
 
 });
 
 $translate_btn.click(function () {
-    yandex_translate($source.val());
+  yandex_translate($source.val());
 });
 
 $reverse_btn.click(function () {
-    var s = $source_select.val(),
-        d = $translate_select.val();
-    $source_select.val(d).change();
-    $translate_select.val(s === 'auto' ? lng : s).change();
+  var s = $source_select.val(),
+    d = $translate_select.val();
+  $source_select.val(d).change();
+  $translate_select.val(s === 'auto' ? lng : s).change();
 });
 
 function yandex_translate(text) {
-    var s_lng = $source_select.val(),
-        d_lng = $translate_select.val(),
-        lng = s_lng === 'auto' ? d_lng : s_lng + '-' + d_lng;
+  var s_lng = $source_select.val(),
+    d_lng = $translate_select.val(),
+    lng = s_lng === 'auto' ? d_lng : s_lng + '-' + d_lng;
 
-    $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/translate', {
-        key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
-        text: text,
-        lang: lng,
-        options: s_lng === 'auto' ? 1 : 0
-    }, function (data, status) {
-        $destination.val(data.text[0]);
-    });
+  $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/translate', {
+    key: 'trnsl.1.1.20150415T224006Z.a368509643fb7c76.cf232c7e8dce21c5295d69dfcd16ee2e76aa1cf9',
+    text: text,
+    lang: lng,
+    options: s_lng === 'auto' ? 1 : 0
+  }, function (data, status) {
+    $destination.val(data.text[0]);
+  });
 }

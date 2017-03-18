@@ -2,12 +2,13 @@
 
 <ul class="nav navbar-nav">
   <li>
-    <a href="javascript: void(0);" class="translate-icon" role="button" data-toogle="tooltip" title="{% trans 'Translator' %}">
+    <a href="javascript: void(0);" class="translate-icon" role="button" data-toogle="tooltip"
+       title="{% trans 'Translator' %}">
       <i class="fa fa-language"></i>
     </a>
   </li>
 
-{% comment %}
+  {% comment %}
   <!-- Messages: style can be found in dropdown.less-->
   <li class="dropdown messages-menu">
     <!-- Menu toggle button -->
@@ -108,19 +109,20 @@
 {% endcomment %}
 
   {% if user.is_authenticated %}
-  <!-- User Account Menu -->
+    <!-- User Account Menu -->
     <li class="dropdown user user-menu">
       <!-- Menu Toggle Button -->
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <!-- The user image in the navbar-->
-        <img src="{{ user.ava|default:'http://lorempixel.com/160/160/people/' }}" class="user-image" alt="User Image" />
+        <img src="{{ user.ava|default:'http://lorempixel.com/160/160/people/' }}" class="user-image" alt="User Image"/>
         <!-- hidden-xs hides the username on small devices so only the image appears. -->
         <span class="hidden-xs">{{ user.get_username }}</span>
       </a>
       <ul class="dropdown-menu">
         <!-- The user image in the menu -->
         <li class="user-header">
-          <img src="{{ user.ava|default:'http://lorempixel.com/160/160/people/' }}" class="img-circle" alt="User Image" />
+          <img src="{{ user.ava|default:'http://lorempixel.com/160/160/people/' }}" class="img-circle"
+               alt="User Image"/>
 
           <p>
             {% if user.first_name and user.last_name %}

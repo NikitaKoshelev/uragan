@@ -2,11 +2,11 @@
 <form id="create-geo_object">
   {% csrf_token %}
   {{ form|as_bootstrap }}
-    <div class="form-group">
-        <button class="btn bg-olive btn-flat" type="submit">
-            <i class="fa fa-check fa-fw"></i> {% trans 'apply changes'|capfirst %}
-        </button>
-    </div>
+  <div class="form-group">
+    <button class="btn bg-olive btn-flat" type="submit">
+      <i class="fa fa-check fa-fw"></i> {% trans 'apply changes'|capfirst %}
+    </button>
+  </div>
 </form>
 <div id="form_media">
   {{ form.media }}
