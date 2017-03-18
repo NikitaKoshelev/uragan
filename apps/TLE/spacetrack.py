@@ -36,9 +36,9 @@
 
 """
 
-import requests
 from datetime import date
 
+import requests
 
 _url_base = "https://www.space-track.org/"
 _url_login = "ajaxauth/login"

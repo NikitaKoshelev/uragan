@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
-from .views import DetailGeoObject, where_iss, WizardCreateGeoObject, ListGeoObject, UpdateGeoObject, CreateGeoObject
-from .views import CreateSurveillancePlan, DetailSurveillancePlan, UpdateSurveillancePlan, ListSurveillancePlan
-from .api import get_kml_by_title, get_kml_by_object_id, geocoder
+from django.conf.urls import url
 
+from .api import get_kml_by_title, get_kml_by_object_id, geocoder
+from .views import CreateSurveillancePlan, DetailSurveillancePlan, UpdateSurveillancePlan, ListSurveillancePlan
+from .views import DetailGeoObject, where_iss, WizardCreateGeoObject, ListGeoObject, UpdateGeoObject, CreateGeoObject
 
 # Views GeoObject
 urlpatterns = [
@@ -14,7 +14,6 @@ urlpatterns = [
     url(r'^where_iss/$', where_iss),
 ]
 
-
 # API GeoObject
 urlpatterns += [
     url(r'^api/geocoder/$', geocoder, name='geocoder'),
@@ -22,7 +21,6 @@ urlpatterns += [
     url(r'^kml/(?P<pk>\d+)/$', get_kml_by_object_id, name='get_kml_by_object'),
     url(r'^kml/$', get_kml_by_title, name='get_kml_by_title'),
 ]
-
 
 # Views SurveillancePlan
 urlpatterns += [

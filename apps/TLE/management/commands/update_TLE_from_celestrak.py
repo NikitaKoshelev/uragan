@@ -1,17 +1,15 @@
 # coding: utf-8
 
-import sys
 import os
-
-from requests import get
-from datetime import datetime, timedelta
+import sys
+from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz
-from pytz import utc
 
 from django.core.management.base import BaseCommand
+from requests import get
+
 from apps.TLE.models import TLE, Satellite
 from .init_TLE_ISS_formfile import unique_tle
-
 
 if sys.version_info.major == 2:
     from urllib import urlretrieve  # python 2.x

@@ -1,10 +1,9 @@
-__author__ = 'koshelev'
+# coding: utf-8
 
-from django.forms import ModelForm, Form, DateTimeField, IntegerField
+from django.forms import Form, DateTimeField, IntegerField
 
-from apps.TLE.models import TLE
 
-#class TleForms(ModelForm):
+# class TleForms(ModelForm):
 #    class Meta:
 #        model = TLE
 

@@ -8,6 +8,7 @@ class JSONResponseMixin(object):
     """
     A mixin that can be used to render a JSON response.
     """
+
     def render_to_json_response(self, context, **response_kwargs):
         """
         Returns a JSON response, transforming 'context' to make the payload.
@@ -29,7 +30,7 @@ class JSONResponseMixin(object):
 
 
 class HybridView(JSONResponseMixin, TemplateView):
-     def render_to_response(self, context, **response_kwargs):
+    def render_to_response(self, context, **response_kwargs):
         # Look for a 'format=json' GET argument
         if self.request.GET.get('format') == 'json':
             return self.render_to_json_response(context, **response_kwargs)

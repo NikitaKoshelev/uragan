@@ -1,4 +1,4 @@
-__author__ = 'koshelev'
+# coding: utf-8
 from django import forms
 
 base_css = {
@@ -17,6 +17,7 @@ class BaseModelForm(forms.ModelForm):
     class Media:
         css = base_css
         js = base_js
+
 
 class BaseForm(forms.Form):
     class Media:

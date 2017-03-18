@@ -1,12 +1,14 @@
 # coding: utf-8
 
-from django.core.management.base import BaseCommand
-from apps.TLE.models import TLE, Satellite
-from apps.TLE import spacetrack
 from datetime import date, timedelta
+
 from dateutil.parser import parse
-from tqdm import tqdm
+from django.core.management.base import BaseCommand
 from pytz import utc
+from tqdm import tqdm
+
+from apps.TLE import spacetrack
+from apps.TLE.models import TLE, Satellite
 
 
 def unique_tle(seq, satellite, start):
@@ -35,7 +37,7 @@ class Command(BaseCommand):
     help = 'Download TLE files'
 
     def handle(self, **options):
-        #TLE.objects.all().delete()
+        # TLE.objects.all().delete()
         satellites = Satellite.objects.all()
 
         for sat in satellites:
@@ -43,7 +45,7 @@ class Command(BaseCommand):
                 credentials = {'identity': 'rkk.experiments@mail.ru', 'password': 'rkkexperiments2015'}
                 first_tle = sat.tle_set.first()
                 date_start = first_tle.datetime_in_lines.date() if first_tle else date(1998, 11, 20)
-                query = spacetrack.tle_query_build(date_range=(date_start, date.today()+timedelta(days=1)),
+                query = spacetrack.tle_query_build(date_range=(date_start, date.today() + timedelta(days=1)),
                                                    norad_id=str(sat.satellite_number), sort='asc')
 
                 self.stdout.write('Start download object - ' + sat.title)

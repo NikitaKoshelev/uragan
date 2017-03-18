@@ -1,12 +1,11 @@
-import json
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
-from django.core.serializers import serialize
-from django.views.generic import ListView, DayArchiveView, TodayArchiveView, DetailView
-from .models import TLE, Satellite
-from .mixins import SatellitesTemplateResponseMixin
-from django.core.cache import caches
 from dateutil import parser
+from django.core.cache import caches
+from django.core.serializers import serialize
+from django.http import JsonResponse, HttpResponse
+from django.views.generic import ListView, DayArchiveView, TodayArchiveView, DetailView
+
+from .mixins import SatellitesTemplateResponseMixin
+from .models import TLE, Satellite
 from .utils import get_ISS_subsatpoint
 
 cache = caches['subsatpoints']

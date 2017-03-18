@@ -11,4 +11,3 @@ def parse_env_list(s, sep='|', limit=-1):
 
 def parse_env_mapping(s):
     return dict(item.split('::', 1) for item in parse_env_list(s))
-

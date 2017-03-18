@@ -1,6 +1,6 @@
-from django.conf import settings
-from django.forms import forms, TextInput, Textarea, Select, SelectMultiple, DateTimeInput
+from django.forms import TextInput, Textarea, Select, SelectMultiple, DateTimeInput
 from django.forms.widgets import mark_safe, Input
+
 
 class ColorPickerWidget(TextInput):
     class Media:
@@ -51,6 +51,7 @@ class AutosizedTextarea(Textarea):
     """
     Autosized Textarea - textarea height dynamically grows based on user input
     """
+
     class Media:
         js = ('plugins/jquery.autosize.min.js',)
 
@@ -65,7 +66,7 @@ class AutosizedTextarea(Textarea):
 
 
 class Select2Widget(Select):
-    #class Media:
+    # class Media:
     #    css = {'all': ('plugins/select2/css/select2.min.css',)}
     #    js = ('plugins/select2/js/select2.full.min.js',)
 
@@ -79,7 +80,7 @@ class Select2Widget(Select):
 
 
 class MultipleSelect2Widget(SelectMultiple):
-    #class Media:
+    # class Media:
     #    css = {'all': ('plugins/select2/css/select2.min.css',)}
     #    js = ('plugins/select2/js/select2.full.min.js',)
 
@@ -90,6 +91,7 @@ class MultipleSelect2Widget(SelectMultiple):
                  '$("#id_%s").select2({language: page_language_code, width: "100%%"});});'
                  '</script>' % name)
         return html
+
 
 class DateTimePickerWidget(DateTimeInput):
     class Media:

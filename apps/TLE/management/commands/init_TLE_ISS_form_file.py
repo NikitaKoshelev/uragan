@@ -1,10 +1,10 @@
 # coding: utf-8
 
 from datetime import datetime, timedelta
-from tqdm import tqdm
-from pytz import utc
 
 from django.core.management.base import BaseCommand
+from pytz import utc
+
 from apps.TLE.models import TLE, Satellite
 
 

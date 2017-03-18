@@ -1,18 +1,18 @@
 # coding: utf-8
-from geopy.geocoders import Nominatim
-from pykml.factory import KML_ElementMaker as KML
-from pykml import parser
-from lxml import etree
-from yandex_translate import YandexTranslate
+from datetime import timedelta
 
+from django.conf import settings
+from django.contrib.gis.db import models
 from django.contrib.gis.geos import GEOSGeometry, Point
 from django.core.urlresolvers import reverse
-from django.contrib.gis.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone as tz
-from datetime import timedelta
-from django.conf import settings
 from django.utils.text import capfirst
+from django.utils.translation import ugettext_lazy as _
+from geopy.geocoders import Nominatim
+from lxml import etree
+from pykml import parser
+from pykml.factory import KML_ElementMaker as KML
+from yandex_translate import YandexTranslate
 
 from .utils import convert_color_hex_to_kml
 
@@ -38,7 +38,8 @@ class GeoObject(models.Model):
     images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('last modification'))
     lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
-    location = models.PointField(geography=True, spatial_index=True, srid=4326, verbose_name=_('location point'), null=True, unique=True)
+    location = models.PointField(geography=True, spatial_index=True, srid=4326, verbose_name=_('location point'),
+                                 null=True, unique=True)
     lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
     short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
     title = models.TextField(verbose_name=_('title geographical object'), unique=True, db_index=True)
@@ -51,8 +52,8 @@ class GeoObject(models.Model):
         verbose_name_plural = _('geographical objects')
 
     def __iter__(self):
-        #data = serialize('json', self)
-        #print(data)
+        # data = serialize('json', self)
+        # print(data)
         for field in self._meta.fields:
             yield (field.name, capfirst(field.verbose_name), capfirst(field.value_to_string(self)))
 
@@ -73,7 +74,7 @@ class GeoObject(models.Model):
                         KML.LineStyle(KML.color(line_color), KML.width(2)),
                         id=id
                     ),
-                    KML.Placemark(KML.name(self.title),  KML.styleUrl('#' + id), parser.fromstring(self.geometry.kml))
+                    KML.Placemark(KML.name(self.title), KML.styleUrl('#' + id), parser.fromstring(self.geometry.kml))
                 ))
                 geometry = etree.tostring(kml, pretty_print=True)
 
@@ -115,7 +116,7 @@ class SurveillancePlan(models.Model):
     time_end = models.DateTimeField(default=tz.now() + timedelta(days=7), verbose_name=_('date and time end'))
     creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name=_('creation date and time'))
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('modification date and time'))
-    researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'),  blank=True)
+    researchers = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('researchers'), blank=True)
 
     class Meta:
         verbose_name = _('surveillance plan')
@@ -126,7 +127,3 @@ class SurveillancePlan(models.Model):
 
     def get_absolute_url(self):
         return reverse('GeoObject:detail_plan', self.pk)
-
-
-
-

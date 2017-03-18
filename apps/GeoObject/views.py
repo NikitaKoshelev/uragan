@@ -1,27 +1,23 @@
-import json
-
-from django.shortcuts import render_to_response, redirect, RequestContext, get_object_or_404
-from django.http import HttpResponse, FileResponse
-from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DeleteView, FormView, DetailView, ListView, UpdateView
-from django.core.serializers import serialize
-
+from django.shortcuts import render_to_response, redirect
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from formtools.wizard.views import CookieWizardView
 
-from .api import get_kml_for_queryset, get_lst_for_queryset, get_kml_by_object
-from .models import GeoObject, SurveillancePlan
-from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2, SurveillancePlanForm
-from apps.common.mixins import LoginRequiredMixin
 from apps.TLE.mixins import SatellitesTemplateResponseMixin
+from apps.common.mixins import LoginRequiredMixin
+from .api import get_kml_for_queryset, get_lst_for_queryset, get_kml_by_object
+from .forms import GeoObjectForm, GeoObjectFormStep1, GeoObjectFormStep2, SurveillancePlanForm
+from .models import GeoObject, SurveillancePlan
 
 
 def where_iss(request):
     return render_to_response('includes/where_is_iss.html')
 
+
 class CreateGeoObject(CreateView):
     model = GeoObject
     form_class = GeoObjectForm
     template_name = 'GeoObject/GeoObject/create.html'
+
 
 class DetailGeoObject(SatellitesTemplateResponseMixin, DetailView):
     model = GeoObject

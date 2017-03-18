@@ -10,8 +10,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 import os
-from django.utils.translation import ugettext_lazy as _
+
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+from django.utils.translation import ugettext_lazy as _
 
 from .utils import parse_env_list, to_bool
 
@@ -29,10 +30,10 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', '$(@)#f)t^&!7q^s0rf=%hspn+boi81&vk%+=aye1uc@pj5+$b9')
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 TEMPLATE_DEBUG = DEBUG = to_bool(os.environ.get('DEBUG', 'false'))
 
+FORCE_SCRIPT_NAME = os.environ.get('FORCE_SCRIPT_NAME')
 ALLOWED_HOSTS = parse_env_list(os.environ.get('ALLOWED_HOSTS', 'localhost'))
 
 # Application definition
@@ -79,7 +80,6 @@ ROOT_URLCONF = 'apps.common.urls'
 
 WSGI_APPLICATION = 'apps.common.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -108,7 +108,6 @@ CACHES = {
     }
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -134,7 +133,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

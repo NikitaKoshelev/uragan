@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Profile
 from django.utils.translation import ugettext_lazy as _
+
 from .models import Company
+from .models import Profile
 
 
 class ProfileAdmin(UserAdmin):
@@ -20,6 +21,7 @@ class ProfileAdmin(UserAdmin):
             'fields': ('username', 'password1', 'password2'),
         }),
     )
+
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Company, admin.ModelAdmin)

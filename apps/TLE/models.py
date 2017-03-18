@@ -3,7 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class TLE(models.Model):
-    datetime_created = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name=_('date and time of creation'))
+    datetime_created = models.DateTimeField(auto_now_add=True, blank=True, null=True,
+                                            verbose_name=_('date and time of creation'))
     title_line = models.CharField(max_length=24, verbose_name=_('title in line two-line element set'))
     line1 = models.CharField(max_length=69, verbose_name=_('first line in two-line element set'))
     line2 = models.CharField(max_length=69, verbose_name=_('second line in two-line element set'))

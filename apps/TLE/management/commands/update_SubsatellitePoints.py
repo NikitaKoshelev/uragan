@@ -1,9 +1,11 @@
 # coding: utf-8
-from django.core.management.base import BaseCommand
-from django.core.cache import caches
 from datetime import timedelta
+
+from django.core.cache import caches
+from django.core.management.base import BaseCommand
+
+from apps.TLE.models import TLE
 from apps.TLE.utils import update_track
-from apps.TLE.models import SubsatellitePoint, TLE
 
 
 class Command(BaseCommand):

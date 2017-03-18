@@ -1,12 +1,12 @@
-from reversion import VersionAdmin
-from suit.widgets import AutosizedTextarea
-from django_select2.widgets import Select2MultipleWidget
-
 from django.contrib import admin
 from django.forms import ModelForm
+from django_select2.widgets import Select2MultipleWidget
+from reversion import VersionAdmin
+from suit.widgets import AutosizedTextarea
 
-from .models import GeoObject, Images, SurveillancePlan
 from apps.common.widgets import ColorPickerWidget
+from .models import GeoObject, Images, SurveillancePlan
+
 
 class GeoObjectAdminForm(ModelForm):
     class Meta:
@@ -32,8 +32,10 @@ class GeoObjectAdmin(VersionAdmin):
     form = GeoObjectAdminForm
     list_display = ('title', 'lat', 'lon', 'short_description',)
 
+
 class ImagesAdmin(VersionAdmin):
     list_display = ('title', 'image',)
+
 
 class SurveillancePlanAdmin(VersionAdmin):
     form = SurveillancePlanAdminForm

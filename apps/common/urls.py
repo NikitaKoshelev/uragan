@@ -3,7 +3,9 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from solid_i18n.urls import solid_i18n_patterns
+
 from .views import translate_string
+
 js_info_dict = {
     # 'packages': ('apps.common',),
 }

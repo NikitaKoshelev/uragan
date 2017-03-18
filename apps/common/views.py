@@ -1,8 +1,10 @@
 # coding: utf-8
 
-from goslate import Goslate
-from django.http import HttpResponse
 import json
+
+from django.http import HttpResponse
+from goslate import Goslate
+
 
 def translate_string(request):
     print(request.GET)

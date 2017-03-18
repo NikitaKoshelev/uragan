@@ -1,10 +1,11 @@
 # coding: utf-8
-from ephem import readtle, Observer
-from datetime import datetime, timedelta
-from geopy.distance import distance
+from datetime import timedelta
 from math import degrees
-from tqdm import tqdm
+
 from django.contrib.gis.geos import Point
+from ephem import readtle
+from tqdm import tqdm
+
 from .models import SubsatellitePoint
 
 
@@ -50,8 +51,8 @@ class DayRange(DateTimeRange):
 
 
 def chunker(chunk_size, iterable):
-    count = len(iterable)//chunk_size
-    for i in range(count+1):
+    count = len(iterable) // chunk_size
+    for i in range(count + 1):
         yield iterable[:chunk_size]
         iterable = iterable[chunk_size:]
 
@@ -65,11 +66,11 @@ def get_ISS_subsatpoint(tle, iss_time):
 
 def update_track(tle, delta=timedelta(days=1), step_in_sec=1):
     start = tle.datetime_in_lines
-    stop = start+delta
+    stop = start + delta
     SubsatellitePoint.objects.filter(date_time__gte=start).delete()
     iss = readtle(tle.title_line, tle.line1, tle.line2)
     for iss_time, next_time in tqdm(DateTimeRange(start, stop, step_in_sec), leave=True):
         iss.compute(iss_time)
         sublong, sublat = map(degrees, (iss.sublong, iss.sublat))
-        #yield SubsatellitePoint(date_time=iss_time, location=Point(sublong, sublat), tle=tle), (iss_time, Point(sublong, sublat))
+        # yield SubsatellitePoint(date_time=iss_time, location=Point(sublong, sublat), tle=tle), (iss_time, Point(sublong, sublat))
         yield iss_time, Point(sublong, sublat)

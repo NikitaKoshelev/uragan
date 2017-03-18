@@ -1,22 +1,20 @@
 # coding: utf-8
 import tempfile
-from geopy import Nominatim, GoogleV3, GeoNames
-from yandex_translate import YandexTranslate
-from pykml.factory import KML_ElementMaker as KML
-from pykml import parser
-from lxml import etree
 
 from django.conf import settings
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, FileResponse
+from django.shortcuts import get_object_or_404
 from django.utils.http import urlquote
-from django.core.serializers import serialize
 from django.utils.translation import ugettext_lazy as _
+from geopy import Nominatim, GoogleV3, GeoNames
+from lxml import etree
+from pykml import parser
+from pykml.factory import KML_ElementMaker as KML
+from yandex_translate import YandexTranslate
 
-from .models import GeoObject
 from .forms import GeocoderForm
+from .models import GeoObject
 from .utils import convert_color_hex_to_kml
-
 
 google = GoogleV3('AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw')
 nominatim = Nominatim()
@@ -99,23 +97,23 @@ def get_kml_for_queryset(queryset, filename=_('Geographical objects')):
         print(line_color, polygon_color)
 
     for (color, title, lat, lon, polygon, short_description) in geo_objects:
-            style_id = colors_dict[color][0]
-            fld = KML.Folder(
+        style_id = colors_dict[color][0]
+        fld = KML.Folder(
+            KML.name(title),
+            KML.Placemark(
                 KML.name(title),
-                KML.Placemark(
-                    KML.name(title),
-                    KML.styleUrl('#' + style_id),
-                    KML.description(short_description),
-                    KML.Point(KML.coordinates("{},{},0".format(lon, lat)))
-                )
+                KML.styleUrl('#' + style_id),
+                KML.description(short_description),
+                KML.Point(KML.coordinates("{},{},0".format(lon, lat)))
             )
+        )
 
-            if polygon:
-                polygon = parser.fromstring(polygon.kml)
-                fld.append(KML.Placemark(KML.name(title), KML.styleUrl('#' + style_id),
-                                         KML.description(short_description), polygon))
+        if polygon:
+            polygon = parser.fromstring(polygon.kml)
+            fld.append(KML.Placemark(KML.name(title), KML.styleUrl('#' + style_id),
+                                     KML.description(short_description), polygon))
 
-            kml.Document.append(fld)
+        kml.Document.append(fld)
 
     kml_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + etree.tostring(kml, pretty_print=True).decode()
     return get_file_response(kml_str, filename)
