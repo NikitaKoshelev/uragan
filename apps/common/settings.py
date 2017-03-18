@@ -13,35 +13,29 @@ import os
 from django.utils.translation import ugettext_lazy as _
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
+from .utils import parse_env_list, to_bool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-FILES_DIRS = os.path.normpath(os.path.join(BASE_DIR, 'files'))
-SERVER_FILES_DIRS = os.path.normpath(os.path.join(BASE_DIR, '..', 'static'))
-
-ON_OPENSHIFT = False
-if os.environ.get('OPENSHIFT_REPO_DIR', False):
-    ON_OPENSHIFT = True
+BASE_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), os.path.pardir, os.path.pardir)
+FILES_DIRS = os.path.join(BASE_DIR, 'files')
+SERVER_FILES_DIRS = os.environ.get('SERVER_FILES_DIRS', os.path.join(BASE_DIR, 'server'))
+os.makedirs(SERVER_FILES_DIRS, exist_ok=True)
+CACHE_DIR = os.environ.get('CACHE_DIR', os.path.join(BASE_DIR, 'cache'))
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('OPENSHIFT_SECRET_TOKEN', '$(@)#f)t^&!7q^s0rf=%hspn+boi81&vk%+=aye1uc@pj5+$b9')
+SECRET_KEY = os.environ.get('SECRET_KEY', '$(@)#f)t^&!7q^s0rf=%hspn+boi81&vk%+=aye1uc@pj5+$b9')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+TEMPLATE_DEBUG = DEBUG = to_bool(os.environ.get('DEBUG', 'false'))
 
-TEMPLATE_DEBUG = DEBUG
-
-ALLOWED_HOSTS = ['localhost']
-if os.environ.get('OPENSHIFT_GEAR_DNS', False):
-    ALLOWED_HOSTS.append(os.environ['OPENSHIFT_GEAR_DNS'])
-
+ALLOWED_HOSTS = parse_env_list(os.environ.get('ALLOWED_HOSTS', 'localhost'))
 
 # Application definition
-
 DEFAULT_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,59 +83,30 @@ WSGI_APPLICATION = 'apps.common.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-if ON_OPENSHIFT:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': os.environ['OPENSHIFT_APP_NAME'],
-            'USER': os.environ['OPENSHIFT_POSTGRESQL_DB_USERNAME'],
-            'PASSWORD': os.environ['OPENSHIFT_POSTGRESQL_DB_PASSWORD'],
-            'HOST': os.environ['OPENSHIFT_POSTGRESQL_DB_HOST'],
-            'PORT': os.environ['OPENSHIFT_POSTGRESQL_DB_PORT'],
-            'CONN_MAX_AGE': None
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get('DB_DEFAULT_NAME'),
+        'USER': os.environ.get('DB_DEFAULT_USER'),
+        'PASSWORD': os.environ.get('DB_DEFAULT_PASSWORD'),
+        'HOST': os.environ.get('DB_DEFAULT_HOST'),
+        'PORT': os.environ.get('DB_DEFAULT_PORT', '5432'),
+        'CONN_MAX_AGE': os.environ.get('DB_DEFAULT_CONN_MAX_AGE')
+    }
+}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'subsatpoints': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(CACHE_DIR, 'subsatpoints'),
+        'TIMEOUT': None,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1500000
         }
     }
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        },
-        'subsatpoints': {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': os.path.join(os.environ['OPENSHIFT_DATA_DIR'], 'django_cache'),
-            'TIMEOUT': None,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1500000
-            }
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            # 'ENGINE': 'django.db.backends.sqlite3',
-            # 'NAME': os.path.join(BASE_DIR, 'db', 'Uragan.sqlite3'),
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': 'uragan',
-            'USER': 'django',
-            'PASSWORD': 'django',
-            'HOST': 'localhost',
-            'PORT': '5432',
-            'CONN_MAX_AGE': None
-        }
-    }
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        },
-        'subsatpoints': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            #'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
-            'KEY_FUNCTION': 'apps.TLE.utils.make_key',
-            'TIMEOUT': None,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1500000
-            }
-        }
-    }
+}
 
 
 # Internationalization
@@ -154,10 +119,10 @@ LANGUAGES = (
     ('ru', _('Russian')),
 )
 
-LOCALE_PATHS = tuple(os.path.join(BASE_DIR, os.path.normpath(app.replace('.', '/')), 'locale') for app in LOCAL_APPS)
-LOCALE_PATHS += (
+LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
+LOCALE_PATHS += tuple(os.path.join(BASE_DIR, *app.split('.'), 'locale') for app in LOCAL_APPS)
 
 # Optional. If you want to use redirects, set this to True
 SOLID_I18N_USE_REDIRECTS = False
@@ -171,13 +136,13 @@ USE_L10N = True
 USE_TZ = True
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/files/statics/'
+STATIC_URL = '/files/static/'
 
-STATIC_ROOT = os.path.join(SERVER_FILES_DIRS, 'statics')
+STATIC_ROOT = os.path.join(SERVER_FILES_DIRS, 'static')
+os.makedirs(STATIC_ROOT, exist_ok=True)
 
 STATICFILES_DIRS = (
     os.path.join(FILES_DIRS, 'static'),
@@ -190,6 +155,7 @@ STATICFILES_FINDERS = (
 
 MEDIA_URL = '/files/media/'
 MEDIA_ROOT = os.path.join(SERVER_FILES_DIRS, 'media')
+os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
@@ -237,6 +203,3 @@ ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_WSGI_AUTO_RELOAD = True
 # -----------------------------------------------------------------------------------------------------------------------
 # AUTO_RENDER_SELECT2_STATICS = False
-
-if not ON_OPENSHIFT:
-    GEOS_LIBRARY_PATH = r"F:\Programs\OSGeo4W64\bin\geos_c.dll"
