@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('geometry', django.contrib.gis.db.models.fields.GeometryField(verbose_name='geometry in KML format', blank=True, srid=4326, null=True)),
                 ('last_modification', models.DateTimeField(auto_now=True, verbose_name='last modification')),
                 ('lat', models.FloatField(verbose_name='northern latitude in degrees')),
-                ('location', django.contrib.gis.db.models.fields.PointField(verbose_name='location point', geography=True, srid=4326, unique=True)),
+                ('location', django.contrib.gis.db.models.fields.PointField(verbose_name='location point', geography=True, srid=4326, null=True, unique=True)),
                 ('lon', models.FloatField(verbose_name='eastern longitude in degrees')),
                 ('short_description', models.TextField(verbose_name='short description', blank=True, null=True)),
                 ('title', models.TextField(verbose_name='title geographical object', db_index=True, unique=True)),

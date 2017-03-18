@@ -38,7 +38,7 @@ class GeoObject(models.Model):
     images = models.ManyToManyField(Images, verbose_name=_('images of geographical object'), blank=True)
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_('last modification'))
     lat = models.FloatField(verbose_name=_('northern latitude in degrees'))
-    location = models.PointField(geography=True, spatial_index=True, srid=4326, verbose_name=_('location point'), unique=True)
+    location = models.PointField(geography=True, spatial_index=True, srid=4326, verbose_name=_('location point'), null=True, unique=True)
     lon = models.FloatField(verbose_name=_('eastern longitude in degrees'))
     short_description = models.TextField(verbose_name=_('short description'), null=True, blank=True)
     title = models.TextField(verbose_name=_('title geographical object'), unique=True, db_index=True)
