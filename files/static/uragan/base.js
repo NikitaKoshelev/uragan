@@ -25,7 +25,6 @@
   function asyncGmapsInitialization(callback) {
     var params = $.param({
       key: settings.googleMapsKey,
-      sensor: false,
       callback: callback || 'initialize',
       language: settings.pageLanguageCode
     });
