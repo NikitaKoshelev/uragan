@@ -39,7 +39,7 @@ $btn_reverse.appendTo($('#buttons')).click(function () {
   nominatim_reverse_geocode(location);
 });
 
-$(document).ready(async_gmaps());
+$(document).ready(asyncGmapsInitializtion());
 
 /*************************************************Functions************************************************************/
 
