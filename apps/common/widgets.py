@@ -74,7 +74,7 @@ class Select2Widget(Select):
         html = super(Select2Widget, self).render(name, value, attrs=None, choices=())
         html += ('<script type="text/javascript">'
                  '$(document).ready(function () { '
-                 '$("[name=%s]").select2({language: page_language_code, width: "100%%"}); });'
+                 '$("[name=%s]").select2({language: window.UraganSettings.pageLanguageCode, width: "100%%"}); });'
                  '</script>' % name)
         return html
 
@@ -88,7 +88,7 @@ class MultipleSelect2Widget(SelectMultiple):
         html = super(MultipleSelect2Widget, self).render(name, value, attrs, choices=())
         html += ('<script type="text/javascript">'
                  '$(document).ready(function () { '
-                 '$("#id_%s").select2({language: page_language_code, width: "100%%"});});'
+                 '$("#id_%s").select2({language: window.UraganSettings.pageLanguageCode, width: "100%%"});});'
                  '</script>' % name)
         return html
 
@@ -109,7 +109,7 @@ class DateTimePickerWidget(DateTimeInput):
         html += ('<script type="text/javascript">'
                  '$(document).ready(function () { '
                  '$("#input_group_%s").datetimepicker({'
-                 '  locale: page_language_code,'
+                 '  locale: window.UraganSettings.pageLanguageCode,'
                  '  icons: {'
                  '      time: "fa fa-clock-o",'
                  '      date: "fa fa-calendar",'

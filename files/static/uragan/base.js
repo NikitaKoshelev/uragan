@@ -1,8 +1,8 @@
 (function ($, settings) {
   'use strict';
 
-  var page_language_code = window.location.pathname.split('/', 2)[1] === 'en' ? 'en' : 'ru';
-  var page_language = page_language_code === 'en' ? 'English' : 'Russian';
+  var window.UraganSettings.pageLanguageCode = window.location.pathname.split('/', 2)[1] === 'en' ? 'en' : 'ru';
+  var window.UraganSettings.pageLanguage = window.UraganSettings.pageLanguageCode === 'en' ? 'English' : 'Russian';
 
   $(function () {
     var $manage_buttons = $('#manage_buttons'),
@@ -29,7 +29,7 @@
       key: settings.googleMapsKey,
       sensor: false,
       callback: callback || 'initialize',
-      language: page_language_code
+      language: window.UraganSettings.pageLanguageCode
     });
 
     $('<script>', {

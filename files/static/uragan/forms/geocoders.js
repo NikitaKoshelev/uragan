@@ -9,7 +9,7 @@ $(document).ready(function () {
     placeholder: gettext('Search geo object with geocoders...'),
     allowClear: true,
     minimumInputLength: 2,
-    language: page_language_code,
+    language: window.UraganSettings.pageLanguageCode,
     width: '100%',
 
     query: function (query) {
@@ -89,7 +89,7 @@ function ajax_google_geocode(term) {
   return $.getJSON("https://maps.googleapis.com/maps/api/geocode/json", {
     address: term,
     key: 'AIzaSyDVEXypca7bWLD1my4Wvc6AQTjsIM88MZw',
-    language: page_language_code
+    language: window.UraganSettings.pageLanguageCode
   });
 }
 
@@ -111,7 +111,7 @@ function ajax_nominatim_geocode(term) {
   return $.getJSON("http://nominatim.openstreetmap.org/search", {
     q: term,
     format: 'json',
-    'accept-language': page_language_code
+    'accept-language': window.UraganSettings.pageLanguageCode
   });
 }
 
@@ -133,7 +133,7 @@ function ajax_geonames_geocode(term) {
     q: term,
     username: 'nikita.koshelev',
     maxRows: 10,
-    lang: page_language_code
+    lang: window.UraganSettings.pageLanguageCode
   })
 }
 

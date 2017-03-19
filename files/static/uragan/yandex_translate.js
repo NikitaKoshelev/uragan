@@ -62,7 +62,7 @@
   var $sync_toggle = $($translate_container.find('#sync_toggle'));
   var $translate_btn = $($translate_container.find('#translate_btn'));
   var $reverse_btn = $($translate_container.find('#reverse_btn'));
-  var lng = page_language_code;
+  var lng = window.UraganSettings.pageLanguageCode;
 
   $(document).ready(function () {
     $.getJSON('https://translate.yandex.net/api/v1.5/tr.json/getLangs', {
