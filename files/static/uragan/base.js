@@ -1,9 +1,6 @@
 (function ($, settings) {
   'use strict';
 
-  var window.UraganSettings.pageLanguageCode = window.location.pathname.split('/', 2)[1] === 'en' ? 'en' : 'ru';
-  var window.UraganSettings.pageLanguage = window.UraganSettings.pageLanguageCode === 'en' ? 'English' : 'Russian';
-
   $(function () {
     var $manage_buttons = $('#manage_buttons'),
       active_items = $(".sidebar li:has(a[href$='{0}'])".f(window.location.pathname));
@@ -23,13 +20,14 @@
 
   });
 
+  window.asyncGmapsInitialization = asyncGmapsInitialization;
 
-  function asyncGmapsInitializtion(callback) {
+  function asyncGmapsInitialization(callback) {
     var params = $.param({
       key: settings.googleMapsKey,
       sensor: false,
       callback: callback || 'initialize',
-      language: window.UraganSettings.pageLanguageCode
+      language: settings.pageLanguageCode
     });
 
     $('<script>', {

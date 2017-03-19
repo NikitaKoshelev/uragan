@@ -19,4 +19,4 @@ function initialize() {
     });
 }
 
-$(document).ready(asyncGmapsInitializtion());
+$(document).ready(asyncGmapsInitialization());
