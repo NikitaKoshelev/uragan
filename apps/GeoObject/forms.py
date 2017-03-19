@@ -40,7 +40,7 @@ class GeoObjectForm(GeoObjectFormStep1, GeoObjectFormStep2, BaseModelForm):
     class Meta:
         model = GeoObject
         fields = '__all__'
-        exclude = 'geometry',
+        exclude = 'geometry', 'location',
         widgets = GeoObjectFormStep1.Meta.widgets.copy()
         widgets.update(GeoObjectFormStep2.Meta.widgets.copy())
 
